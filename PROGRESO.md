@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 5 — Invertir: comparador y calculadoras
+## Siguiente fase: 6 — Aprende: cursos
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -8,7 +8,7 @@
 | 2 | Tipo de cambio automático | Hecha | 3 nov 2026 |
 | 3 | Indicadores y dato del día | Hecha | 3 nov 2026 |
 | 4 | Noticias automáticas | Hecha | 3 nov 2026 |
-| 5 | Invertir: comparador y calculadoras | Pendiente | |
+| 5 | Invertir: comparador y calculadoras | Hecha | 3 nov 2026 |
 | 6 | Aprende: cursos | Pendiente | |
 | 7 | Resumen para WhatsApp | Pendiente | |
 | 8 | SEO, analítica y pulido | Pendiente | |
@@ -79,3 +79,19 @@
 - 3 nov 2026 (fase 4): en la computadora (`npm run dev`) se usa el entorno `local` de `wrangler.jsonc`,
   sin binding de IA, porque la IA obliga a iniciar sesión en Cloudflare. Por eso en local las noticias
   salen solo con titular; los resúmenes aparecerán al publicar. No se pudo probar la IA real desde aquí.
+- 3 nov 2026 (fase 5): tasas de plazo fijo y ahorro en `data/inversiones.json`. Fuente principal:
+  tasas.gt (comparador que lee los tarifarios PDF que cada banco publica por norma de la SIB; verificado el
+  8 sep 2026), más la tabla oficial de Cooperativa Guadalupana (3 nov 2026) y G&T (31 ago 2026). La SIB y
+  los sitios de varios bancos bloquean scripts (403), por eso no se citan sus PDF directamente. Banrural no
+  publica su tasa de plazo fijo en línea y El Bienestar solo un máximo: quedan como "Consultar con la
+  entidad". Las tasas se muestran antes del ISR del 10%.
+- 3 nov 2026 (fase 5): Bonos del Tesoro para pequeños inversionistas (AG 26-2026): desde Q5,000, plazos
+  1/2/3 años al 6.00/6.125/6.25%, intereses semestrales exentos, vía agentes de bolsa. Datos de la emisión
+  de abril 2026 (Prensa Libre, 19 abr 2026); cada emisión puede cambiar.
+- 3 nov 2026 (fase 5): las 4 calculadoras usan la misma lógica en `src/calculadoras.js` (probada) y en
+  `public/app.js` (para no cargar módulos en el navegador). Plazo fijo con interés simple nominal, como lo
+  calculan los bancos de Guatemala; ahorro y meta con capitalización mensual.
+- 3 nov 2026 (fase 5): hay una prueba que falla si cualquier texto de Invertir contiene frases de
+  recomendación personal ("te conviene", "la mejor opción", etc.).
+- 3 nov 2026 (fase 5): revisar las tasas una vez al mes (o cuando Raúl lo pida); la fecha de cada tasa
+  es visible en la app.

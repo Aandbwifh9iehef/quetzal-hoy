@@ -249,6 +249,131 @@
   cargarNoticias();
   fetch('/api/noticias/archivo').then(function (r) { return r.json(); }).then(pintarArchivo).catch(function () {});
 
+
+  // ─── Invertir ───
+  function pct(n) { return (Math.round(n * 100) / 100).toFixed(2) + '%'; }
+  function riesgoClase(r) { return r.indexOf('alto') >= 0 ? 'alto' : r.indexOf('medio') >= 0 ? 'medio' : 'bajo'; }
+
+  function pintarOpciones(tipos) {
+    var html = '';
+    for (var i = 0; i < tipos.length; i++) {
+      var t = tipos[i];
+      html +=
+        '<details class="tarjeta opcion">' +
+        '<summary class="opcion__cab"><span class="opcion__nombre">' + esc(t.nombre) + '</span><span class="badge badge--riesgo-' + riesgoClase(t.riesgo) + '">Riesgo ' + esc(t.riesgo) + '</span></summary>' +
+        '<p class="opcion__que">' + esc(t.queEs) + '</p>' +
+        '<dl class="opcion__datos">' +
+        '<dt>Desde</dt><dd>' + esc(t.desde) + '</dd>' +
+        '<dt>Plazo</dt><dd>' + esc(t.plazo) + '</dd>' +
+        '<dt>Riesgo</dt><dd>' + esc(t.riesgoExplicado) + '</dd>' +
+        '<dt>Liquidez</dt><dd>' + esc(t.liquidez) + '</dd>' +
+        '<dt>Quién supervisa</dt><dd>' + esc(t.supervisa) + '</dd>' +
+        '</dl>' +
+        '<div class="opcion__pc"><div><strong>A favor</strong><ul>' + t.pros.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>' +
+        '<div><strong>En contra</strong><ul>' + t.contras.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div></div>' +
+        '</details>';
+    }
+    document.getElementById('lista-opciones').innerHTML = html;
+  }
+
+  function filaTasa(f, colMonto) {
+    var tasa = f.tasa === null ? '<span class="tasa tasa--na">Consultar con la entidad</span>' : '<span class="tasa">' + pct(f.tasa) + '</span><span class="tasa__tipo">' + esc(f.tipoTasa || '') + '</span>';
+    return (
+      '<div class="fila-tasa">' +
+      '<div class="fila-tasa__ent"><strong>' + esc(f.entidad) + '</strong><span class="texto-suave">' + esc(f.producto) + (f[colMonto] && f[colMonto] !== '—' ? ' · ' + esc(f[colMonto]) : '') + '</span>' +
+      '<span class="fila-tasa__fuente">' + fechaCorta(f.fecha) + ' · <a href="' + esc(f.url) + '" target="_blank" rel="noopener">' + esc(f.fuente) + '</a></span></div>' +
+      '<div class="fila-tasa__val">' + tasa + '</div>' +
+      '</div>'
+    );
+  }
+
+  function pintarTasas(d) {
+    document.getElementById('tasas-nota').textContent = d.tasasPlazoFijo.nota;
+    var filas = d.tasasPlazoFijo.filas.slice().sort(function (a, b) { return (b.tasa || -1) - (a.tasa || -1); });
+    document.getElementById('tabla-plazo-fijo').innerHTML = '<div class="tarjeta tabla-tasas">' + filas.map(function (f) { return filaTasa(f, 'monto'); }).join('') + '</div>';
+    document.getElementById('ahorro-nota').textContent = d.tasasAhorro.nota;
+    var ah = d.tasasAhorro.filas.slice().sort(function (a, b) { return b.tasa - a.tasa; });
+    document.getElementById('tabla-ahorro').innerHTML = '<div class="tarjeta tabla-tasas">' + ah.map(function (f) { return filaTasa(f, 'saldo'); }).join('') + '</div>';
+    var ref = d.referencia.tasaPromedioPlazo;
+    document.getElementById('isr-nota').innerHTML = esc(d.avisoIsr) + ' Referencia: el promedio de todos los depósitos a plazo del sistema fue ' + pct(ref.valor) + ' en ' + esc(ref.periodo.toLowerCase()) + ' (<a href="' + esc(ref.url) + '" target="_blank" rel="noopener">' + esc(ref.fuente) + '</a>); ' + esc(ref.nota);
+  }
+
+  function pintarBonos(b) {
+    var plazos = b.plazos.map(function (p) { return '<div class="bono"><span class="bono__plazo">' + p.anios + (p.anios === 1 ? ' año' : ' años') + '</span><span class="bono__tasa">' + pct(p.tasa) + '</span><span class="texto-suave">vence ' + fechaCorta(p.vence) + '</span></div>'; }).join('');
+    document.getElementById('card-bonos').innerHTML =
+      '<div class="tarjeta">' +
+      '<div class="bonos">' + plazos + '</div>' +
+      '<dl class="opcion__datos mt-md">' +
+      '<dt>Mínimo</dt><dd>' + q(b.minimo) + ', luego múltiplos de ' + q(b.multiplo) + '; máximo ' + q(b.maximoAnual) + ' al año</dd>' +
+      '<dt>Intereses</dt><dd>' + esc(b.pagoIntereses) + ', ' + esc(b.impuestos) + '</dd>' +
+      '<dt>Cómo se compran</dt><dd>' + esc(b.comoComprar) + '</dd>' +
+      '</dl>' +
+      '<div class="fuente-dato">Fuente: <a href="' + esc(b.url) + '" target="_blank" rel="noopener">' + esc(b.fuente) + '</a>, ' + fechaCorta(b.fecha) + '. Las tasas son de la emisión de abril de 2026; cada emisión puede cambiar. Información oficial en <a href="' + esc(b.urlOficial) + '" target="_blank" rel="noopener">minfin.gob.gt</a>.</div>' +
+      '</div>';
+  }
+
+  function pintarEstafas(n) {
+    document.getElementById('lista-estafas').innerHTML = n.senales.map(function (s) {
+      return '<div class="tarjeta alerta"><div class="alerta__titulo">' + esc(s.titulo) + '</div><p>' + esc(s.texto) + '</p></div>';
+    }).join('');
+    document.getElementById('lista-verificar').innerHTML = '<div class="tarjeta"><ol class="verificar">' + n.verificar.map(function (v) {
+      return '<li>' + esc(v.texto) + ' <a href="' + esc(v.enlace) + '" target="_blank" rel="noopener">' + esc(v.etiqueta) + ' →</a></li>';
+    }).join('') + '</ol></div>';
+  }
+
+  // Calculadoras (misma lógica que src/calculadoras.js)
+  function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) && v >= 0 ? v : null; }
+  function calcAhorro() {
+    var a = num('c1-aporte'), t = num('c1-tasa'), m = num('c1-meses'), i = num('c1-inicial');
+    var out = document.getElementById('c1-resultado');
+    if (a === null || t === null || m === null || i === null || m < 1) { out.textContent = 'Revisa los números.'; return; }
+    var r = t / 100 / 12, n = Math.floor(m), f = Math.pow(1 + r, n);
+    var total = r === 0 ? i + a * n : i * f + a * ((f - 1) / r);
+    var aportado = i + a * n;
+    out.innerHTML = '<div class="calc__grande">' + q(total, 2) + '</div><div class="texto-suave">Tú pones ' + q(aportado, 2) + ' y el interés agrega ' + q(total - aportado, 2) + ' en ' + n + ' meses (antes del ISR).</div>';
+  }
+  function calcPlazo() {
+    var m = num('c2-monto'), t = num('c2-tasa'), d = parseInt(document.getElementById('c2-dias').value, 10);
+    var out = document.getElementById('c2-resultado');
+    if (m === null || t === null) { out.textContent = 'Revisa los números.'; return; }
+    var interes = m * (t / 100) * (d / 365), isr = interes * 0.1;
+    out.innerHTML = '<div class="calc__grande">' + q(m + interes - isr, 2) + '</div><div class="texto-suave">Interés ' + q(interes, 2) + ' menos 10% de ISR (' + q(isr, 2) + ') = ' + q(interes - isr, 2) + ' netos en ' + d + ' días.</div>';
+  }
+  function calcInflacion() {
+    var m = num('c3-monto'), a = num('c3-anios'), i = num('c3-inflacion');
+    var out = document.getElementById('c3-resultado');
+    if (m === null || a === null || i === null) { out.textContent = 'Revisa los números.'; return; }
+    var real = m / Math.pow(1 + i / 100, a);
+    out.innerHTML = '<div class="calc__grande calc__grande--rojo">−' + q(m - real, 2) + '</div><div class="texto-suave">Tus ' + q(m) + ' seguirán siendo ' + q(m) + ', pero comprarán lo que hoy compras con ' + q(real, 2) + '. Pierdes ' + pct((1 - real / m) * 100) + ' de poder de compra en ' + a + (a === 1 ? ' año' : ' años') + '.</div>';
+  }
+  function calcMeta() {
+    var meta = num('c4-meta'), m = num('c4-meses'), t = num('c4-tasa'), i = num('c4-inicial');
+    var out = document.getElementById('c4-resultado');
+    if (meta === null || m === null || t === null || i === null || m < 1) { out.textContent = 'Revisa los números.'; return; }
+    var r = t / 100 / 12, n = Math.floor(m), f = Math.pow(1 + r, n);
+    var faltante = meta - i * f;
+    if (faltante <= 0) { out.innerHTML = '<div class="calc__grande">Q 0.00 al mes</div><div class="texto-suave">Con lo que ya tienes llegas a la meta.</div>'; return; }
+    var aporte = r === 0 ? faltante / n : faltante * r / (f - 1);
+    out.innerHTML = '<div class="calc__grande">' + q(aporte, 2) + ' al mes</div><div class="texto-suave">Durante ' + n + ' meses para llegar a ' + q(meta) + '. El interés pone ' + q(meta - i - aporte * n, 2) + '.</div>';
+  }
+  var calcs = [['c1', calcAhorro], ['c2', calcPlazo], ['c3', calcInflacion], ['c4', calcMeta]];
+  for (var ci = 0; ci < calcs.length; ci++) {
+    (function (prefijo, fn) {
+      var campos = document.querySelectorAll('[id^="' + prefijo + '-"]');
+      for (var k = 0; k < campos.length; k++) { campos[k].addEventListener('input', fn); campos[k].addEventListener('change', fn); }
+      fn();
+    })(calcs[ci][0], calcs[ci][1]);
+  }
+
+  fetch('/api/inversiones').then(function (r) { return r.json(); }).then(function (d) {
+    pintarOpciones(d.tipos);
+    pintarTasas(d);
+    pintarBonos(d.bonos);
+    pintarEstafas(d.noEsInversion);
+  }).catch(function () {
+    document.getElementById('lista-opciones').innerHTML = '<p class="texto-suave">No pudimos cargar la información.</p>';
+  });
+
   fetch('/api/tipo-cambio')
     .then(function (r) { return r.json(); })
     .then(pintarTipoCambio)

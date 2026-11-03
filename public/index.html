@@ -125,14 +125,88 @@
 
     <!-- Pestaña: Invertir -->
     <section id="tab-invertir" class="seccion" role="tabpanel" aria-label="Invertir">
-      <h1 class="seccion-titulo">Invertir</h1>
-      <div class="pronto">
-        <div class="pronto__icono" aria-hidden="true">📊</div>
-        <div class="pronto__titulo">Comparador de inversiones, próximamente</div>
-        <p class="pronto__desc">Compararás opciones reales: depósitos a plazo, cuentas de ahorro, cooperativas y bonos del Estado — con tasas actuales y calculadoras.</p>
+      <h1 class="seccion-titulo">Invertir en Guatemala</h1>
+      <div class="aviso-legal aviso-legal--arriba">
+        Esto es información para comparar, no asesoría financiera. Verifica las condiciones con la entidad antes de invertir. <a href="/aviso-legal">Aviso legal</a>.
       </div>
-      <div class="aviso-legal mt-md">
-        La información de esta sección es educativa y no es asesoría financiera personalizada. <a href="/aviso-legal">Aviso legal</a>.
+
+      <nav class="subnav" aria-label="Secciones de Invertir">
+        <a href="#opciones">Opciones</a>
+        <a href="#tasas">Tasas</a>
+        <a href="#bonos">Bonos</a>
+        <a href="#calculadoras">Calculadoras</a>
+        <a href="#estafas">Estafas</a>
+      </nav>
+
+      <h2 class="subtitulo mt-lg" id="opciones">Tus opciones reales</h2>
+      <p class="texto-suave mb-md">Toca cada una para ver qué es, desde cuánto, el riesgo y quién la supervisa.</p>
+      <div id="lista-opciones"><div class="cargando">Cargando…</div></div>
+
+      <h2 class="subtitulo mt-lg" id="tasas">Tasas de plazo fijo a 1 año</h2>
+      <p class="texto-suave mb-md" id="tasas-nota"></p>
+      <div id="tabla-plazo-fijo"></div>
+      <details class="significa mt-sm" id="det-ahorro">
+        <summary>Ver tasas de cuentas de ahorro</summary>
+        <p class="texto-suave" id="ahorro-nota"></p>
+        <div id="tabla-ahorro"></div>
+      </details>
+      <p class="texto-suave mt-md" id="isr-nota"></p>
+
+      <h2 class="subtitulo mt-lg" id="bonos">Bonos del Tesoro para personas</h2>
+      <div id="card-bonos"></div>
+
+      <h2 class="subtitulo mt-lg" id="calculadoras">Calculadoras</h2>
+
+      <div class="tarjeta calc">
+        <div class="tarjeta__titulo">Ahorro mensual con interés</div>
+        <div class="calc__campos">
+          <label class="campo"><span>Ahorras al mes (Q)</span><input type="number" inputmode="decimal" id="c1-aporte" value="500" min="0" step="any"></label>
+          <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c1-tasa" value="5" min="0" step="any"></label>
+          <label class="campo"><span>Meses</span><input type="number" inputmode="numeric" id="c1-meses" value="24" min="1" step="1"></label>
+          <label class="campo"><span>Ya tienes (Q)</span><input type="number" inputmode="decimal" id="c1-inicial" value="0" min="0" step="any"></label>
+        </div>
+        <div class="calc__resultado" id="c1-resultado"></div>
+      </div>
+
+      <div class="tarjeta calc mt-md">
+        <div class="tarjeta__titulo">Plazo fijo</div>
+        <div class="calc__campos">
+          <label class="campo"><span>Monto (Q)</span><input type="number" inputmode="decimal" id="c2-monto" value="10000" min="0" step="any"></label>
+          <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c2-tasa" value="5" min="0" step="any"></label>
+          <label class="campo"><span>Días</span><select id="c2-dias"><option value="90">90</option><option value="180">180</option><option value="365" selected>365</option><option value="730">730</option></select></label>
+        </div>
+        <div class="calc__resultado" id="c2-resultado"></div>
+      </div>
+
+      <div class="tarjeta calc mt-md">
+        <div class="tarjeta__titulo">Si lo guardas en casa</div>
+        <div class="calc__campos">
+          <label class="campo"><span>Monto guardado (Q)</span><input type="number" inputmode="decimal" id="c3-monto" value="5000" min="0" step="any"></label>
+          <label class="campo"><span>Años</span><input type="number" inputmode="numeric" id="c3-anios" value="3" min="1" step="1"></label>
+          <label class="campo"><span>Inflación anual (%)</span><input type="number" inputmode="decimal" id="c3-inflacion" value="4.69" min="0" step="any"></label>
+        </div>
+        <div class="calc__resultado" id="c3-resultado"></div>
+      </div>
+
+      <div class="tarjeta calc mt-md">
+        <div class="tarjeta__titulo">Meta de ahorro</div>
+        <div class="calc__campos">
+          <label class="campo"><span>Quiero juntar (Q)</span><input type="number" inputmode="decimal" id="c4-meta" value="20000" min="0" step="any"></label>
+          <label class="campo"><span>En cuántos meses</span><input type="number" inputmode="numeric" id="c4-meses" value="18" min="1" step="1"></label>
+          <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c4-tasa" value="4" min="0" step="any"></label>
+          <label class="campo"><span>Ya tienes (Q)</span><input type="number" inputmode="decimal" id="c4-inicial" value="0" min="0" step="any"></label>
+        </div>
+        <div class="calc__resultado" id="c4-resultado"></div>
+      </div>
+
+      <h2 class="subtitulo mt-lg" id="estafas">Esto NO es inversión</h2>
+      <p class="texto-suave mb-md">Cada año miles de guatemaltecos pierden sus ahorros en "negocios" que prometen mucho. Estas son las señales de alerta.</p>
+      <div id="lista-estafas"></div>
+      <h3 class="subtitulo mt-lg">Cómo verificar si una entidad está autorizada</h3>
+      <div id="lista-verificar"></div>
+
+      <div class="aviso-legal mt-lg">
+        Información educativa, no asesoría financiera personalizada. Las tasas cambian: verifica las condiciones con la entidad antes de invertir. Nunca prometemos rendimientos. <a href="/aviso-legal">Aviso legal</a>.
       </div>
     </section>
 

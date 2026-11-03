@@ -1,0 +1,158 @@
+{
+  "actualizado": "2026-11-03",
+  "avisoIsr": "En Guatemala, los intereses que pagan bancos y cooperativas tienen una retención del 10% de ISR. Las tasas se muestran antes de esa retención, tal como las publica cada entidad.",
+  "tipos": [
+    {
+      "id": "ahorro",
+      "nombre": "Cuenta de ahorro",
+      "queEs": "Una cuenta en un banco donde tu dinero está disponible siempre y gana un poco de interés. Es el primer paso: sirve para el fondo de emergencia.",
+      "desde": "Q25 a Q1,000 según el banco",
+      "plazo": "Sin plazo: sacas el dinero cuando quieras",
+      "riesgo": "bajo",
+      "riesgoExplicado": "Tu dinero está protegido por el Fondo para la Protección del Ahorro (FOPA) hasta Q20,000 por persona si el banco quiebra.",
+      "liquidez": "Inmediata",
+      "supervisa": "Superintendencia de Bancos (SIB)",
+      "pros": ["Puedes sacar el dinero en cualquier momento", "Sin riesgo de perder lo que depositaste", "Muchas se abren desde el celular"],
+      "contras": ["Casi todas pagan menos que la inflación", "Algunas cobran comisión si el saldo baja de cierto monto", "Es fácil gastarlo porque está a la mano"]
+    },
+    {
+      "id": "plazo-fijo",
+      "nombre": "Depósito a plazo fijo (CDP)",
+      "queEs": "Le prestas tu dinero al banco por un tiempo fijo (90 días a 2 años) y te paga una tasa pactada. Si lo sacas antes, pierdes parte o todo el interés.",
+      "desde": "Q500 a Q5,000 según la entidad",
+      "plazo": "90, 180, 365 o 730 días",
+      "riesgo": "bajo",
+      "riesgoExplicado": "La tasa está pactada desde el inicio. Cubierto por el FOPA hasta Q20,000 por persona en bancos.",
+      "liquidez": "Baja: el dinero queda amarrado hasta el vencimiento",
+      "supervisa": "Superintendencia de Bancos (SIB)",
+      "pros": ["Tasa fija y conocida desde el primer día", "Paga más que la cuenta de ahorro", "Te obliga a no gastar ese dinero"],
+      "contras": ["No puedes usarlo en una emergencia sin penalización", "Con montos pequeños la tasa suele ser baja", "La inflación puede comerse parte de la ganancia"]
+    },
+    {
+      "id": "cooperativa",
+      "nombre": "Ahorro en cooperativa",
+      "queEs": "Las cooperativas de ahorro y crédito son de sus propios socios. Ofrecen cuentas de ahorro y plazo fijo, muchas veces con tasas más altas que los bancos.",
+      "desde": "Q1,000 en la mayoría (más una aportación como socio)",
+      "plazo": "Ahorro disponible o plazo fijo de 90 a 730 días",
+      "riesgo": "bajo a medio",
+      "riesgoExplicado": "No están cubiertas por el FOPA ni supervisadas por la SIB. Las serias están afiliadas a FENACOAC (MICOOPE) y supervisadas por el INACOP. Revisa su historial y estados financieros.",
+      "liquidez": "Inmediata en ahorro; baja en plazo fijo",
+      "supervisa": "INACOP e INGECOP; las de MICOOPE también por FENACOAC",
+      "pros": ["Tasas más altas que muchos bancos", "Eres socio y puedes recibir parte de las ganancias", "Suelen estar cerca en el interior del país"],
+      "contras": ["Sin garantía estatal del depósito", "Calidad muy variable entre cooperativas", "Algunas piden aportaciones que no se retiran fácil"]
+    },
+    {
+      "id": "bonos",
+      "nombre": "Bonos del Tesoro para personas",
+      "queEs": "Le prestas dinero al Estado de Guatemala por 1, 2 o 3 años y te paga intereses cada seis meses. Desde 2025 hay una ventanilla para pequeños inversionistas.",
+      "desde": "Q5,000 (y luego múltiplos de Q1,000, hasta Q1 millón al año)",
+      "plazo": "1, 2 o 3 años",
+      "riesgo": "bajo",
+      "riesgoExplicado": "El pago lo respalda el Estado. El riesgo es que necesites el dinero antes: se pueden vender en bolsa, pero el precio puede variar.",
+      "liquidez": "Media: se venden en el mercado secundario a través del agente de bolsa",
+      "supervisa": "Ministerio de Finanzas; agentes de bolsa supervisados por el Registro del Mercado de Valores y la Bolsa de Valores Nacional",
+      "pros": ["Intereses exentos de impuestos", "Tasa fija por todo el plazo", "Respaldo del Estado"],
+      "contras": ["Hay que comprarlos con un agente de bolsa, que cobra comisión", "Cupo limitado cada año", "Si vendes antes, el precio no está garantizado"]
+    },
+    {
+      "id": "fondos",
+      "nombre": "Fondos de inversión y reportos",
+      "queEs": "Una casa de bolsa junta el dinero de muchas personas y lo invierte en bonos, pagarés o reportos. Tú recibes una parte de lo que gane el fondo.",
+      "desde": "Depende de la casa de bolsa; consulta con ella",
+      "plazo": "Desde días (reportos) hasta años",
+      "riesgo": "medio",
+      "riesgoExplicado": "El rendimiento no está garantizado: depende de lo que gane el fondo. Solo usa casas de bolsa autorizadas y registradas.",
+      "liquidez": "Media: según el fondo",
+      "supervisa": "Registro del Mercado de Valores y Mercancías y Bolsa de Valores Nacional",
+      "pros": ["Acceso a inversiones que una persona sola no podría comprar", "Manejo profesional", "Puede rendir más que un plazo fijo"],
+      "contras": ["Puedes ganar menos de lo esperado o perder", "Comisiones que no siempre son claras", "Pocos fondos abiertos al público general en Guatemala"]
+    },
+    {
+      "id": "seguros",
+      "nombre": "Seguro de vida con ahorro",
+      "queEs": "Un seguro de vida que, además de proteger a tu familia, acumula una parte de lo que pagas como ahorro que recibes al final del plazo.",
+      "desde": "Primas desde unos Q200 al mes según la aseguradora",
+      "plazo": "10, 15 o 20 años normalmente",
+      "riesgo": "bajo a medio",
+      "riesgoExplicado": "La parte de ahorro suele rendir menos que un plazo fijo porque una parte paga el seguro y las comisiones. Si dejas de pagar en los primeros años, puedes perder mucho.",
+      "liquidez": "Muy baja: retirar antes tiene castigos fuertes",
+      "supervisa": "Superintendencia de Bancos (SIB)",
+      "pros": ["Protege a tu familia y ahorra al mismo tiempo", "Disciplina de pago mensual", "Beneficio fiscal en algunos casos"],
+      "contras": ["Rendimiento bajo comparado con ahorrar aparte", "Comisiones altas al inicio", "Es difícil salirse sin perder"]
+    }
+  ],
+  "tasasPlazoFijo": {
+    "nota": "Tasa anual publicada para un depósito de Q5,000 a Q50,000 a 1 año (365 días), antes del ISR. Las tasas cambian seguido: verifica las condiciones con la entidad antes de invertir.",
+    "filas": [
+      { "entidad": "Banco Azteca", "tipo": "banco", "producto": "Inversión Azteca a Plazo", "tasa": 6.25, "tipoTasa": "efectiva", "monto": "Q5,000 a Q299,999", "plazo": "364 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco de Antigua", "tipo": "banco", "producto": "Certificado de Depósito a Plazo", "tasa": 6.25, "tipoTasa": "nominal", "monto": "Q3,000 a Q99,999", "plazo": "365 a 729 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa UPA", "tipo": "cooperativa", "producto": "Plazo fijo", "tasa": 6.5, "tipoTasa": "nominal", "monto": "Cualquier monto", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa ACREDICOM", "tipo": "cooperativa", "producto": "Ahorro a plazo fijo", "tasa": 6.0, "tipoTasa": "nominal", "monto": "Cualquier monto", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa COPAR", "tipo": "cooperativa", "producto": "Cuenta a plazo fijo", "tasa": 5.75, "tipoTasa": "nominal", "monto": "Q5,000 a Q25,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Internacional", "tipo": "banco", "producto": "e-Plazo (digital)", "tasa": 5.5, "tipoTasa": "efectiva", "monto": "Q5,000 a Q10 millones", "plazo": "360 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Bantrab", "tipo": "banco", "producto": "CDP Bienestar +", "tasa": 5.05, "tipoTasa": "nominal", "monto": "Q5,000 a Q49,999", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "BAC Credomatic", "tipo": "banco", "producto": "CDP (canal digital)", "tasa": 4.9, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa Guadalupana", "tipo": "cooperativa", "producto": "Mi Plazo Fijo", "tasa": 4.05, "tipoTasa": "nominal", "monto": "Q1,000 a Q50,000", "plazo": "365 días", "fecha": "2026-11-03", "fuente": "Sitio de la cooperativa", "url": "https://www.cooperativaguadalupana.com.gt/ahorro/mi-plazo-fijo/" },
+      { "entidad": "Banco Ficohsa", "tipo": "banco", "producto": "Inversión a Plazo Fijo", "tasa": 3.75, "tipoTasa": "nominal", "monto": "Q1,000 a Q49,999", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Promerica", "tipo": "banco", "producto": "Depósito a Plazo Fijo", "tasa": 3.55, "tipoTasa": "efectiva", "monto": "Q2,000 a Q24,999", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco G&T Continental", "tipo": "banco", "producto": "Certificado de Depósito a Plazo", "tasa": 2.75, "tipoTasa": "nominal", "monto": "Q5,000 a Q49,999", "plazo": "365 días", "fecha": "2026-08-31", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo/gtc-plazo-fijo-gtq" },
+      { "entidad": "Banco Agromercantil (BAM)", "tipo": "banco", "producto": "CDP", "tasa": 2.0, "tipoTasa": "efectiva", "monto": "Q5,000 a Q49,999", "plazo": "360 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Industrial", "tipo": "banco", "producto": "Plazo Fijo", "tasa": 1.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "CHN", "tipo": "banco", "producto": "Ahorro Plazo Fijo", "tasa": 1.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banrural", "tipo": "banco", "producto": "Depósito a plazo", "tasa": null, "tipoTasa": null, "monto": "—", "plazo": "—", "fecha": "2026-11-03", "fuente": "No encontramos la tasa publicada en línea", "url": "https://www.banrural.com.gt/" },
+      { "entidad": "Cooperativa El Bienestar", "tipo": "cooperativa", "producto": "Ahorro a plazo fijo", "tasa": null, "tipoTasa": null, "monto": "Desde Q1,000", "plazo": "90 a 730 días", "fecha": "2026-11-03", "fuente": "Publica solo un máximo (\"hasta 7.75%\"), sin tabla", "url": "https://cooperativaelbienestar.com.gt/index.php/ahorros/ahorro-a-plazo-fijo" }
+    ]
+  },
+  "tasasAhorro": {
+    "nota": "Cuentas de ahorro con el dinero siempre disponible, tasa anual publicada antes del ISR, verificado el 8 de septiembre de 2026 en tasas.gt (lee el tarifario de cada banco).",
+    "filas": [
+      { "entidad": "Banco Multimoney", "producto": "Cuenta de Ahorro Digital", "tasa": 5.0, "saldo": "Desde Q0.01", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Industrial", "producto": "Planes de Inversión", "tasa": 4.5, "saldo": "Desde Q50", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "CHN", "producto": "Depósito de Ahorro Visionario", "tasa": 4.0, "saldo": "Cualquier monto", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Cooperativa UPA", "producto": "Ahorro Disponible", "tasa": 4.0, "saldo": "Cualquier monto", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Internacional", "producto": "Ahorro e-Savings", "tasa": 3.0, "saldo": "Desde Q1,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "G&T Continental", "producto": "Ahorro Preferente", "tasa": 3.0, "saldo": "Desde Q5,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Bantrab", "producto": "BT La Colmenita", "tasa": 2.5, "saldo": "Desde Q50", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "BAC Credomatic", "producto": "Ahorro Alcanza", "tasa": 2.0, "saldo": "Q5,000 a Q300,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banrural", "producto": "Cuenta Amigo Crece", "tasa": 1.0, "saldo": "Hasta Q250,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" }
+    ]
+  },
+  "bonos": {
+    "nombre": "Bonos del Tesoro para pequeños inversionistas 2026",
+    "minimo": 5000,
+    "multiplo": 1000,
+    "maximoAnual": 1000000,
+    "plazos": [
+      { "anios": 1, "tasa": 6.0, "vence": "2027-04-14" },
+      { "anios": 2, "tasa": 6.125, "vence": "2028-04-14" },
+      { "anios": 3, "tasa": 6.25, "vence": "2029-04-13" }
+    ],
+    "pagoIntereses": "cada seis meses",
+    "impuestos": "intereses exentos",
+    "comoComprar": "Con un agente de bolsa autorizado por la Bolsa de Valores Nacional (cobra comisión). Necesitas DPI, un recibo de servicios, una cuenta bancaria para recibir los intereses y llenar el formulario de la IVE.",
+    "cupo2026": 500000000,
+    "fecha": "2026-04-19",
+    "fuente": "Prensa Libre, con datos del Ministerio de Finanzas (Acuerdo Gubernativo 26-2026)",
+    "url": "https://www.prensalibre.com/economia/bonos-del-tesoro-para-pequenos-inversionistas-como-invertir-desde-q5-mil-y-ganar-hasta-6-25/",
+    "urlOficial": "https://www.minfin.gob.gt/"
+  },
+  "referencia": {
+    "tasaPromedioPlazo": { "valor": 6.84, "periodo": "Diciembre 2025", "fecha": "2026-02-15", "fuente": "Superintendencia de Bancos, informe a diciembre de 2025", "url": "https://www.sib.gob.gt/wp-content/uploads/04-Informe-a-diciembre-2025.pdf", "nota": "Promedio ponderado de todos los depósitos a plazo del sistema; los montos grandes suben el promedio." }
+  },
+  "noEsInversion": {
+    "senales": [
+      { "titulo": "Te prometen ganancias garantizadas", "texto": "Nadie serio garantiza un 5% al mes ni \"duplicar tu dinero\". Un banco grande paga entre 2% y 6% al año. Si ofrecen mucho más, el riesgo es perderlo todo." },
+      { "titulo": "Ganas por meter a más gente", "texto": "Si el dinero sale de los nuevos que entran y no de un negocio real, es una pirámide. Se cae cuando dejan de entrar personas, y los últimos pierden." },
+      { "titulo": "Te lo ofrecen por WhatsApp, TikTok o un \"asesor\" sin empresa", "texto": "Las entidades autorizadas tienen oficinas, contratos y están en listas públicas. Un número de celular y capturas de pantalla no son respaldo." },
+      { "titulo": "Te apuran: \"solo hoy\", \"quedan pocos cupos\"", "texto": "La prisa busca que no verifiques. Una inversión seria sigue existiendo mañana." },
+      { "titulo": "Cripto, forex o \"trading\" con rendimientos fijos", "texto": "Esos mercados suben y bajan; nadie puede prometer una ganancia fija. Las \"señales\" y los \"bots\" que cobran por adelantado casi siempre terminan mal." },
+      { "titulo": "Te piden depositar a la cuenta de una persona", "texto": "Una entidad autorizada recibe el dinero a nombre de la empresa, con recibo o contrato. Si la cuenta es de un particular, no hay a quién reclamar." }
+    ],
+    "verificar": [
+      { "texto": "Bancos, financieras, aseguradoras y casas de cambio: busca el nombre en la lista de entidades supervisadas por la Superintendencia de Bancos.", "enlace": "https://www.sib.gob.gt/", "etiqueta": "Superintendencia de Bancos" },
+      { "texto": "Casas de bolsa, agentes y fondos de inversión: deben estar inscritos en el Registro del Mercado de Valores y Mercancías.", "enlace": "https://www.rmvm.gob.gt/", "etiqueta": "Registro del Mercado de Valores y Mercancías" },
+      { "texto": "Cooperativas de ahorro y crédito: pregunta si está inscrita en el INACOP y si pertenece a MICOOPE (FENACOAC).", "enlace": "https://www.inacop.gob.gt/", "etiqueta": "INACOP" },
+      { "texto": "Si ya te estafaron, denuncia en el Ministerio Público; puedes llamar al 1570.", "enlace": "https://www.mp.gob.gt/", "etiqueta": "Ministerio Público" }
+    ]
+  }
+}
