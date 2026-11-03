@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es-GT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quetzal Hoy — Tu dinero, explicado</title>
+  <meta name="description" content="Tipo de cambio del día, noticias económicas de Guatemala explicadas en sencillo, comparador de inversiones y cursos de finanzas personales.">
+  <meta name="theme-color" content="#1B4332" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1923" media="(prefers-color-scheme: dark)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Quetzal Hoy">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Quetzal Hoy">
+  <meta property="og:title" content="Quetzal Hoy — Tu dinero, explicado">
+  <meta property="og:description" content="Tipo de cambio del día, noticias económicas de Guatemala explicadas en sencillo, comparador de inversiones y cursos de finanzas personales.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://hoy.compoundclub.fyi/">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="canonical" href="https://hoy.compoundclub.fyi/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__logo">
+      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Quetzal estilizado: plumas de la cola -->
+        <circle cx="16" cy="14" r="7" fill="#52B788"/>
+        <ellipse cx="16" cy="14" rx="4.5" ry="5" fill="#1B4332"/>
+        <circle cx="16" cy="12" r="2" fill="#52B788"/>
+        <!-- Plumas largas -->
+        <path d="M12 20 Q10 26 9 30" stroke="#52B788" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M14 21 Q13 27 12 31" stroke="#74C69D" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 21 Q16 27 16 32" stroke="#52B788" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M18 21 Q19 27 20 31" stroke="#74C69D" stroke-width="2" stroke-linecap="round"/>
+        <path d="M20 20 Q22 26 23 30" stroke="#52B788" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Pico -->
+        <path d="M14 11 Q16 9 18 11" stroke="#F4A261" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Ojo -->
+        <circle cx="16" cy="12.5" r="1" fill="#F4A261"/>
+      </svg>
+      <span>Quetzal Hoy</span>
+    </div>
+    <span class="header__fecha" id="fecha-hoy"></span>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main" id="contenido-principal">
+
+    <!-- Botón de instalación PWA -->
+    <button id="btn-instalar" aria-label="Instalar la app en tu celular">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Instalar app en tu celular
+    </button>
+
+    <!-- Pestaña: Hoy -->
+    <section id="tab-hoy" class="seccion activa" role="tabpanel" aria-label="Hoy">
+      <h1 class="seccion-titulo">Hoy en Guatemala</h1>
+
+      <div class="tarjeta" id="card-tipo-cambio">
+        <div class="tarjeta__titulo">Tipo de cambio</div>
+        <div class="cargando">Cargando dato…</div>
+      </div>
+
+      <div class="tarjeta mt-md">
+        <div class="tarjeta__titulo">Indicadores <span class="badge badge--pronto">Próximamente</span></div>
+        <p class="texto-suave">En la siguiente fase verás aquí la inflación, la tasa de interés, las remesas y más datos de la economía guatemalteca.</p>
+      </div>
+
+      <div class="tarjeta mt-md">
+        <div class="tarjeta__titulo">Dato del día <span class="badge badge--pronto">Próximamente</span></div>
+        <p class="texto-suave">Un dato curioso sobre tu dinero, calculado con cifras reales, cada día.</p>
+      </div>
+
+      <div class="aviso-legal mt-md">
+        Dato de referencia. Consulta el oficial en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.
+        Información educativa. <a href="/aviso-legal">Aviso legal</a>.
+      </div>
+    </section>
+
+    <!-- Pestaña: Noticias -->
+    <section id="tab-noticias" class="seccion" role="tabpanel" aria-label="Noticias">
+      <h1 class="seccion-titulo">Noticias</h1>
+      <div class="pronto">
+        <div class="pronto__icono" aria-hidden="true">📰</div>
+        <div class="pronto__titulo">Noticias explicadas, próximamente</div>
+        <p class="pronto__desc">Cada mañana tendrás aquí las noticias económicas de Guatemala y el mundo, explicadas en frases cortas y con fuentes visibles.</p>
+      </div>
+    </section>
+
+    <!-- Pestaña: Invertir -->
+    <section id="tab-invertir" class="seccion" role="tabpanel" aria-label="Invertir">
+      <h1 class="seccion-titulo">Invertir</h1>
+      <div class="pronto">
+        <div class="pronto__icono" aria-hidden="true">📊</div>
+        <div class="pronto__titulo">Comparador de inversiones, próximamente</div>
+        <p class="pronto__desc">Compararás opciones reales: depósitos a plazo, cuentas de ahorro, cooperativas y bonos del Estado — con tasas actuales y calculadoras.</p>
+      </div>
+      <div class="aviso-legal mt-md">
+        La información de esta sección es educativa y no es asesoría financiera personalizada. <a href="/aviso-legal">Aviso legal</a>.
+      </div>
+    </section>
+
+    <!-- Pestaña: Aprende -->
+    <section id="tab-aprende" class="seccion" role="tabpanel" aria-label="Aprende">
+      <h1 class="seccion-titulo">Aprende</h1>
+      <div class="pronto">
+        <div class="pronto__icono" aria-hidden="true">🎓</div>
+        <div class="pronto__titulo">Cursos de finanzas, próximamente</div>
+        <p class="pronto__desc">Cursos cortos y gratuitos: cómo hacer tu presupuesto, salir de deudas y empezar a invertir con poco dinero.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Links del footer -->
+  <nav class="footer-links" aria-label="Páginas de la app">
+    <a href="/acerca">Acerca de</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/aviso-legal">Aviso legal</a>
+    <a href="/contacto">Contacto</a>
+  </nav>
+
+  <!-- Navegación inferior -->
+  <nav class="nav-inferior" aria-label="Navegación principal" role="tablist">
+    <button class="nav-btn activo" id="nav-hoy" onclick="cambiarTab('hoy', this)" role="tab" aria-selected="true" aria-controls="tab-hoy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Hoy
+    </button>
+    <button class="nav-btn" id="nav-noticias" onclick="cambiarTab('noticias', this)" role="tab" aria-selected="false" aria-controls="tab-noticias">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+        <path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>
+      </svg>
+      Noticias
+    </button>
+    <button class="nav-btn" id="nav-invertir" onclick="cambiarTab('invertir', this)" role="tab" aria-selected="false" aria-controls="tab-invertir">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      </svg>
+      Invertir
+    </button>
+    <button class="nav-btn" id="nav-aprende" onclick="cambiarTab('aprende', this)" role="tab" aria-selected="false" aria-controls="tab-aprende">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>
+      Aprende
+    </button>
+  </nav>
+
+</div>
+
+<script>
+  // Fecha de hoy
+  const hoy = new Date();
+  const opcionesFecha = { weekday: 'short', day: 'numeric', month: 'short' };
+  document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-GT', opcionesFecha);
+
+  // Navegación entre pestañas
+  function cambiarTab(tab, btn) {
+    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.classList.remove('activo');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.getElementById('tab-' + tab).classList.add('activa');
+    btn.classList.add('activo');
+    btn.setAttribute('aria-selected', 'true');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Tipo de cambio (Fase 2 lo llenará; por ahora muestra aviso)
+  fetch('/api/tipo-cambio')
+    .then(r => r.json())
+    .then(data => {
+      const card = document.getElementById('card-tipo-cambio');
+      if (data && data.compra) {
+        card.innerHTML = `
+          <div class="tarjeta__titulo">Tipo de cambio</div>
+          <div class="tarjeta__valor">Q ${data.venta}</div>
+          <div class="tarjeta__sub">1 USD = Q ${data.venta} (venta) · Q ${data.compra} (compra)</div>
+          <div class="fuente-dato">Fuente: Banguat, ${data.fecha}</div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="tarjeta__titulo">Tipo de cambio <span class="badge badge--pronto">Próximamente</span></div>
+          <p class="texto-suave mt-sm">El dato automático se activa en la siguiente fase. Por ahora, consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>
+        `;
+      }
+    })
+    .catch(() => {
+      const card = document.getElementById('card-tipo-cambio');
+      card.innerHTML = `
+        <div class="tarjeta__titulo">Tipo de cambio <span class="badge badge--pronto">Próximamente</span></div>
+        <p class="texto-suave mt-sm">El dato automático se activa en la siguiente fase. Consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>
+      `;
+    });
+
+  // PWA: botón de instalación
+  let installEvent = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    installEvent = e;
+    const btn = document.getElementById('btn-instalar');
+    btn.classList.add('visible');
+    btn.addEventListener('click', () => {
+      installEvent.prompt();
+      installEvent.userChoice.then(() => { btn.classList.remove('visible'); });
+    });
+  });
+
+  // Registrar Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>

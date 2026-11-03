@@ -1,0 +1,19 @@
+{
+  "nombre": "Quetzal Hoy",
+  "tagline": "Tu dinero, explicado",
+  "dominio": "hoy.compoundclub.fyi",
+  "contacto": "CompundClub@proton.me",
+  "autor": "Leo Marín",
+  "colores": {
+    "primario": "#1B4332",
+    "primarioClaro": "#2D6A4F",
+    "secundario": "#52B788",
+    "acento": "#F4A261",
+    "acentoOscuro": "#E76F51"
+  },
+  "patrocinador": "",
+  "patrocinadorUrl": "",
+  "afiliados": {},
+  "videos": {},
+  "analytics": ""
+}
