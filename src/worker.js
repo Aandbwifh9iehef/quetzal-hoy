@@ -29,8 +29,9 @@ export default {
     return env.ASSETS.fetch(request);
   },
 
-  async scheduled(event, env, ctx) {
-    ctx.waitUntil(correrCron(event.cron, env));
+  // El cron debe esperar el trabajo: lo que queda en waitUntil se cancela a los 30 s
+  async scheduled(event, env) {
+    await correrCron(event.cron, env);
   }
 };
 

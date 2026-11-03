@@ -22,8 +22,9 @@ celular, muchos con datos móviles limitados. Todo en español de Guatemala.
 3. Haz TODAS las tareas de la fase. No hagas tareas de fases futuras.
 4. Verifica cada "Criterio de terminado" de la fase (ver "Cómo verificar"). Si uno falla, arréglalo
    y vuelve a verificar. No pases a reportar con criterios fallando.
-5. Haz commit con mensaje claro en español (`Fase N: ...`) y push a `main`
-   (cada push a `main` se despliega solo en Cloudflare una vez conectado en la fase 1).
+5. Haz commit con mensaje claro en español (`Fase N: ...`), push a `main` y publica con
+   `npm run deploy` (wrangler está autorizado en esta Mac; el repo no está conectado a Cloudflare,
+   así que el push por sí solo no publica). Comprueba la URL pública después.
 6. Actualiza `PROGRESO.md`: marca la fase como hecha, fecha, decisiones tomadas y pendientes de Raúl.
    Haz commit y push de ese cambio también.
 7. Responde con el reporte (formato abajo).

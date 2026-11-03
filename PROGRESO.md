@@ -15,8 +15,17 @@
 | 9 | Listo para ganar dinero | Hecha | 3 nov 2026 |
 | 10 | App en Google Play | Hecha (lista para que Raúl la suba) | 3 nov 2026 |
 
+## Publicación
+- **La app está publicada:** https://hoy.compoundclub.fyi (también https://quetzal-hoy.academi-q1.workers.dev).
+- Se despliega desde esta computadora con `npm run deploy` (wrangler ya está autorizado con la cuenta de
+  Cloudflare). No está conectado a GitHub: un push a `main` **no** publica solo; Claude Code hace
+  `npm run deploy` al terminar cada cambio. Si algún día Raúl quiere publicación automática por push,
+  Cloudflare → Workers → quetzal-hoy → Settings → Build → conectar el repo.
+- KV `quetzal-hoy-data` creado (ID en `wrangler.jsonc`). Crons activos: noticias 6:00 y tipo de cambio
+  6:30 y 12:30 (hora Guatemala).
+
 ## Pendientes de Raúl
-- **Google Play (fase 10):** cuando la web esté publicada: 1) pwabuilder.com → pegar https://hoy.compoundclub.fyi
+- **Google Play (fase 10):** 1) pwabuilder.com → pegar https://hoy.compoundclub.fyi
   → Package for stores → Android → Generate → Download. 2) Guardar `signing.keystore` y `signing-key-info.txt`
   fuera del repo (y una copia en la nube). 3) Copiar la huella de `assetlinks.json` a `site.config.json` →
   `android.sha256`. 4) Cuenta de desarrollador en play.google.com/console (US$25 una vez) → crear app →
@@ -48,16 +57,6 @@
   3–4 min, lenguaje hablado). Cuando grabes o produzcas un video, súbelo a YouTube como "no listado"
   y pega su ID en `site.config.json` → `videos`, con la clave `curso-leccion` (p. ej. `"deudas-1":
   "abc123XYZ_-"`). La lección lo mostrará arriba del texto. Mientras no haya video, se ve el texto completo.
-- **Bloquea la publicación (no la fase 2):** conectar el repo `quetzal-hoy` a Cloudflare Workers
-  (Workers & Pages → Create → Import a repository → elegir `quetzal-hoy`; el build detecta
-  `wrangler.jsonc` solo) y agregar el dominio personalizado `hoy.compoundclub.fyi` en
-  Settings → Domains & Routes del Worker.
-- **Bloquea el deploy desde la fase 2:** crear el KV y pegar su ID en `wrangler.jsonc`:
-  1. Cloudflare → Storage & Databases → KV → "Create a namespace" → nombre `quetzal-hoy-data` → Add.
-  2. Copiar el ID que aparece junto al nombre.
-  3. En GitHub, abrir `wrangler.jsonc`, reemplazar `PEGAR_ID_DEL_KV_AQUI` por ese ID y guardar (Commit changes).
-  Sin esto el Worker no se publica. Mientras el KV esté vacío, la app muestra el historial de 2 años
-  incluido en el repo y consulta el dato de hoy en vivo, así que no se ve nada roto.
 
 ## Decisiones
 - 3 nov 2026: nombre de trabajo "Quetzal Hoy", subdominio hoy.compoundclub.fyi. Se puede cambiar en site.config.json.
@@ -197,3 +196,12 @@
 - 3 nov 2026 (fase 10): en `android/declaraciones.md` la respuesta a "funciones financieras" es "otras
   funciones financieras (información y educación)"; no préstamos, ni pagos, ni inversión. Cambiar
   "compras dentro de la app" a Sí si se activa premium.
+- 3 nov 2026 (publicación): Raúl autorizó wrangler (OAuth) en esta Mac; el KV se creó con el conector de
+  Cloudflare de la sesión; el Worker se desplegó con `wrangler deploy` y el dominio se configuró desde
+  `wrangler.jsonc` (`routes` con `custom_domain: true`). Primer deploy: 3 nov 2026.
+- 3 nov 2026 (publicación): al probar el cron de noticias contra los servicios reales aparecieron dos
+  fallos que en local no se veían: (1) el modelo `@cf/meta/llama-3.1-8b-instruct` fue retirado por
+  Cloudflare el 30 may 2026 → ahora se usa `@cf/meta/llama-3.1-8b-instruct-fp8` (US$0.152/M entrada,
+  US$0.287/M salida); (2) el handler `scheduled` dejaba el trabajo en `waitUntil`, que se cancela a los
+  30 s → ahora lo espera con `await`, y las 8 llamadas a la IA van en paralelo. Resultado real del primer
+  día: 7 resúmenes de 8 (1 descartado por largo), ~45 neuronas (límite gratis 10,000).

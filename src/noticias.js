@@ -1,9 +1,9 @@
 import { parsearRss } from './rss.js';
 
-export const MODELO_IA = '@cf/meta/llama-3.1-8b-instruct';
-// Estimación de neuronas por token según la tabla de precios de Workers AI para este modelo
-// (US$0.282 / M tokens de entrada y US$0.827 / M de salida; 1,000 neuronas = US$0.011).
-export const NEURONAS_POR_TOKEN = { entrada: 0.02564, salida: 0.07518 };
+export const MODELO_IA = '@cf/meta/llama-3.1-8b-instruct-fp8';
+// Estimación de neuronas por token según la ficha del modelo en Workers AI
+// (US$0.152 / M tokens de entrada y US$0.287 / M de salida; 1,000 neuronas = US$0.011).
+export const NEURONAS_POR_TOKEN = { entrada: 0.01382, salida: 0.02609 };
 export const CLAVE_ULTIMO = 'noticias:ultimo';
 export const CLAVE_INDICE = 'noticias:indice';
 export const CLAVE_USO = 'noticias:uso';
@@ -186,24 +186,22 @@ export async function actualizarNoticias(env, { fuentes, fetchFn = fetch, ai = e
 
   const uso = { entrada: 0, salida: 0, resumenes: 0, descartados: 0, sinIa: 0 };
   const salida = { fecha: hoy, generado: ahora.toISOString(), guatemala: [], mundo: [] };
-  for (const region of ['guatemala', 'mundo']) {
-    for (const it of elegidas[region]) {
-      const noticia = { titulo: it.titulo, enlace: it.enlace, medio: it.medio, fecha: it.fecha, resumen: null, afecta: null };
-      if (ai) {
-        try {
-          const r = await generarResumen(ai, it);
-          uso.entrada += r.uso.entrada; uso.salida += r.uso.salida;
-          if (r.ok) { noticia.resumen = r.resumen; noticia.afecta = r.afecta; uso.resumenes++; }
-          else uso.descartados++;
-        } catch {
-          uso.sinIa++;
-        }
-      } else {
-        uso.sinIa++;
-      }
-      salida[region].push(noticia);
+  const resumir = async (it) => {
+    const noticia = { titulo: it.titulo, enlace: it.enlace, medio: it.medio, fecha: it.fecha, resumen: null, afecta: null };
+    if (!ai) { uso.sinIa++; return noticia; }
+    try {
+      const r = await generarResumen(ai, it);
+      uso.entrada += r.uso.entrada; uso.salida += r.uso.salida;
+      if (r.ok) { noticia.resumen = r.resumen; noticia.afecta = r.afecta; uso.resumenes++; }
+      else { uso.descartados++; console.log(`Resumen descartado (${r.motivo}): ${it.titulo.slice(0, 60)}`); }
+    } catch (err) {
+      uso.sinIa++;
+      console.error(`IA falló en "${it.titulo.slice(0, 60)}": ${err?.message ?? err}`);
     }
-  }
+    return noticia;
+  };
+  // Las llamadas a la IA van en paralelo (cada una tarda varios segundos)
+  [salida.guatemala, salida.mundo] = await Promise.all([Promise.all(elegidas.guatemala.map(resumir)), Promise.all(elegidas.mundo.map(resumir))]);
   uso.neuronas = neuronasEstimadas(uso);
   salida.uso = uso;
   salida.errores = errores;
