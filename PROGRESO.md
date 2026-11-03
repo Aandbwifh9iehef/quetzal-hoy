@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 6 — Aprende: cursos
+## Siguiente fase: 7 — Resumen para WhatsApp
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -9,13 +9,17 @@
 | 3 | Indicadores y dato del día | Hecha | 3 nov 2026 |
 | 4 | Noticias automáticas | Hecha | 3 nov 2026 |
 | 5 | Invertir: comparador y calculadoras | Hecha | 3 nov 2026 |
-| 6 | Aprende: cursos | Pendiente | |
+| 6 | Aprende: cursos | Hecha | 3 nov 2026 |
 | 7 | Resumen para WhatsApp | Pendiente | |
 | 8 | SEO, analítica y pulido | Pendiente | |
 | 9 | Listo para ganar dinero | Pendiente | |
 | 10 | App en Google Play | Pendiente | |
 
 ## Pendientes de Raúl
+- **Videos de los cursos (fase 6, no bloquea nada):** hay 15 guiones en `guiones/` (uno por lección,
+  3–4 min, lenguaje hablado). Cuando grabes o produzcas un video, súbelo a YouTube como "no listado"
+  y pega su ID en `site.config.json` → `videos`, con la clave `curso-leccion` (p. ej. `"deudas-1":
+  "abc123XYZ_-"`). La lección lo mostrará arriba del texto. Mientras no haya video, se ve el texto completo.
 - **Bloquea la publicación (no la fase 2):** conectar el repo `quetzal-hoy` a Cloudflare Workers
   (Workers & Pages → Create → Import a repository → elegir `quetzal-hoy`; el build detecta
   `wrangler.jsonc` solo) y agregar el dominio personalizado `hoy.compoundclub.fyi` en
@@ -95,3 +99,17 @@
   recomendación personal ("te conviene", "la mejor opción", etc.).
 - 3 nov 2026 (fase 5): revisar las tasas una vez al mes (o cuando Raúl lo pida); la fecha de cada tasa
   es visible en la app.
+- 3 nov 2026 (fase 6): cursos en `data/cursos.json` (3 cursos × 5 lecciones, cada una con texto de
+  1,500–2,300 caracteres, 3 preguntas de repaso con explicación y guion en `guiones/<curso>-<n>.md`).
+  Contenido adaptado de las guías de Compound Club (`compoundclub-finance/src/guides-es.js`) a
+  Guatemala: quetzales, Bono 14, IGSS, FOPA, cooperativas MICOOPE, Bonos del Tesoro, prestamistas.
+  Los textos de la app usan "tú" (regla de CLAUDE.md); los guiones hablados usan "vos", como se habla
+  en Guatemala, y lo indican al inicio.
+- 3 nov 2026 (fase 6): el progreso se guarda en localStorage (`quetzal-hoy:progreso`) con try/catch;
+  si falla, la app funciona igual y avisa "no se pudo guardar". Una lección cuenta como terminada al
+  revisar las 3 preguntas (con cualquier número de aciertos). "Continuar donde te quedaste" elige el
+  curso empezado con más avance.
+- 3 nov 2026 (fase 6): `site.config.json` → `cursosPremium` (lista de IDs; vacía = todo gratis) y
+  `videos` (IDs de YouTube por lección). El API `/api/cursos` aplica ambos.
+- 3 nov 2026 (fase 6): la lógica de progreso vive en `src/progreso.js` (probada) y repetida en
+  `public/app.js`, igual que las calculadoras, para no cargar módulos en el navegador.

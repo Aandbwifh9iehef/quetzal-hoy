@@ -7,6 +7,7 @@ import { anotarAntiguedad } from './indicadores.js';
 import { construirContexto, datoDelDia } from './dato-del-dia.js';
 import FUENTES from '../data/fuentes-noticias.json';
 import INVERSIONES from '../data/inversiones.json';
+import CURSOS from '../data/cursos.json';
 import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
 
 const CRON_NOTICIAS = '0 12 * * *';
@@ -69,6 +70,7 @@ async function handleApi(path, env, ctx, urlActual) {
   if (path === '/api/dato-del-dia') return apiDatoDelDia(env, ctx);
   if (path === '/api/noticias') return apiNoticias(env, urlActual);
   if (path === '/api/inversiones') return Response.json(INVERSIONES, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
+  if (path === '/api/cursos') return apiCursos();
   if (path === '/api/noticias/archivo') return apiArchivoNoticias(env);
   if (path === '/api/noticias/uso') return apiUsoNoticias(env);
 
@@ -80,6 +82,15 @@ async function handleApi(path, env, ctx, urlActual) {
   }
 
   return Response.json({ error: 'Ruta no encontrada' }, { status: 404, headers: CABECERAS });
+}
+
+function apiCursos() {
+  const cursos = CURSOS.cursos.map((c) => ({
+    ...c,
+    premium: CONFIG.cursosPremium?.includes(c.id) ?? false,
+    lecciones: c.lecciones.map((l) => ({ ...l, video: CONFIG.videos?.[`${c.id}-${l.id}`] || l.video || null }))
+  }));
+  return Response.json({ autor: CURSOS.autor, cursos }, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
 }
 
 function hoyIso() {

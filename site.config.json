@@ -14,6 +14,9 @@
   "patrocinador": "",
   "patrocinadorUrl": "",
   "afiliados": {},
-  "videos": {},
-  "analytics": ""
+  "videos": {
+    "nota": "ID de YouTube por lección, clave curso-leccion, p. ej. \"presupuesto-1\": \"dQw4w9WgXcQ\". Vacío = solo texto."
+  },
+  "analytics": "",
+  "cursosPremium": []
 }

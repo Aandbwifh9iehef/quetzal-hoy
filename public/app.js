@@ -374,6 +374,138 @@
     document.getElementById('lista-opciones').innerHTML = '<p class="texto-suave">No pudimos cargar la información.</p>';
   });
 
+
+  // ─── Aprende: cursos con progreso en el celular ───
+  var CLAVE_PROGRESO = 'quetzal-hoy:progreso';
+  var cursosCache = null;
+  function leerProgreso() {
+    try { var c = localStorage.getItem(CLAVE_PROGRESO); var d = c ? JSON.parse(c) : {}; return d && typeof d === 'object' ? d : {}; } catch (e) { return {}; }
+  }
+  function guardarProgreso(p) { try { localStorage.setItem(CLAVE_PROGRESO, JSON.stringify(p)); return true; } catch (e) { return false; } }
+  function avance(curso, p) {
+    var h = 0;
+    for (var i = 0; i < curso.lecciones.length; i++) { var l = p[curso.id] && p[curso.id].lecciones && p[curso.id].lecciones[curso.lecciones[i].id]; if (l && l.terminada) h++; }
+    return { hechas: h, total: curso.lecciones.length, pct: Math.round(h / curso.lecciones.length * 100) };
+  }
+  function siguiente(curso, p) {
+    var ids = curso.lecciones.map(function (l) { return l.id; });
+    var pc = p[curso.id] || {};
+    var desde = Math.max(0, pc.ultima ? ids.indexOf(pc.ultima) : 0);
+    for (var i = 0; i < ids.length; i++) { var id = ids[(desde + i) % ids.length]; if (!(pc.lecciones && pc.lecciones[id] && pc.lecciones[id].terminada)) return id; }
+    return ids[0];
+  }
+  function cursoPorId(id) { for (var i = 0; i < cursosCache.length; i++) if (cursosCache[i].id === id) return cursosCache[i]; return null; }
+  function leccionPorId(curso, id) { for (var i = 0; i < curso.lecciones.length; i++) if (curso.lecciones[i].id === id) return curso.lecciones[i]; return null; }
+
+  // Texto de lección: ## títulos, - listas, **negritas**, párrafos
+  function renderTexto(t) {
+    var bloques = t.split(/\n\n+/), html = '';
+    for (var i = 0; i < bloques.length; i++) {
+      var b = bloques[i].trim();
+      if (!b) continue;
+      var inl = esc(b).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      if (b.indexOf('## ') === 0) html += '<h3 class="leccion__h">' + inl.slice(3) + '</h3>';
+      else if (/^(- |\d+\. )/.test(b)) {
+        var items = b.split('\n'), ol = /^\d+\. /.test(b);
+        html += (ol ? '<ol' : '<ul') + ' class="leccion__lista">' + items.map(function (x) { return '<li>' + esc(x.replace(/^(- |\d+\. )/, '')).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') + '</li>'; }).join('') + (ol ? '</ol>' : '</ul>');
+      } else html += '<p>' + inl.replace(/\n/g, '<br>') + '</p>';
+    }
+    return html;
+  }
+
+  function barra(a) { return '<div class="barra" role="progressbar" aria-valuenow="' + a.pct + '" aria-valuemin="0" aria-valuemax="100"><div class="barra__relleno" style="width:' + a.pct + '%"></div></div>'; }
+
+  function vistaCursos() {
+    var p = leerProgreso(), html = '<h1 class="seccion-titulo">Aprende</h1><p class="texto-suave mb-md">Cursos cortos y gratuitos. Tu avance se guarda en este celular.</p>';
+    var cont = null;
+    for (var i = 0; i < cursosCache.length; i++) {
+      var c = cursosCache[i], a = avance(c, p), tocado = p[c.id] && p[c.id].ultima;
+      if (tocado && a.hechas < a.total && (!cont || a.hechas > cont.a.hechas)) cont = { c: c, a: a, l: siguiente(c, p) };
+    }
+    if (cont) {
+      var lec = leccionPorId(cont.c, cont.l);
+      html += '<button class="continuar" data-curso="' + cont.c.id + '" data-leccion="' + cont.l + '"><span class="continuar__eti">Continuar donde te quedaste</span><span class="continuar__tit">' + esc(cont.c.titulo) + ' · Lección ' + cont.l + ': ' + esc(lec.titulo) + '</span>' + barra(cont.a) + '</button>';
+    }
+    for (var j = 0; j < cursosCache.length; j++) {
+      var cu = cursosCache[j], av = avance(cu, p);
+      html += '<button class="tarjeta curso" data-curso="' + cu.id + '">' +
+        '<div class="curso__cab"><span class="curso__icono" aria-hidden="true">' + cu.icono + '</span><div><div class="curso__titulo">' + esc(cu.titulo) + (cu.premium ? ' <span class="badge badge--nuevo">Premium</span>' : '') + '</div><div class="texto-suave">' + cu.lecciones.length + ' lecciones · ' + cu.nivel + '</div></div></div>' +
+        '<p class="curso__desc">' + esc(cu.descripcion) + '</p>' +
+        barra(av) + '<div class="texto-suave curso__avance">' + (av.hechas === av.total ? '✓ Curso terminado' : av.hechas + ' de ' + av.total + ' lecciones') + '</div></button>';
+    }
+    html += '<p class="texto-suave mt-lg texto-centro">Por ' + esc(autorCursos) + '. Información educativa, no asesoría financiera.</p>';
+    pintarAprende(html);
+    var bs = document.querySelectorAll('#aprende-vista [data-curso]');
+    for (var k = 0; k < bs.length; k++) bs[k].addEventListener('click', function () {
+      var cid = this.getAttribute('data-curso'), lid = this.getAttribute('data-leccion');
+      if (lid) vistaLeccion(cid, lid); else vistaCurso(cid);
+    });
+  }
+
+  function vistaCurso(cid) {
+    var c = cursoPorId(cid), p = leerProgreso(), a = avance(c, p);
+    var html = '<button class="volver" id="volver-cursos">← Todos los cursos</button>' +
+      '<h1 class="seccion-titulo"><span aria-hidden="true">' + c.icono + '</span> ' + esc(c.titulo) + '</h1><p class="texto-suave">' + esc(c.descripcion) + '</p>' +
+      '<div class="mt-md">' + barra(a) + '<div class="texto-suave curso__avance">' + a.hechas + ' de ' + a.total + ' lecciones terminadas</div></div>' +
+      '<div class="lecciones mt-md">';
+    for (var i = 0; i < c.lecciones.length; i++) {
+      var l = c.lecciones[i], hecha = p[c.id] && p[c.id].lecciones && p[c.id].lecciones[l.id] && p[c.id].lecciones[l.id].terminada;
+      html += '<button class="tarjeta leccion-item' + (hecha ? ' leccion-item--hecha' : '') + '" data-leccion="' + l.id + '"><span class="leccion-item__num">' + (hecha ? '✓' : l.id) + '</span><span class="leccion-item__cuerpo"><span class="leccion-item__tit">' + esc(l.titulo) + '</span><span class="texto-suave">' + l.duracion + ' min' + (l.video ? ' · con video' : ' · texto') + '</span></span></button>';
+    }
+    html += '</div><button class="btn-principal mt-md" id="btn-empezar">' + (a.hechas === 0 ? 'Empezar el curso' : a.hechas === a.total ? 'Repasar desde el inicio' : 'Continuar: lección ' + siguiente(c, p)) + '</button>';
+    pintarAprende(html);
+    document.getElementById('volver-cursos').addEventListener('click', vistaCursos);
+    document.getElementById('btn-empezar').addEventListener('click', function () { vistaLeccion(cid, a.hechas === a.total ? c.lecciones[0].id : siguiente(c, p)); });
+    var bs = document.querySelectorAll('#aprende-vista [data-leccion]');
+    for (var k = 0; k < bs.length; k++) bs[k].addEventListener('click', function () { vistaLeccion(cid, this.getAttribute('data-leccion')); });
+  }
+
+  function vistaLeccion(cid, lid) {
+    var c = cursoPorId(cid), l = leccionPorId(c, lid), p = leerProgreso();
+    p[cid] = p[cid] || { lecciones: {} }; p[cid].lecciones = p[cid].lecciones || {}; p[cid].ultima = lid; guardarProgreso(p);
+    var idx = c.lecciones.indexOf(l), sig = c.lecciones[idx + 1];
+    var video = l.video ? '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/' + esc(l.video) + '" title="Video de la lección" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>' : '';
+    var quiz = '<div class="quiz mt-lg"><h3 class="leccion__h">Repaso rápido</h3>';
+    for (var i = 0; i < l.preguntas.length; i++) {
+      var q = l.preguntas[i];
+      quiz += '<fieldset class="quiz__p" data-i="' + i + '"><legend>' + (i + 1) + '. ' + esc(q.p) + '</legend>';
+      for (var j = 0; j < q.opciones.length; j++) quiz += '<label class="quiz__op"><input type="radio" name="q' + i + '" value="' + j + '"><span>' + esc(q.opciones[j]) + '</span></label>';
+      quiz += '<p class="quiz__exp" hidden></p></fieldset>';
+    }
+    quiz += '<button class="btn-principal" id="btn-revisar">Revisar respuestas</button><div id="quiz-resultado" class="mt-sm"></div></div>';
+    var html = '<button class="volver" id="volver-curso">← ' + esc(c.titulo) + '</button>' +
+      '<div class="texto-suave">Lección ' + l.id + ' de ' + c.lecciones.length + ' · ' + l.duracion + ' min de lectura</div>' +
+      '<h1 class="seccion-titulo">' + esc(l.titulo) + '</h1>' + video +
+      '<div class="leccion">' + renderTexto(l.texto) + '</div>' + quiz +
+      '<div class="leccion__nav mt-lg">' + (sig ? '<button class="btn-principal" id="btn-siguiente">Siguiente: ' + esc(sig.titulo) + ' →</button>' : '<button class="btn-principal" id="btn-siguiente">Volver al curso</button>') + '</div>';
+    pintarAprende(html);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('volver-curso').addEventListener('click', function () { vistaCurso(cid); });
+    document.getElementById('btn-siguiente').addEventListener('click', function () { if (sig) vistaLeccion(cid, sig.id); else vistaCurso(cid); });
+    document.getElementById('btn-revisar').addEventListener('click', function () {
+      var aciertos = 0, faltan = 0;
+      for (var i = 0; i < l.preguntas.length; i++) {
+        var sel = document.querySelector('input[name="q' + i + '"]:checked'), fs = document.querySelector('.quiz__p[data-i="' + i + '"]'), exp = fs.querySelector('.quiz__exp');
+        if (!sel) { faltan++; continue; }
+        var ok = parseInt(sel.value, 10) === l.preguntas[i].respuesta;
+        if (ok) aciertos++;
+        fs.classList.remove('quiz__p--ok', 'quiz__p--mal'); fs.classList.add(ok ? 'quiz__p--ok' : 'quiz__p--mal');
+        exp.textContent = (ok ? '✓ Correcto. ' : '✗ La respuesta es: ' + l.preguntas[i].opciones[l.preguntas[i].respuesta] + '. ') + l.preguntas[i].explicacion; exp.hidden = false;
+      }
+      var res = document.getElementById('quiz-resultado');
+      if (faltan) { res.innerHTML = '<span class="texto-suave">Te falta responder ' + faltan + (faltan === 1 ? ' pregunta.' : ' preguntas.') + '</span>'; return; }
+      var pr = leerProgreso(); pr[cid] = pr[cid] || { lecciones: {} }; pr[cid].lecciones = pr[cid].lecciones || {};
+      pr[cid].lecciones[lid] = { terminada: true, aciertos: aciertos, fecha: new Date().toISOString().slice(0, 10) }; pr[cid].ultima = lid;
+      var guardado = guardarProgreso(pr);
+      res.innerHTML = '<div class="quiz__final">' + aciertos + ' de ' + l.preguntas.length + ' correctas. Lección terminada' + (guardado ? '.' : ' (no se pudo guardar el avance en este celular).') + '</div>';
+    });
+  }
+
+  var autorCursos = 'Leo Marín';
+  function pintarAprende(html) { document.getElementById('aprende-vista').innerHTML = html; }
+  fetch('/api/cursos').then(function (r) { return r.json(); }).then(function (d) { cursosCache = d.cursos; autorCursos = d.autor || autorCursos; vistaCursos(); })
+    .catch(function () { pintarAprende('<h1 class="seccion-titulo">Aprende</h1><p class="texto-suave">No pudimos cargar los cursos. Inténtalo de nuevo con conexión.</p>'); });
+
   fetch('/api/tipo-cambio')
     .then(function (r) { return r.json(); })
     .then(pintarTipoCambio)
