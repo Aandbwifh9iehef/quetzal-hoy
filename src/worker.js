@@ -13,6 +13,7 @@ import NOVEDADES from '../data/novedades.json';
 import { INDICADORES_SEO, paginaTipoCambio, paginaIndicador, paginaCursos, paginaCurso, paginaLeccion, paginaInvertir, paginaNovedades, paginaAnunciate, paginaMediaKit, rutasSitemap, sitemapXml } from './paginas.js';
 import { aplicarAfiliados, aplicarPatrocinioCursos } from './patrocinio.js';
 import { premiumPublico } from './premium.js';
+import { assetLinks } from './android.js';
 
 const INVERSIONES_PUB = aplicarAfiliados(INVERSIONES, CONFIG.afiliados);
 import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
@@ -78,6 +79,9 @@ const htmlRes = (h) => new Response(h, { headers: HTML });
 
 async function paginaSeo(path, env, ctx) {
   const ruta = path.replace(/\/$/, '') || '/';
+  if (ruta === '/.well-known/assetlinks.json') {
+    return new Response(JSON.stringify(assetLinks(CONFIG.android), null, 2), { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=3600' } });
+  }
   if (ruta === '/sitemap.xml') {
     return new Response(sitemapXml(rutasSitemap(CURSOS.cursos), CONFIG.dominio, hoyIso()), { headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' } });
   }

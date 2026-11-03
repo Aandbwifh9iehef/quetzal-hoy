@@ -36,5 +36,10 @@
     "correo": "CompundClub@proton.me",
     "whatsapp": "",
     "preciosNota": "Precios a convenir según alcance y duración."
+  },
+  "android": {
+    "paquete": "fyi.compoundclub.hoy",
+    "sha256": [],
+    "nota": "Pegar aquí la(s) huella(s) SHA-256 del certificado de firma (las da PWABuilder o Play Console → Integridad de la app). Sin ellas, Android abre la app con barra de navegador."
   }
 }

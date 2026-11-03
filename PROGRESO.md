@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 10 — App en Google Play
+## Siguiente fase: ninguna — las 10 fases del plan están hechas. Lo que sigue es mantenimiento (ver "Rutina mensual").
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -13,9 +13,22 @@
 | 7 | Resumen para WhatsApp | Hecha | 3 nov 2026 |
 | 8 | SEO, analítica y pulido | Hecha | 3 nov 2026 |
 | 9 | Listo para ganar dinero | Hecha | 3 nov 2026 |
-| 10 | App en Google Play | Pendiente | |
+| 10 | App en Google Play | Hecha (lista para que Raúl la suba) | 3 nov 2026 |
 
 ## Pendientes de Raúl
+- **Google Play (fase 10):** cuando la web esté publicada: 1) pwabuilder.com → pegar https://hoy.compoundclub.fyi
+  → Package for stores → Android → Generate → Download. 2) Guardar `signing.keystore` y `signing-key-info.txt`
+  fuera del repo (y una copia en la nube). 3) Copiar la huella de `assetlinks.json` a `site.config.json` →
+  `android.sha256`. 4) Cuenta de desarrollador en play.google.com/console (US$25 una vez) → crear app →
+  llenar con `android/declaraciones.md` y `android/ficha-play-store.md` → subir `app-release-bundle.aab`,
+  capturas de `android/capturas/`, ícono y `android/grafico-destacado.png` → prueba cerrada con 12 testers
+  14 días → producción. Guía completa en `android/README.md`.
+
+## Rutina mensual (mantenimiento)
+- Pedir a Claude Code: "revisa los indicadores" (tasa líder, inflación, combustibles, canasta: fuentes en
+  `data/indicadores.json`) y "revisa las tasas de Invertir" (`data/inversiones.json`, tasas.gt y sitios).
+- Revisar `/api/noticias/uso` (neuronas) y `/api/eventos` (uso de la app) de vez en cuando.
+- `node scripts/enlaces.js https://hoy.compoundclub.fyi` para detectar enlaces rotos.
 - **Google Search Console (fase 8):** 1) Entra a search.google.com/search-console con tu cuenta de Google.
   2) "Agregar propiedad" → tipo "Prefijo de URL" → escribe https://hoy.compoundclub.fyi → Continuar.
   3) Elige verificación "Proveedor de nombres de dominio" o "Etiqueta HTML"; si es etiqueta HTML, cópiame
@@ -172,3 +185,15 @@
   opera en Guatemala). Probado en local activándolo temporalmente con un código de prueba y revertido.
 - 3 nov 2026 (fase 9): la propuesta de cursos para empresas ("bienestar financiero para empleados") está
   en /anunciate y en el media kit; no hay página aparte.
+- 3 nov 2026 (fase 10): no se generó el `.aab` aquí porque esta Mac no tiene JDK 17 ni Android SDK y la
+  TWA debe apuntar a la web publicada (aún no lo está). La ruta recomendada para Raúl es PWABuilder (genera
+  el paquete y la llave de firma desde la URL); Bubblewrap queda documentado con `android/twa-manifest.json`.
+- 3 nov 2026 (fase 10): `/.well-known/assetlinks.json` lo sirve el Worker desde `site.config.json` →
+  `android.paquete` (`fyi.compoundclub.hoy`) y `android.sha256` (lista; vacía = `[]`). Al pegar la huella
+  de PWABuilder (y la de Play App Signing si difiere) la app abre a pantalla completa.
+- 3 nov 2026 (fase 10): capturas en `android/capturas/` a 780×1560 (relación 2:1, el máximo que permite
+  Play) tomadas de la app real; gráfico destacado 1024×500 generado con Chrome headless desde
+  `android/grafico-destacado.svg`. Textos de la ficha dentro de los límites (título 28/30, corta 78/80).
+- 3 nov 2026 (fase 10): en `android/declaraciones.md` la respuesta a "funciones financieras" es "otras
+  funciones financieras (información y educación)"; no préstamos, ni pagos, ni inversión. Cambiar
+  "compras dentro de la app" a Sí si se activa premium.

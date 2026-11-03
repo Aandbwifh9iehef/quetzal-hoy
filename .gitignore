@@ -1,4 +1,7 @@
 node_modules/
 .wrangler/
 .dev.vars
-capturas/
+/capturas/
+android.keystore
+*.keystore
+signing-key-info.txt
