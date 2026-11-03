@@ -49,7 +49,9 @@ test('index tiene las 4 pestañas, el service worker y Open Graph', () => {
   for (const t of ['Hoy', 'Noticias', 'Invertir', 'Aprende']) {
     assert.match(html, new RegExp(`id="tab-${t.toLowerCase()}"`), `falta pestaña ${t}`);
   }
-  assert.match(html, /serviceWorker\.register\('\/sw\.js'\)/);
+  assert.match(html, /<script src="\/app\.js">/);
+  const app = readFileSync(join(publico, 'app.js'), 'utf8');
+  assert.match(app, /serviceWorker\.register\('\/sw\.js'\)/);
   assert.match(html, /property="og:image" content="\/og-image\.png"/);
   assert.ok(existsSync(join(publico, 'og-image.png')));
 });

@@ -71,9 +71,25 @@
     <section id="tab-hoy" class="seccion activa" role="tabpanel" aria-label="Hoy">
       <h1 class="seccion-titulo">Hoy en Guatemala</h1>
 
-      <div class="tarjeta" id="card-tipo-cambio">
-        <div class="tarjeta__titulo">Tipo de cambio</div>
+      <div class="tarjeta tarjeta--tc" id="card-tipo-cambio">
+        <div class="tarjeta__titulo">Tipo de cambio del dólar</div>
         <div class="cargando">Cargando dato…</div>
+      </div>
+
+      <div class="tarjeta mt-md" id="card-convertidor" hidden>
+        <div class="tarjeta__titulo">Convertidor rápido</div>
+        <div class="convertidor">
+          <label class="campo">
+            <span>Dólares (USD)</span>
+            <input type="number" inputmode="decimal" id="usd" placeholder="100" min="0" step="any">
+          </label>
+          <button class="convertidor__swap" id="btn-swap" aria-label="Invertir conversión">⇅</button>
+          <label class="campo">
+            <span>Quetzales (GTQ)</span>
+            <input type="number" inputmode="decimal" id="gtq" placeholder="0" min="0" step="any">
+          </label>
+        </div>
+        <p class="texto-suave mt-sm" id="convertidor-nota"></p>
       </div>
 
       <div class="tarjeta mt-md">
@@ -87,7 +103,7 @@
       </div>
 
       <div class="aviso-legal mt-md">
-        Dato de referencia. Consulta el oficial en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.
+        Dato de referencia del Banco de Guatemala. Consulta el oficial en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.
         Información educativa. <a href="/aviso-legal">Aviso legal</a>.
       </div>
     </section>
@@ -167,69 +183,6 @@
 
 </div>
 
-<script>
-  // Fecha de hoy
-  const hoy = new Date();
-  const opcionesFecha = { weekday: 'short', day: 'numeric', month: 'short' };
-  document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-GT', opcionesFecha);
-
-  // Navegación entre pestañas
-  function cambiarTab(tab, btn) {
-    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
-    document.querySelectorAll('.nav-btn').forEach(b => {
-      b.classList.remove('activo');
-      b.setAttribute('aria-selected', 'false');
-    });
-    document.getElementById('tab-' + tab).classList.add('activa');
-    btn.classList.add('activo');
-    btn.setAttribute('aria-selected', 'true');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // Tipo de cambio (Fase 2 lo llenará; por ahora muestra aviso)
-  fetch('/api/tipo-cambio')
-    .then(r => r.json())
-    .then(data => {
-      const card = document.getElementById('card-tipo-cambio');
-      if (data && data.compra) {
-        card.innerHTML = `
-          <div class="tarjeta__titulo">Tipo de cambio</div>
-          <div class="tarjeta__valor">Q ${data.venta}</div>
-          <div class="tarjeta__sub">1 USD = Q ${data.venta} (venta) · Q ${data.compra} (compra)</div>
-          <div class="fuente-dato">Fuente: Banguat, ${data.fecha}</div>
-        `;
-      } else {
-        card.innerHTML = `
-          <div class="tarjeta__titulo">Tipo de cambio <span class="badge badge--pronto">Próximamente</span></div>
-          <p class="texto-suave mt-sm">El dato automático se activa en la siguiente fase. Por ahora, consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>
-        `;
-      }
-    })
-    .catch(() => {
-      const card = document.getElementById('card-tipo-cambio');
-      card.innerHTML = `
-        <div class="tarjeta__titulo">Tipo de cambio <span class="badge badge--pronto">Próximamente</span></div>
-        <p class="texto-suave mt-sm">El dato automático se activa en la siguiente fase. Consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>
-      `;
-    });
-
-  // PWA: botón de instalación
-  let installEvent = null;
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    installEvent = e;
-    const btn = document.getElementById('btn-instalar');
-    btn.classList.add('visible');
-    btn.addEventListener('click', () => {
-      installEvent.prompt();
-      installEvent.userChoice.then(() => { btn.classList.remove('visible'); });
-    });
-  });
-
-  // Registrar Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
-  }
-</script>
+<script src="/app.js"></script>
 </body>
 </html>

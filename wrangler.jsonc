@@ -11,8 +11,9 @@
     "not_found_handling": "404-page"
   },
 
-  // KV para datos dinámicos (tipo de cambio, noticias). Se activa en la Fase 2.
-  // "kv_namespaces": [{ "binding": "DATA", "id": "..." }],
+  // KV para datos dinámicos (tipo de cambio, noticias).
+  // Raúl: crear el namespace en Cloudflare (Storage & Databases → KV) y pegar su ID aquí.
+  "kv_namespaces": [{ "binding": "DATA", "id": "PEGAR_ID_DEL_KV_AQUI" }],
 
   // Workers AI para resumir noticias (Fase 4)
   // "ai": { "binding": "AI" },

@@ -395,3 +395,110 @@ button {
   animation: girar 0.8s linear infinite;
   flex-shrink: 0;
 }
+
+/* ─── Tipo de cambio ─── */
+.tc__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.tc__cambio {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-texto-suave);
+}
+.tc__cambio--sube { color: var(--c-acento-oscuro); }
+.tc__cambio--baja { color: var(--c-secundario); }
+
+.aviso-viejo {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--c-acento-oscuro);
+}
+
+.rangos {
+  display: flex;
+  gap: 6px;
+  margin: 14px 0 8px;
+}
+
+.rango {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-texto-suave);
+  background: var(--c-fondo);
+  border: 1px solid var(--c-borde);
+  min-height: 40px;
+}
+.rango.activo {
+  background: var(--c-primario);
+  color: #fff;
+  border-color: var(--c-primario);
+}
+@media (prefers-color-scheme: dark) {
+  .rango.activo { background: var(--c-secundario); color: #0F1923; border-color: var(--c-secundario); }
+}
+
+.grafica {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: var(--c-secundario);
+}
+.grafica__area { fill: currentColor; opacity: 0.12; }
+.grafica__linea { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.grafica__punto { fill: currentColor; }
+
+.grafica__ejes {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--c-texto-suave);
+  margin-top: 4px;
+}
+
+/* ─── Convertidor ─── */
+.convertidor {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.campo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--c-texto-suave);
+}
+
+.campo input {
+  width: 100%;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--c-borde);
+  background: var(--c-fondo);
+  color: var(--c-texto);
+  min-height: 48px;
+}
+.campo input:focus { outline: 2px solid var(--c-secundario); outline-offset: 1px; }
+
+.convertidor__swap {
+  min-width: 44px;
+  min-height: 48px;
+  border-radius: 10px;
+  border: 1px solid var(--c-borde);
+  background: var(--c-fondo);
+  color: var(--c-secundario);
+  font-size: 1.2rem;
+}
