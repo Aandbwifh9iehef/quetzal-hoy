@@ -274,7 +274,7 @@ button {
   width: 100%;
   padding: 14px var(--espacio);
   background: var(--c-acento);
-  color: #fff;
+  color: #1A1A2E;
   font-size: 0.95rem;
   font-weight: 700;
   border-radius: var(--radio);
@@ -851,3 +851,47 @@ button {
 }
 .formatos { display: flex; gap: 6px; }
 .vista-imagen img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--c-borde); display: block; }
+
+/* ─── Accesibilidad y páginas SEO ─── */
+.saltar {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  background: var(--c-acento);
+  color: #1A1A2E;
+  padding: 10px 14px;
+  border-radius: 8px;
+  z-index: 200;
+  font-weight: 700;
+}
+.saltar:focus { left: 8px; }
+:focus-visible { outline: 3px solid var(--c-acento); outline-offset: 2px; }
+.nav-btn:focus-visible, .rango:focus-visible, .btn-principal:focus-visible { outline-offset: -3px; }
+a.nav-btn:hover { text-decoration: none; }
+.migas { font-size: 0.8rem; color: var(--c-texto-suave); margin-bottom: 12px; }
+.migas a { color: var(--c-texto-suave); }
+.lede { font-size: 1.05rem; color: var(--c-texto); }
+.pagina-estatica .lede { color: var(--c-texto); }
+.tabla { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 12px 0; }
+.tabla th, .tabla td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--c-borde); vertical-align: top; }
+.tabla th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--c-texto-suave); }
+.btn-enlace { font-weight: 700; }
+.sin-margen { margin-top: 0; }
+.lista-compacta { padding-left: 20px; font-size: 0.9rem; }
+.lista-compacta li + li { margin-top: 4px; }
+.lecciones-lista { padding-left: 20px; }
+.lecciones-lista li + li { margin-top: 12px; }
+.leccion-nav { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; }
+.pagina-estatica .leccion p, .pagina-estatica .leccion li { color: var(--c-texto); font-size: 1rem; }
+.pagina-estatica .leccion h2 { color: var(--c-primario-claro); }
+@media (prefers-color-scheme: dark) { .pagina-estatica .leccion h2 { color: var(--c-secundario); } }
+
+/* ─── Enlaces dentro de texto: subrayados (no solo color) ─── */
+p a, li a, .fuente-dato a, .aviso-legal a, .texto-suave a, .noticia__titulo a, .tarjeta__sub a, td a { text-decoration: underline; text-underline-offset: 2px; }
+.nav-btn, .footer-links a, .subnav a, .btn-compartir, .noticia__leer, .volver, .btn-enlace, .header__logo { text-decoration: none; }
+
+/* ─── Espacio reservado mientras cargan los datos (evita saltos de diseño) ─── */
+#card-tipo-cambio { min-height: 440px; }
+#card-dato-del-dia { min-height: 150px; }
+#lista-indicadores { min-height: 900px; }
+#card-convertidor input:disabled { opacity: 0.6; }

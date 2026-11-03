@@ -22,6 +22,7 @@
 
   // ─── Compartir (Web Share API; si no existe, copia al portapapeles) ───
   function compartir(titulo, texto, url) {
+    evento('compartir');
     if (navigator.share) return navigator.share({ title: titulo, text: texto, url: url }).catch(function () {});
     var todo = texto + '\n' + url;
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(todo).then(function () { alert('Copiado. Pégalo en WhatsApp.'); });
@@ -33,7 +34,30 @@
   var hoy = new Date();
   document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-GT', { weekday: 'short', day: 'numeric', month: 'short' });
 
+  // ─── Analítica (Cloudflare Web Analytics si hay token) y eventos simples ───
+  function evento(nombre) {
+    try {
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/evento', nombre);
+      else fetch('/api/evento', { method: 'POST', body: nombre, keepalive: true }).catch(function () {});
+    } catch (e) {}
+  }
+  window.eventoQH = evento;
+  fetch('/api/config').then(function (r) { return r.json(); }).then(function (c) {
+    if (c && c.analytics) {
+      var s = document.createElement('script');
+      s.defer = true; s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+      s.setAttribute('data-cf-beacon', JSON.stringify({ token: c.analytics }));
+      document.head.appendChild(s);
+    }
+  }).catch(function () {});
+  window.addEventListener('appinstalled', function () { evento('instalacion'); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[rel~="sponsored"]');
+    if (a) evento('clic_afiliado');
+  });
+
   // ─── Pestañas ───
+  var TABS = ['hoy', 'noticias', 'invertir', 'aprende'];
   window.cambiarTab = function (tab, btn) {
     var secs = document.querySelectorAll('.seccion');
     for (var i = 0; i < secs.length; i++) secs[i].classList.remove('activa');
@@ -42,8 +66,15 @@
     document.getElementById('tab-' + tab).classList.add('activa');
     btn.classList.add('activo');
     btn.setAttribute('aria-selected', 'true');
+    if (history.replaceState) history.replaceState(null, '', tab === 'hoy' ? location.pathname : '#' + tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  function abrirDesdeHash() {
+    var h = (location.hash || '').replace('#', '');
+    if (TABS.indexOf(h) > 0) window.cambiarTab(h, document.getElementById('nav-' + h));
+  }
+  abrirDesdeHash();
+  window.addEventListener('hashchange', abrirDesdeHash);
 
   // ─── Gráfica SVG ───
   function graficaSvg(serie) {
@@ -95,7 +126,7 @@
       '<div class="tc__cambio tc__cambio--' + d.tendencia + '">' + flecha + ' ' + esc(textoCambio) + '</div></div>' +
       '<div class="tarjeta__sub">por 1 dólar · ' + fechaCorta(d.fecha) + '</div>' +
       avisoFecha +
-      '<div class="rangos" role="tablist" aria-label="Rango de la gráfica">' +
+      '<div class="rangos" role="group" aria-label="Rango de la gráfica">' +
       '<button class="rango activo" data-r="7d">7 días</button>' +
       '<button class="rango" data-r="1m">1 mes</button>' +
       '<button class="rango" data-r="1a">1 año</button></div>' +
@@ -479,6 +510,7 @@
 
   function vistaLeccion(cid, lid) {
     var c = cursoPorId(cid), l = leccionPorId(c, lid), p = leerProgreso();
+    if (!p[cid] || !p[cid].ultima) evento('curso_iniciado');
     p[cid] = p[cid] || { lecciones: {} }; p[cid].lecciones = p[cid].lecciones || {}; p[cid].ultima = lid; guardarProgreso(p);
     var idx = c.lecciones.indexOf(l), sig = c.lecciones[idx + 1];
     var video = l.video ? '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/' + esc(l.video) + '" title="Video de la lección" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>' : '';
@@ -514,6 +546,7 @@
       var pr = leerProgreso(); pr[cid] = pr[cid] || { lecciones: {} }; pr[cid].lecciones = pr[cid].lecciones || {};
       pr[cid].lecciones[lid] = { terminada: true, aciertos: aciertos, fecha: new Date().toISOString().slice(0, 10) }; pr[cid].ultima = lid;
       var guardado = guardarProgreso(pr);
+      if (avance(c, pr).hechas === c.lecciones.length) evento('curso_terminado');
       res.innerHTML = '<div class="quiz__final">' + aciertos + ' de ' + l.preguntas.length + ' correctas. Lección terminada' + (guardado ? '.' : ' (no se pudo guardar el avance en este celular).') + '</div>';
     });
   }

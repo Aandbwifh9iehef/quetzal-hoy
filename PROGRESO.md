@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 8 — SEO, analítica y pulido
+## Siguiente fase: 9 — Listo para ganar dinero
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -11,11 +11,20 @@
 | 5 | Invertir: comparador y calculadoras | Hecha | 3 nov 2026 |
 | 6 | Aprende: cursos | Hecha | 3 nov 2026 |
 | 7 | Resumen para WhatsApp | Hecha | 3 nov 2026 |
-| 8 | SEO, analítica y pulido | Pendiente | |
+| 8 | SEO, analítica y pulido | Hecha | 3 nov 2026 |
 | 9 | Listo para ganar dinero | Pendiente | |
 | 10 | App en Google Play | Pendiente | |
 
 ## Pendientes de Raúl
+- **Google Search Console (fase 8):** 1) Entra a search.google.com/search-console con tu cuenta de Google.
+  2) "Agregar propiedad" → tipo "Prefijo de URL" → escribe https://hoy.compoundclub.fyi → Continuar.
+  3) Elige verificación "Proveedor de nombres de dominio" o "Etiqueta HTML"; si es etiqueta HTML, cópiame
+  el código y lo pongo en la app. 4) Ya verificado: menú "Sitemaps" → escribe `sitemap.xml` → Enviar.
+- **Cloudflare Web Analytics (fase 8):** 1) Cloudflare → Analytics & Logs → Web Analytics → "Add a site".
+  2) Hostname: hoy.compoundclub.fyi → "Done". 3) Te mostrará un fragmento con `"token": "xxxx"`: copia solo
+  el token. 4) En GitHub, `site.config.json` → `"analytics": ""` → pega el token entre las comillas → Commit.
+  Desde ese momento se cuentan visitas sin cookies; los eventos (instalaciones, cursos, compartir) se cuentan
+  aparte en `/api/eventos`.
 - **Canal de WhatsApp (fase 7):** 1) En WhatsApp → Novedades → Canales → "+" → Crear canal. 2) Nombre:
   "Quetzal Hoy". Descripción sugerida: "Cada mañana, en 1 minuto: el dólar de hoy, 3 noticias
   económicas de Guatemala explicadas en sencillo y un dato para cuidar tu dinero. Gratis. Por Leo
@@ -130,3 +139,19 @@
   al portapapeles. `/compartir` no está en el menú ni en el sitemap y lleva `noindex`.
 - 3 nov 2026 (fase 7): el patrocinador sale de `site.config.json` → `patrocinador` y
   `patrocinadorUrl`; si está vacío no aparece la línea "Te lo trae".
+- 3 nov 2026 (fase 8): las páginas indexables las genera el Worker con datos reales (no son archivos
+  estáticos): /tipo-cambio-hoy, /tasa-lider-guatemala, /inflacion-guatemala, /remesas-guatemala,
+  /precio-gasolina-guatemala, /canasta-basica-guatemala, /invertir-en-guatemala, /cursos, /cursos/<id>,
+  /cursos/<id>/<n>, /novedades. Llevan canonical, Open Graph, migas y JSON-LD (ExchangeRateSpecification,
+  Course, Article, BreadcrumbList). El sitemap es dinámico en /sitemap.xml (32 URLs); se borró el estático.
+- 3 nov 2026 (fase 8): Web Analytics se activa solo si `site.config.json` → `analytics` tiene token. Los
+  eventos simples (instalacion, curso_iniciado, curso_terminado, compartir, copiar_resumen, clic_afiliado)
+  se cuentan por día en KV (`eventos:AAAA-MM-DD`) vía `POST /api/evento` y se leen en `/api/eventos`
+  (últimos 30 días); servirán para la página Anúnciate de la fase 9.
+- 3 nov 2026 (fase 8): Lighthouse móvil en local con Chrome: portada 96/100/100/100 (rendimiento,
+  accesibilidad, buenas prácticas, SEO); /tipo-cambio-hoy, /cursos/deudas/1 e /invertir-en-guatemala
+  100/95→100/100/100. Se corrigió el salto de diseño (CLS 0.87 → 0.11) reservando altura a las tarjetas
+  que cargan datos, y accesibilidad (enlaces subrayados, contraste del botón Instalar, roles ARIA).
+- 3 nov 2026 (fase 8): `node scripts/enlaces.js [url]` revisa todos los enlaces internos y externos
+  (68 hoy, 0 rotos). MEM, Minfin y SIB devuelven 403 a robots: no están rotos. Las pestañas de la app
+  se pueden abrir por enlace: /#noticias, /#invertir, /#aprende.

@@ -62,9 +62,8 @@ test('la página principal pesa menos de 150 KB sin imágenes', () => {
   assert.ok(peso < 150 * 1024, `pesa ${peso} bytes`);
 });
 
-test('sitemap y robots apuntan al dominio configurado', () => {
-  const sitemap = readFileSync(join(publico, 'sitemap.xml'), 'utf8');
+test('robots apunta al sitemap del dominio configurado', () => {
   const robots = readFileSync(join(publico, 'robots.txt'), 'utf8');
-  assert.match(sitemap, new RegExp(`https://${config.dominio}/`));
   assert.match(robots, new RegExp(`https://${config.dominio}/sitemap.xml`));
+  assert.ok(!existsSync(join(publico, 'sitemap.xml')), 'el sitemap es dinámico (Worker), no estático');
 });

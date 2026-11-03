@@ -1,0 +1,10 @@
+[
+  { "fecha": "2026-11-03", "titulo": "La app existe", "cambios": ["Cuatro pestañas: Hoy, Noticias, Invertir y Aprende.", "Se instala en el celular y funciona sin internet con lo último que viste.", "Páginas de Acerca de, Contacto, Privacidad y Aviso legal."] },
+  { "fecha": "2026-11-03", "titulo": "Tipo de cambio automático", "cambios": ["El dólar del Banco de Guatemala se actualiza solo dos veces al día.", "Gráfica de 7 días, 1 mes y 1 año, y cambio frente a ayer.", "Convertidor rápido de dólares a quetzales."] },
+  { "fecha": "2026-11-03", "titulo": "Indicadores y dato del día", "cambios": ["Inflación, tasa líder, remesas, combustibles y canasta básica, con fuente y fecha.", "\"¿Qué significa esto?\" en cada indicador.", "Un dato del día distinto, calculado con cifras reales."] },
+  { "fecha": "2026-11-03", "titulo": "Noticias explicadas", "cambios": ["Cada mañana, 5 noticias económicas de Guatemala y 3 del mundo.", "Resumen de dos frases y \"¿Cómo te afecta?\", con enlace al medio.", "Archivo de los últimos 30 días."] },
+  { "fecha": "2026-11-03", "titulo": "Invertir sin jerga", "cambios": ["Seis opciones reales en Guatemala explicadas: qué son, riesgo y quién las supervisa.", "Tasas de plazo fijo y ahorro de bancos y cooperativas con fecha y fuente.", "Bonos del Tesoro para personas, cuatro calculadoras y señales de estafa."] },
+  { "fecha": "2026-11-03", "titulo": "Tres cursos gratis", "cambios": ["Tu primer presupuesto, Sal de deudas y Empieza a invertir con poco.", "Quince lecciones cortas con repaso; el avance se guarda en tu celular."] },
+  { "fecha": "2026-11-03", "titulo": "Resumen para compartir", "cambios": ["Botón Compartir en el tipo de cambio y en cada noticia.", "Resumen diario listo para WhatsApp e imagen del día."] },
+  { "fecha": "2026-11-03", "titulo": "Páginas para buscar en Google y novedades", "cambios": ["Páginas propias para el tipo de cambio, la inflación, la tasa líder, las remesas, los combustibles, la canasta básica, los cursos y las tasas de inversión.", "Esta página de novedades.", "Mejoras de accesibilidad: salto al contenido y foco visible."] }
+]

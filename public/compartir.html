@@ -57,6 +57,7 @@
 
   document.getElementById('btn-copiar').addEventListener('click', function () {
     var texto = pre.textContent;
+    try { navigator.sendBeacon && navigator.sendBeacon('/api/evento', 'copiar_resumen'); } catch (e) {}
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(texto).then(function () { avisar('copiar-estado', 'Copiado. Ya puedes pegarlo en WhatsApp.'); }, function () { seleccionar(); });
     } else seleccionar();

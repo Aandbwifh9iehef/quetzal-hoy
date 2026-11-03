@@ -9,6 +9,8 @@ import FUENTES from '../data/fuentes-noticias.json';
 import INVERSIONES from '../data/inversiones.json';
 import CURSOS from '../data/cursos.json';
 import { textoResumen, svgImagen, FORMATOS } from './compartir.js';
+import NOVEDADES from '../data/novedades.json';
+import { INDICADORES_SEO, paginaTipoCambio, paginaIndicador, paginaCursos, paginaCurso, paginaLeccion, paginaInvertir, paginaNovedades, rutasSitemap, sitemapXml } from './paginas.js';
 import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
 
 const CRON_NOTICIAS = '0 12 * * *';
@@ -16,7 +18,9 @@ const CRON_NOTICIAS = '0 12 * * *';
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.pathname.startsWith('/api/')) return handleApi(url.pathname, env, ctx, url);
+    if (url.pathname.startsWith('/api/')) return handleApi(url.pathname, env, ctx, url, request);
+    const pagina = await paginaSeo(url.pathname, env, ctx);
+    if (pagina) return pagina;
     return env.ASSETS.fetch(request);
   },
 
@@ -65,7 +69,65 @@ async function apiUsoNoticias(env) {
   return Response.json({ limiteDiario: 10000, uso }, { headers: { ...CABECERAS, 'Cache-Control': 'no-store' } });
 }
 
-async function handleApi(path, env, ctx, urlActual) {
+const HTML = { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=900' };
+const htmlRes = (h) => new Response(h, { headers: HTML });
+
+async function paginaSeo(path, env, ctx) {
+  const ruta = path.replace(/\/$/, '') || '/';
+  if (ruta === '/sitemap.xml') {
+    return new Response(sitemapXml(rutasSitemap(CURSOS.cursos), CONFIG.dominio, hoyIso()), { headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' } });
+  }
+  if (ruta === INDICADORES_SEO['tipo-cambio'].ruta) return htmlRes(paginaTipoCambio(await (await apiTipoCambio(env, ctx)).json(), CONFIG));
+  for (const [clave, seo] of Object.entries(INDICADORES_SEO)) {
+    if (clave !== 'tipo-cambio' && ruta === seo.ruta) return htmlRes(paginaIndicador(clave, anotarAntiguedad(INDICADORES.indicadores, hoyIso())[clave], CONFIG));
+  }
+  if (ruta === '/invertir-en-guatemala') return htmlRes(paginaInvertir(INVERSIONES, CONFIG));
+  if (ruta === '/novedades') return htmlRes(paginaNovedades(NOVEDADES, CONFIG));
+  if (ruta === '/cursos') return htmlRes(paginaCursos(CURSOS.cursos, CONFIG));
+  const m = /^\/cursos\/([a-z-]+)(?:\/(\d+))?$/.exec(ruta);
+  if (m) {
+    const c = CURSOS.cursos.find((x) => x.id === m[1]);
+    if (!c) return null;
+    if (!m[2]) return htmlRes(paginaCurso(c, CONFIG));
+    const l = c.lecciones.find((x) => x.id === m[2]);
+    return l ? htmlRes(paginaLeccion(c, l, CONFIG)) : null;
+  }
+  return null;
+}
+
+const EVENTOS_VALIDOS = new Set(['instalacion', 'curso_iniciado', 'curso_terminado', 'clic_afiliado', 'compartir', 'copiar_resumen']);
+
+async function apiEvento(env, request) {
+  if (request.method !== 'POST') return Response.json({ error: 'POST' }, { status: 405, headers: CABECERAS });
+  const nombre = (await request.text()).trim().slice(0, 40);
+  if (!EVENTOS_VALIDOS.has(nombre)) return Response.json({ ok: false }, { status: 400, headers: CABECERAS });
+  if (env.DATA) {
+    const clave = `eventos:${hoyIso()}`;
+    const dia = (await env.DATA.get(clave, 'json')) ?? {};
+    dia[nombre] = (dia[nombre] ?? 0) + 1;
+    await env.DATA.put(clave, JSON.stringify(dia), { expirationTtl: 400 * 86400 });
+  }
+  return Response.json({ ok: true }, { headers: { ...CABECERAS, 'Cache-Control': 'no-store' } });
+}
+
+async function apiEventos(env) {
+  const dias = {};
+  if (env.DATA) {
+    const d = new Date();
+    for (let i = 0; i < 30; i++) {
+      const iso = new Date(d.getTime() - i * 86400_000).toISOString().slice(0, 10);
+      const v = await env.DATA.get(`eventos:${iso}`, 'json');
+      if (v) dias[iso] = v;
+    }
+  }
+  const totales = {};
+  for (const v of Object.values(dias)) for (const [k, n] of Object.entries(v)) totales[k] = (totales[k] ?? 0) + n;
+  return Response.json({ dias, totales }, { headers: { ...CABECERAS, 'Cache-Control': 'no-store' } });
+}
+
+async function handleApi(path, env, ctx, urlActual, request) {
+  if (path === '/api/evento') return apiEvento(env, request);
+  if (path === '/api/eventos') return apiEventos(env);
   if (path === '/api/tipo-cambio') return apiTipoCambio(env, ctx);
   if (path === '/api/indicadores') return apiIndicadores();
   if (path === '/api/dato-del-dia') return apiDatoDelDia(env, ctx);
@@ -79,7 +141,7 @@ async function handleApi(path, env, ctx, urlActual) {
 
   if (path === '/api/config') {
     return Response.json(
-      { nombre: CONFIG.nombre, tagline: CONFIG.tagline, contacto: CONFIG.contacto, autor: CONFIG.autor },
+      { nombre: CONFIG.nombre, tagline: CONFIG.tagline, contacto: CONFIG.contacto, autor: CONFIG.autor, analytics: CONFIG.analytics || null, patrocinador: CONFIG.patrocinador || null },
       { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=86400' } }
     );
   }
