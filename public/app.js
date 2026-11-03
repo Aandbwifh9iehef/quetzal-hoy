@@ -619,18 +619,59 @@
     .then(pintarTipoCambio)
     .catch(function () { pintarTipoCambio(null); });
 
-  // ─── PWA: botón de instalación ───
+  // ─── Instalación: botón automático si el navegador lo ofrece; si no, pasos según el teléfono ───
+  var instalar = document.getElementById('instalar');
+  var btnInstalar = document.getElementById('btn-instalar');
+  var pasosInstalar = document.getElementById('instalar-pasos');
   var installEvent = null;
+  function yaInstalada() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true || location.search.indexOf('source=pwa') >= 0 || location.search.indexOf('source=twa') >= 0;
+  }
+  function instalacionOculta() { try { return localStorage.getItem('quetzal-hoy:instalar') === 'no'; } catch (e) { return false; } }
+  function pasosSegunTelefono() {
+    var ua = navigator.userAgent || '';
+    var iOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (iOS) {
+      var safari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
+      return (safari ? [] : ['Abre esta página en <strong>Safari</strong> (en otros navegadores de iPhone no se puede instalar).']).concat([
+        'Toca el botón <strong>Compartir</strong> <span class="instalar__icono" aria-hidden="true">⎙</span> (el cuadrado con la flecha hacia arriba, abajo en el centro).',
+        'Baja en la lista y toca <strong>"Agregar a pantalla de inicio"</strong>.',
+        'Toca <strong>Agregar</strong>. Listo: ya tienes el ícono verde en tu pantalla.'
+      ]);
+    }
+    if (/Android/i.test(ua)) {
+      var chrome = /Chrome/i.test(ua) && !/EdgA|OPR|SamsungBrowser/i.test(ua);
+      return [
+        'Toca el menú <strong>⋮</strong> (los tres puntos, arriba a la derecha' + (chrome ? '' : ' de Chrome') + ').',
+        'Toca <strong>"Agregar a pantalla principal"</strong> o <strong>"Instalar app"</strong>.',
+        'Confirma con <strong>Instalar</strong>. Listo: ya tienes el ícono verde en tu pantalla.'
+      ];
+    }
+    return ['En el celular, abre <strong>hoy.compoundclub.fyi</strong> y usa "Agregar a pantalla de inicio" del menú del navegador.'];
+  }
+  function mostrarInstalar() {
+    if (yaInstalada() || instalacionOculta()) return;
+    if (installEvent) { btnInstalar.hidden = false; pasosInstalar.hidden = true; }
+    else { pasosInstalar.innerHTML = pasosSegunTelefono().map(function (p) { return '<li>' + p + '</li>'; }).join(''); pasosInstalar.hidden = false; btnInstalar.hidden = true; }
+    instalar.hidden = false;
+  }
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     installEvent = e;
-    var btn = document.getElementById('btn-instalar');
-    btn.classList.add('visible');
-    btn.addEventListener('click', function () {
-      installEvent.prompt();
-      installEvent.userChoice.then(function () { btn.classList.remove('visible'); });
-    });
+    mostrarInstalar();
   });
+  btnInstalar.addEventListener('click', function () {
+    if (!installEvent) return;
+    installEvent.prompt();
+    installEvent.userChoice.then(function (r) { if (r && r.outcome === 'accepted') instalar.hidden = true; });
+  });
+  document.getElementById('btn-instalar-cerrar').addEventListener('click', function () {
+    instalar.hidden = true;
+    try { localStorage.setItem('quetzal-hoy:instalar', 'no'); } catch (e) {}
+  });
+  window.addEventListener('appinstalled', function () { instalar.hidden = true; });
+  // Si en 2 s el navegador no ofreció instalar, mostramos los pasos manuales
+  setTimeout(mostrarInstalar, 2000);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function () {});

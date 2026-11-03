@@ -268,24 +268,6 @@ button {
   max-width: 280px;
 }
 
-/* ─── Botón instalar PWA ─── */
-#btn-instalar {
-  display: none;
-  width: 100%;
-  padding: 14px var(--espacio);
-  background: var(--c-acento);
-  color: #1A1A2E;
-  font-size: 0.95rem;
-  font-weight: 700;
-  border-radius: var(--radio);
-  margin-bottom: 16px;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  text-align: center;
-}
-
-#btn-instalar.visible { display: flex; }
 
 /* ─── Aviso legal rápido ─── */
 .aviso-legal {
@@ -1246,3 +1228,26 @@ button:active, .curso:active, .leccion-item:active, .continuar:active { transfor
   pointer-events: none;
 }
 .tarjeta--tc > *:not(.tc__quetzal) { position: relative; z-index: 1; }
+
+/* ─── Tarjeta de instalación ─── */
+.instalar {
+  background: linear-gradient(135deg, rgba(244,162,97,0.22), rgba(244,162,97,0.06) 70%), var(--c-fondo-tarjeta);
+  border: 2px solid rgba(244,162,97,0.5);
+  border-radius: var(--radio);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 18px rgba(231,111,81,0.18);
+}
+.instalar__cab { display: flex; gap: 12px; align-items: center; }
+.instalar__cab img { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; }
+.instalar__tit { font-weight: 800; letter-spacing: -0.02em; font-size: 1.02rem; }
+.instalar__sub { font-size: 0.82rem; color: var(--c-texto-suave); }
+.instalar__pasos { margin: 12px 0 0; padding-left: 22px; font-size: 0.92rem; line-height: 1.5; }
+.instalar__pasos li + li { margin-top: 6px; }
+.instalar__icono { display: inline-block; font-size: 1.1em; }
+.instalar__cerrar {
+  display: block; margin: 10px auto 0; color: var(--c-texto-suave);
+  font-size: 0.82rem; font-weight: 600; min-height: 36px; padding: 6px 12px;
+}
+#btn-instalar { display: block; width: 100%; }
+#btn-instalar[hidden] { display: none; }
