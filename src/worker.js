@@ -5,22 +5,31 @@ import { CLAVE_HISTORIAL, construirRespuesta, fusionarHistorial, actualizarTipoC
 import INDICADORES from '../data/indicadores.json';
 import { anotarAntiguedad } from './indicadores.js';
 import { construirContexto, datoDelDia } from './dato-del-dia.js';
+import FUENTES from '../data/fuentes-noticias.json';
+import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
+
+const CRON_NOTICIAS = '0 12 * * *';
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.pathname.startsWith('/api/')) return handleApi(url.pathname, env, ctx);
+    if (url.pathname.startsWith('/api/')) return handleApi(url.pathname, env, ctx, url);
     return env.ASSETS.fetch(request);
   },
 
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(correrCron(env));
+    ctx.waitUntil(correrCron(event.cron, env));
   }
 };
 
-async function correrCron(env) {
+async function correrCron(cron, env) {
   if (!env.DATA) {
     console.log('Cron: no hay KV (DATA); nada que guardar');
+    return;
+  }
+  if (cron === CRON_NOTICIAS) {
+    const r = await actualizarNoticias(env, { fuentes: FUENTES.fuentes, ai: env.AI });
+    console.log(`Noticias ${r.fecha}: ${r.guatemala.length} GT + ${r.mundo.length} mundo, ${r.uso.resumenes} resúmenes, ~${r.uso.neuronas} neuronas` + (r.errores.length ? `; errores: ${r.errores.join(' | ')}` : ''));
     return;
   }
   const r = await actualizarTipoCambio(env);
@@ -32,10 +41,34 @@ const CABECERAS = {
   'Access-Control-Allow-Origin': '*'
 };
 
-async function handleApi(path, env, ctx) {
+async function apiNoticias(env, url) {
+  const headers = { ...CABECERAS, 'Cache-Control': 'public, max-age=900' };
+  if (!env.DATA) return Response.json({ disponible: false }, { headers });
+  const fecha = url.searchParams.get('fecha');
+  const clave = /^\d{4}-\d{2}-\d{2}$/.test(fecha ?? '') ? `noticias:${fecha}` : CLAVE_ULTIMO;
+  const datos = await env.DATA.get(clave, 'json');
+  if (!datos) return Response.json({ disponible: false }, { headers });
+  const { errores, ...publico } = datos;
+  return Response.json({ disponible: true, ...publico }, { headers });
+}
+
+async function apiArchivoNoticias(env) {
+  const fechas = env.DATA ? (await env.DATA.get(CLAVE_INDICE, 'json')) ?? [] : [];
+  return Response.json({ fechas }, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=900' } });
+}
+
+async function apiUsoNoticias(env) {
+  const uso = env.DATA ? (await env.DATA.get(CLAVE_USO, 'json')) ?? [] : [];
+  return Response.json({ limiteDiario: 10000, uso }, { headers: { ...CABECERAS, 'Cache-Control': 'no-store' } });
+}
+
+async function handleApi(path, env, ctx, urlActual) {
   if (path === '/api/tipo-cambio') return apiTipoCambio(env, ctx);
   if (path === '/api/indicadores') return apiIndicadores();
   if (path === '/api/dato-del-dia') return apiDatoDelDia(env, ctx);
+  if (path === '/api/noticias') return apiNoticias(env, urlActual);
+  if (path === '/api/noticias/archivo') return apiArchivoNoticias(env);
+  if (path === '/api/noticias/uso') return apiUsoNoticias(env);
 
   if (path === '/api/config') {
     return Response.json(

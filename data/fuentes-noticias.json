@@ -1,0 +1,53 @@
+{
+  "nota": "Solo se usa el titular, la descripción corta del RSS y el enlace. Nunca se copia el texto de la nota ni sus imágenes. Cada noticia enlaza a la nota original con el nombre del medio. Revisado el 3 de noviembre de 2026.",
+  "fuentes": [
+    {
+      "id": "prensalibre",
+      "nombre": "Prensa Libre",
+      "region": "guatemala",
+      "url": "https://www.prensalibre.com/economia/feed/",
+      "seccionEconomica": true,
+      "terminos": "https://www.prensalibre.com/terminos-y-condiciones/ — permite enlazar; no permite reproducir contenido, por eso solo titular + enlace."
+    },
+    {
+      "id": "republica",
+      "nombre": "República",
+      "region": "guatemala",
+      "url": "https://republica.gt/economia/feed/",
+      "seccionEconomica": true,
+      "terminos": "RSS público de la sección Economía; solo titular + enlace."
+    },
+    {
+      "id": "lahora",
+      "nombre": "La Hora",
+      "region": "guatemala",
+      "url": "https://lahora.gt/feed/",
+      "seccionEconomica": false,
+      "terminos": "RSS general; se filtra por palabras clave económicas. Solo titular + enlace."
+    },
+    {
+      "id": "banguat",
+      "nombre": "Banco de Guatemala",
+      "region": "guatemala",
+      "url": "https://www.banguat.gob.gt/rss.xml",
+      "seccionEconomica": true,
+      "terminos": "Comunicados oficiales de acceso público."
+    },
+    {
+      "id": "elpais",
+      "nombre": "El País",
+      "region": "mundo",
+      "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada",
+      "seccionEconomica": true,
+      "terminos": "https://elpais.com/estaticos/aviso-legal/ — RSS para uso personal/no comercial de titulares con enlace a la fuente."
+    },
+    {
+      "id": "dw",
+      "nombre": "DW",
+      "region": "mundo",
+      "url": "https://rss.dw.com/xml/rss-sp-eco",
+      "seccionEconomica": true,
+      "terminos": "RSS público de Deutsche Welle en español; solo titular + enlace."
+    }
+  ]
+}

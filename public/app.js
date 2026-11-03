@@ -185,6 +185,70 @@
   fetch('/api/indicadores').then(function (r) { return r.json(); }).then(pintarIndicadores).catch(function () { pintarIndicadores(null); });
   fetch('/api/dato-del-dia').then(function (r) { return r.json(); }).then(pintarDatoDelDia).catch(function () { pintarDatoDelDia(null); });
 
+
+  // ─── Noticias ───
+  function tarjetaNoticia(n) {
+    var auto = n.resumen ? '<span class="badge badge--auto">Resumen automático</span>' : '';
+    return (
+      '<article class="tarjeta noticia">' +
+      '<div class="noticia__medio">' + esc(n.medio) + (n.fecha ? ' · ' + fechaCorta(n.fecha.slice(0, 10)) : '') + '</div>' +
+      '<h3 class="noticia__titulo"><a href="' + esc(n.enlace) + '" target="_blank" rel="noopener">' + esc(n.titulo) + '</a></h3>' +
+      (n.resumen ? '<p class="noticia__resumen">' + esc(n.resumen) + '</p>' : '') +
+      (n.afecta ? '<p class="noticia__afecta"><strong>¿Cómo te afecta?</strong> ' + esc(n.afecta) + '</p>' : '') +
+      '<div class="noticia__pie">' + auto + '<a class="noticia__leer" href="' + esc(n.enlace) + '" target="_blank" rel="noopener">Leer en ' + esc(n.medio) + ' →</a></div>' +
+      '</article>'
+    );
+  }
+
+  function pintarNoticias(resp) {
+    var cont = document.getElementById('noticias-contenido');
+    var fecha = document.getElementById('noticias-fecha');
+    if (!resp || !resp.disponible) {
+      fecha.textContent = '';
+      cont.innerHTML = '<div class="pronto"><div class="pronto__icono" aria-hidden="true">📰</div><div class="pronto__titulo">Aún no hay noticias de hoy</div><p class="pronto__desc">Las noticias se preparan cada mañana a las 6:00. Vuelve en un rato.</p></div>';
+      return;
+    }
+    fecha.textContent = 'Resumen del ' + fechaCorta(resp.fecha);
+    var html = '';
+    if (resp.guatemala && resp.guatemala.length) {
+      html += '<h2 class="subtitulo">Guatemala</h2>';
+      for (var i = 0; i < resp.guatemala.length; i++) html += tarjetaNoticia(resp.guatemala[i]);
+    }
+    if (resp.mundo && resp.mundo.length) {
+      html += '<h2 class="subtitulo mt-lg">Mundo</h2>';
+      for (var j = 0; j < resp.mundo.length; j++) html += tarjetaNoticia(resp.mundo[j]);
+    }
+    cont.innerHTML = html || '<p class="texto-suave">Hoy no encontramos noticias económicas.</p>';
+  }
+
+  function cargarNoticias(fecha) {
+    document.getElementById('noticias-contenido').innerHTML = '<div class="cargando">Cargando noticias…</div>';
+    fetch('/api/noticias' + (fecha ? '?fecha=' + fecha : ''))
+      .then(function (r) { return r.json(); })
+      .then(pintarNoticias)
+      .catch(function () { pintarNoticias(null); });
+  }
+
+  function pintarArchivo(resp) {
+    var fechas = (resp && resp.fechas) || [];
+    if (fechas.length < 2) return;
+    var lista = document.getElementById('archivo-lista');
+    var html = '';
+    for (var i = 0; i < fechas.length; i++) html += '<button class="archivo__dia" data-f="' + esc(fechas[i]) + '">' + fechaCorta(fechas[i]) + '</button>';
+    lista.innerHTML = html;
+    var botones = lista.querySelectorAll('.archivo__dia');
+    for (var k = 0; k < botones.length; k++) {
+      botones[k].addEventListener('click', function () {
+        cargarNoticias(this.getAttribute('data-f'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    document.getElementById('archivo-noticias').hidden = false;
+  }
+
+  cargarNoticias();
+  fetch('/api/noticias/archivo').then(function (r) { return r.json(); }).then(pintarArchivo).catch(function () {});
+
   fetch('/api/tipo-cambio')
     .then(function (r) { return r.json(); })
     .then(pintarTipoCambio)

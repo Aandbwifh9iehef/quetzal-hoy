@@ -1,13 +1,13 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 4 — Noticias automáticas
+## Siguiente fase: 5 — Invertir: comparador y calculadoras
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
 | 1 | Esqueleto, diseño y publicación | Hecha | 3 nov 2026 |
 | 2 | Tipo de cambio automático | Hecha | 3 nov 2026 |
 | 3 | Indicadores y dato del día | Hecha | 3 nov 2026 |
-| 4 | Noticias automáticas | Pendiente | |
+| 4 | Noticias automáticas | Hecha | 3 nov 2026 |
 | 5 | Invertir: comparador y calculadoras | Pendiente | |
 | 6 | Aprende: cursos | Pendiente | |
 | 7 | Resumen para WhatsApp | Pendiente | |
@@ -63,3 +63,19 @@
   inflación diciembre/diciembre 2019–2025 del INE, ambos en `data/indicadores.json` → `referencias`.
 - 3 nov 2026 (fase 3): la canasta básica enlaza a ine.gob.gt (portada) porque el INE no da enlaces
   estables a cada informe mensual.
+- 3 nov 2026 (fase 4): fuentes RSS en `data/fuentes-noticias.json`: Prensa Libre (economía), República
+  (economía), La Hora (general, filtrada por palabras clave), Banguat (comunicados), El País (economía) y
+  DW (economía). BBC Mundo quedó fuera: su RSS de economía está congelado desde 2014. Soy502, AGN y
+  Emisoras Unidas no tienen RSS que funcione.
+- 3 nov 2026 (fase 4): cron de noticias a las 12:00 UTC (6:00 Guatemala). Elige 5 de Guatemala y 3 del
+  mundo entre lo publicado en las últimas 48 h, con tope blando de 3 por medio (2 en Mundo). Archivo de
+  30 días en KV (`noticias:AAAA-MM-DD`, índice en `noticias:indice`) y log de uso en `noticias:uso`
+  (visible en `/api/noticias/uso`).
+- 3 nov 2026 (fase 4): modelo de Workers AI `@cf/meta/llama-3.1-8b-instruct`; cada resumen usa solo
+  titular + descripción del RSS. Validación automática: si el resumen trae una cifra que no está en el
+  RSS, tiene más de 2 frases o el "¿Cómo te afecta?" más de 1, se descarta y se muestra solo el titular.
+  Estimación: ~8 noticias × ~430 tokens ≈ 120 neuronas/día (límite gratis 10,000). Las neuronas se
+  estiman a partir de los tokens con la tabla de precios de Cloudflare, porque la API no las devuelve.
+- 3 nov 2026 (fase 4): en la computadora (`npm run dev`) se usa el entorno `local` de `wrangler.jsonc`,
+  sin binding de IA, porque la IA obliga a iniciar sesión en Cloudflare. Por eso en local las noticias
+  salen solo con titular; los resúmenes aparecerán al publicar. No se pudo probar la IA real desde aquí.

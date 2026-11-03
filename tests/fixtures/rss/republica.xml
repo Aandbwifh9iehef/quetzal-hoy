@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+        xmlns:content="http://purl.org/rss/1.0/modules/content/"
+        xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:atom="http://www.w3.org/2005/Atom"
+        xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+        xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+	<channel>
+		<title>Empresa - Últimas noticias de Guatemala hoy en vivo </title>
+		<atom:link href="https://republica.com/economia/feed" rel="self" type="application/rss+xml" />
+		<link>https://republica.com</link>
+		<description>Todas las noticias politicas, economicas y mas de Guatemala y el mundo.</description>
+		<lastBuildDate>Tue, 03 Nov 2026 19:45:50 GMT</lastBuildDate>
+		<language>es</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+		<generator>https://www.mustang.cloud/</generator>
+
+		<image>
+			<url>https://static.republica.com/img/estructura/cropped-favicon-36x36.png</url>
+			<title>Últimas noticias de Guatemala hoy en vivo</title>
+			<link>https://republica.com</link>
+			<width>32</width>
+			<height>32</height>
+		</image> 
+
+		<item>
+			<title><![CDATA[Oliver Hartleben: cómo lograr la ciudad de 15 minutos sin deshacer la ciudad de la hora y media]]></title>
+			<link>https://republica.com/economia/oliver-hartleben-como-lograr-la-ciudad-de-15-minutos-sin-deshacer-la-ciudad-de-la-hora-y-media-20001130400</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Tue, 03 Nov 2026 17:07:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/oliver-hartleben-como-lograr-la-ciudad-de-15-minutos-sin-deshacer-la-ciudad-de-la-hora-y-media-20001130400</guid>
+			<description><![CDATA[Oliver Hartleben propone aprovechar los barrancos para reconectar Guatemala y transformar las barreras urbanas en oportunidades de desarrollo.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Zafra arrancará el 6 de noviembre bajo estrés climático]]></title>
+			<link>https://republica.com/economia/zafra-arrancara-el-6-de-noviembre-bajo-estres-climatico-2000103016350</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Sat, 31 Oct 2026 16:04:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/zafra-arrancara-el-6-de-noviembre-bajo-estres-climatico-2000103016350</guid>
+			<description><![CDATA[El sector prevé una baja en la cosecha por menos lluvias y altas temperaturas, aunque mantendrá su aporte energético y laboral.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Del campo al Canal: El Niño podría golpear la economía en 2027]]></title>
+			<link>https://republica.com/economia/del-campo-al-canal-el-nino-podria-golpear-la-economia-en-2027-2000103015130</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Sat, 31 Oct 2026 16:02:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/del-campo-al-canal-el-nino-podria-golpear-la-economia-en-2027-2000103015130</guid>
+			<description><![CDATA[La sequía asociada a El Niño podría encarecer alimentos, electricidad y transporte en Centroamérica, con mayores efectos económicos en 2027.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Eddy Carpio Sam es el nuevo presidente del BANGUAT ]]></title>
+			<link>https://republica.com/economia/eddy-carpio-sam-es-el-nuevo-presidente-del-banguat-2026103014110</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Fri, 30 Oct 2026 20:11:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/eddy-carpio-sam-es-el-nuevo-presidente-del-banguat-2026103014110</guid>
+			<description><![CDATA[Carpio, exgerente general del BANGUAT y exdirector ante el BID, asume la presidencia de la banca central y la Junta Monetaria.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[De un taller en zona 4 a 35 países: FOGEL, Exportador del Año]]></title>
+			<link>https://republica.com/economia/de-un-taller-en-zona-4-a-35-paises-fogel-exportador-del-ano-202610301010</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Fri, 30 Oct 2026 16:01:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/de-un-taller-en-zona-4-a-35-paises-fogel-exportador-del-ano-202610301010</guid>
+			<description><![CDATA[FOGEL fue nombrada Exportador del Año 2026; SISAP y Plantaciones Nahualate también fueron galardonadas por su desempeño exportador.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Centroamérica permitirá ingreso de mercancías por hasta 2 mil dólares sin pago de aranceles]]></title>
+			<link>https://republica.com/economia/centroamerica-permitira-ingreso-de-mercancias-por-hasta-2-mil-dolares-sin-pago-de-aranceles-2026102917450</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Thu, 29 Oct 2026 23:45:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/centroamerica-permitira-ingreso-de-mercancias-por-hasta-2-mil-dolares-sin-pago-de-aranceles-2026102917450</guid>
+			<description><![CDATA[La franquicia sube de USD 500 a USD 2000. La reforma añade declaración anticipada, trámites digitales y gestión de riesgos.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Aida Lorenzo: “Importamos el 100 % de lo negro y exportamos el 100 % de lo verde”]]></title>
+			<link>https://republica.com/economia/aida-lorenzo-importamos-el-100-de-lo-negro-y-exportamos-el-100-de-lo-verde-2000102818110</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Thu, 29 Oct 2026 16:08:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/aida-lorenzo-importamos-el-100-de-lo-negro-y-exportamos-el-100-de-lo-verde-2000102818110</guid>
+			<description><![CDATA[Guatemala importa el 90 % de su gasolina y todo el diésel. Aida Lorenzo explica cómo los combustibles renovables pueden reducir esa dependencia.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Guatemala demanda mejores obras, no parches]]></title>
+			<link>https://republica.com/economia/guatemala-demanda-mejores-obras-no-parches-200010272060</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Thu, 29 Oct 2026 16:07:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/guatemala-demanda-mejores-obras-no-parches-200010272060</guid>
+			<description><![CDATA[Reducir la pobreza exige algo más que crecimiento: requiere infraestructura capaz de atraer inversión y elevar la productividad.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[ Puertos operan con brechas críticas de seguridad]]></title>
+			<link>https://republica.com/economia/puertos-operan-con-brechas-criticas-de-seguridad-2000102817470</link>
+			<dc:creator><![CDATA[Natalie Chang]]></dc:creator>
+			<pubDate>Thu, 29 Oct 2026 16:07:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/puertos-operan-con-brechas-criticas-de-seguridad-2000102817470</guid>
+			<description><![CDATA[La ausencia de estándares comunes y sistemas interoperables mantiene vulnerabilidades en las principales terminales portuarias.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Fiambre impulsa empleo y desarrollo industrial]]></title>
+			<link>https://republica.com/economia/fiambre-impulsa-empleo-y-desarrollo-industrial-2026102713340</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Tue, 27 Oct 2026 19:34:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/fiambre-impulsa-empleo-y-desarrollo-industrial-2026102713340</guid>
+			<description><![CDATA[En Guatemala se produjeron 115 318 toneladas de embutidos en 2023 y el sector generó 77 185 empleos en 2022, según el INE.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[La energía que Guatemala deja en la basura]]></title>
+			<link>https://republica.com/economia/la-energia-que-guatemala-deja-en-la-basura-2000102312320</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Sat, 24 Oct 2026 16:27:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/la-energia-que-guatemala-deja-en-la-basura-2000102312320</guid>
+			<description><![CDATA[El 89 % de la basura de la capital tiene potencial para producir combustibles mediante pirólisis. Una regulación facilitaría su uso industrial.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Charles Bland: “No arruinemos la poca formalidad; generemos más empleo”]]></title>
+			<link>https://republica.com/economia/charles-bland-no-arruinemos-la-poca-formalidad-generemos-mas-empleo-2000102317440</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Sat, 24 Oct 2026 16:18:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/charles-bland-no-arruinemos-la-poca-formalidad-generemos-mas-empleo-2000102317440</guid>
+			<description><![CDATA[El presidente de CAMAGRO advierte que elevar el salario mínimo sin criterios técnicos frena el empleo formal y amplía la informalidad.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Luis Lara Grojec es reconocido como Gerente del Año 2026]]></title>
+			<link>https://republica.com/economia/luis-lara-grojec-es-reconocido-como-gerente-del-ano-2026-2026102219330</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Fri, 23 Oct 2026 01:33:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/luis-lara-grojec-es-reconocido-como-gerente-del-ano-2026-2026102219330</guid>
+			<description><![CDATA[Más de 32 años de trayectoria, liderazgo ético, visión estratégica e impulso a la transformación digital y financiera del país.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[De siete regiones turísticas a polos de inversión]]></title>
+			<link>https://republica.com/economia/de-siete-regiones-turisticas-a-polos-de-inversion-200010211840</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Thu, 22 Oct 2026 16:36:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/de-siete-regiones-turisticas-a-polos-de-inversion-200010211840</guid>
+			<description><![CDATA[ De Antigua a Huehuetenango, Guatemala puede ampliar su oferta turística con inversiones adaptadas a las necesidades de cada territorio.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Agro actualiza política laboral con apoyo OIT]]></title>
+			<link>https://republica.com/economia/agro-actualiza-politica-laboral-con-apoyo-oit-2026102111190</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Wed, 21 Oct 2026 17:19:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/agro-actualiza-politica-laboral-con-apoyo-oit-2026102111190</guid>
+			<description><![CDATA[La política laboral del Agro fue actualizada y da continuidad a la Política de Respeto a los Derechos Humanos adoptada por el sector en 2018.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[La factura oculta de la ley de etiquetado]]></title>
+			<link>https://republica.com/economia/la-factura-oculta-de-la-ley-de-etiquetado-2000101621110</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Mon, 19 Oct 2026 12:32:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/la-factura-oculta-de-la-ley-de-etiquetado-2000101621110</guid>
+			<description><![CDATA[Ley de etiquetado elevaría costos, duplicaría trámites, afectaría a mipymes, inversión y competitividad, según la industria alimentaria.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Patrick Wilson: “Deberían duplicar la cantidad de ingenieros para atraer la industria de semiconductores”]]></title>
+			<link>https://republica.com/economia/patrick-wilson-deberian-duplicar-la-cantidad-de-ingenieros-para-atraer-la-industria-de-semiconductores-2026101615330</link>
+			<dc:creator><![CDATA[Redacción]]></dc:creator>
+			<pubDate>Sat, 17 Oct 2026 16:37:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/patrick-wilson-deberian-duplicar-la-cantidad-de-ingenieros-para-atraer-la-industria-de-semiconductores-2026101615330</guid>
+			<description><![CDATA[Patrick Wilson propone duplicar la formación de ingenieros para que Guatemala aproveche las oportunidades de la industria de semiconductores.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Los departamentos donde la red eléctrica está al límite]]></title>
+			<link>https://republica.com/economia/los-departamentos-donde-la-red-electrica-esta-al-limite-2000101610100</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Sat, 17 Oct 2026 16:36:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/los-departamentos-donde-la-red-electrica-esta-al-limite-2000101610100</guid>
+			<description><![CDATA[La demanda eléctrica crece más rápido que la red. Proyectos frenados por alcaldes, licencias y conflictos elevan el riesgo de apagones. ]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Doce empresas compiten por el máximo galardón exportador]]></title>
+			<link>https://republica.com/economia/doce-empresas-compiten-por-el-maximo-galardon-exportador-2026101518580</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Fri, 16 Oct 2026 00:58:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/doce-empresas-compiten-por-el-maximo-galardon-exportador-2026101518580</guid>
+			<description><![CDATA[Edición 2026 reconoce a organizaciones que fortalecen cadenas globales de producción y construyen relaciones comerciales duraderas.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Guatemala busca dar el gran salto en IED]]></title>
+			<link>https://republica.com/economia/guatemala-busca-dar-el-gran-salto-en-ied-2000101415480</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Thu, 15 Oct 2026 16:36:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/guatemala-busca-dar-el-gran-salto-en-ied-2000101415480</guid>
+			<description><![CDATA[Guatemala podría atraer más IED si mejora su infraestructura, garantiza energía y prepara a las empresas locales para ser proveedoras. ]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[La matriz renovable lejos del 80%]]></title>
+			<link>https://republica.com/economia/guatemala-corre-hacia-el-80-renovable-2000101422260</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Thu, 15 Oct 2026 16:35:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/guatemala-corre-hacia-el-80-renovable-2000101422260</guid>
+			<description><![CDATA[ Guatemala rozó el 80 % renovable en 2022, pero volvió a alejarse de la meta. Más inversión y mejores redes serán clave para alcanzarla en 2027.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[EE. UU. alerta que etiquetado exclusivo para Guatemala encarecería la canasta básica]]></title>
+			<link>https://republica.com/economia/ee-uu-alerta-que-etiquetado-exclusivo-para-guatemala-encareceria-la-canasta-basica-2026101410250</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Wed, 14 Oct 2026 16:25:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/ee-uu-alerta-que-etiquetado-exclusivo-para-guatemala-encareceria-la-canasta-basica-2026101410250</guid>
+			<description><![CDATA[Etiquetado exclusivo para Guatemala elevaría costos para empresas y podría trasladarse a los consumidores mediante alzas en los alimentos.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[Elon Musk estrena la era del billón  ]]></title>
+			<link>https://republica.com/economia/elon-musk-estrena-la-era-del-billon-2026101012350</link>
+			<dc:creator><![CDATA[Christian Ricica]]></dc:creator>
+			<pubDate>Sat, 10 Oct 2026 18:35:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/elon-musk-estrena-la-era-del-billon-2026101012350</guid>
+			<description><![CDATA[SpaceX desplazó a Tesla como principal fuente de la fortuna de Elon Musk, impulsándolo a convertirse en la primera persona con más de USD 1 billón.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[El Niño ya hace averías en los precios]]></title>
+			<link>https://republica.com/economia/el-nino-ya-hace-averias-en-los-precios-20001021360</link>
+			<dc:creator><![CDATA[Luis Gonzalez]]></dc:creator>
+			<pubDate>Sat, 10 Oct 2026 16:21:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/el-nino-ya-hace-averias-en-los-precios-20001021360</guid>
+			<description><![CDATA[La presión ya empieza a sentirse en los precios. La inflación interanual de Guatemala subió de un 3.37 % en agosto a un 4.69 % en septiembre de 2026.]]></description>
+			
+		</item>
+		<item>
+			<title><![CDATA[La carrera del Triángulo Norte por la energía ]]></title>
+			<link>https://republica.com/economia/la-carrera-del-triangulo-norte-centroamericano-por-la-energia-200010918330</link>
+			<dc:creator><![CDATA[Ximena Fernández]]></dc:creator>
+			<pubDate>Sat, 10 Oct 2026 16:20:00 GMT</pubDate>
+			<category><![CDATA[Empresa]]></category>
+			<guid isPermaLink="false">https://republica.com/economia/la-carrera-del-triangulo-norte-centroamericano-por-la-energia-200010918330</guid>
+			<description><![CDATA[Guatemala, Honduras y El Salvador impulsan licitaciones y reformas para atraer inversión eléctrica y ampliar su capacidad de generación.]]></description>
+			
+		</item>
+	</channel>
+</rss>

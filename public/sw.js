@@ -1,4 +1,4 @@
-const CACHE = 'quetzal-hoy-v3';
+const CACHE = 'quetzal-hoy-v4';
 const PRECACHE = [
   '/',
   '/styles.css',

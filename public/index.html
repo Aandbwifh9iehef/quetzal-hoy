@@ -110,11 +110,16 @@
 
     <!-- Pestaña: Noticias -->
     <section id="tab-noticias" class="seccion" role="tabpanel" aria-label="Noticias">
-      <h1 class="seccion-titulo">Noticias</h1>
-      <div class="pronto">
-        <div class="pronto__icono" aria-hidden="true">📰</div>
-        <div class="pronto__titulo">Noticias explicadas, próximamente</div>
-        <p class="pronto__desc">Cada mañana tendrás aquí las noticias económicas de Guatemala y el mundo, explicadas en frases cortas y con fuentes visibles.</p>
+      <h1 class="seccion-titulo">Noticias explicadas</h1>
+      <p class="texto-suave noticias__intro">Cada mañana elegimos lo económico que importa, lo resumimos en dos frases y te decimos cómo te afecta. Siempre con enlace a la nota original.</p>
+      <div id="noticias-fecha" class="noticias__fecha"></div>
+      <div id="noticias-contenido"><div class="cargando">Cargando noticias…</div></div>
+      <details class="archivo" id="archivo-noticias" hidden>
+        <summary>Días anteriores</summary>
+        <div class="archivo__lista" id="archivo-lista"></div>
+      </details>
+      <div class="aviso-legal mt-md">
+        Los resúmenes se generan automáticamente a partir del titular y la descripción de cada medio. El contenido completo pertenece a cada medio. <a href="/aviso-legal">Aviso legal</a>.
       </div>
     </section>
 
