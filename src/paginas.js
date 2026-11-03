@@ -79,9 +79,10 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
   <header class="header">
     <a class="header__logo" href="/">
       <img src="/icon.svg" alt="" width="32" height="32">
-      <span>${esc(config.nombre)}</span>
+      <span class="marca">${esc(config.nombre).replace(/ (\S+)$/, ' <em>$1</em>')}</span>
     </a>
   </header>
+  <div class="tejido" aria-hidden="true"></div>
   <main class="pagina-estatica" id="contenido">
     ${migas.length ? `<nav class="migas" aria-label="Ruta"><a href="/">Inicio</a>${migas.map((m) => ` › <a href="${esc(m.ruta)}">${esc(m.nombre)}</a>`).join('')}</nav>` : ''}
     ${cuerpo}

@@ -50,10 +50,11 @@
         <!-- Ojo -->
         <circle cx="16" cy="12.5" r="1" fill="#F4A261"/>
       </svg>
-      <span>Quetzal Hoy</span>
+      <span class="marca">Quetzal <em>Hoy</em></span>
     </div>
     <span class="header__fecha" id="fecha-hoy"></span>
   </header>
+  <div class="tejido" aria-hidden="true"></div>
 
   <!-- Contenido principal -->
   <main class="main" id="contenido-principal">
@@ -70,7 +71,7 @@
 
     <!-- Pestaña: Hoy -->
     <section id="tab-hoy" class="seccion activa" role="tabpanel" aria-label="Hoy">
-      <h1 class="seccion-titulo">Hoy en Guatemala</h1>
+      <h1 class="seccion-titulo">Hoy en <span class="resaltado">Guatemala</span></h1>
 
       <div class="tarjeta tarjeta--tc" id="card-tipo-cambio">
         <div class="tarjeta__titulo">Tipo de cambio del dólar</div>
@@ -111,7 +112,7 @@
 
     <!-- Pestaña: Noticias -->
     <section id="tab-noticias" class="seccion" role="tabpanel" aria-label="Noticias">
-      <h1 class="seccion-titulo">Noticias explicadas</h1>
+      <h1 class="seccion-titulo">Noticias <span class="resaltado">explicadas</span></h1>
       <p class="texto-suave noticias__intro">Cada mañana elegimos lo económico que importa, lo resumimos en dos frases y te decimos cómo te afecta. Siempre con enlace a la nota original.</p>
       <div id="noticias-fecha" class="noticias__fecha"></div>
       <div id="noticias-contenido"><div class="cargando">Cargando noticias…</div></div>
@@ -126,7 +127,7 @@
 
     <!-- Pestaña: Invertir -->
     <section id="tab-invertir" class="seccion" role="tabpanel" aria-label="Invertir">
-      <h1 class="seccion-titulo">Invertir en Guatemala</h1>
+      <h1 class="seccion-titulo">Invertir en <span class="resaltado">Guatemala</span></h1>
       <div class="aviso-legal aviso-legal--arriba">
         Esto es información para comparar, no asesoría financiera. Verifica las condiciones con la entidad antes de invertir. <a href="/aviso-legal">Aviso legal</a>.
       </div>

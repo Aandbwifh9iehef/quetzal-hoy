@@ -171,6 +171,7 @@
 
   // ─── Indicadores ───
   var ORDEN = ['inflacion', 'tasa-lider', 'remesas', 'combustibles', 'canasta-basica'];
+  var ICONO = { inflacion: '📈', 'tasa-lider': '🏦', remesas: '💸', combustibles: '⛽', 'canasta-basica': '🧺' };
 
   function valorIndicador(clave, d) {
     if (clave === 'inflacion') return d.valor.toFixed(2) + '%';
@@ -199,12 +200,12 @@
       var d = resp.indicadores[clave];
       if (!d) continue;
       html +=
-        '<div class="tarjeta indicador">' +
-        '<div class="indicador__fila"><div>' +
+        '<div class="tarjeta indicador indicador--' + clave + '">' +
+        '<div class="indicador__fila"><div class="indicador__izq"><span class="indicador__icono" aria-hidden="true">' + (ICONO[clave] || '•') + '</span><div>' +
         '<div class="tarjeta__titulo">' + esc(d.nombre) + '</div>' +
         '<div class="indicador__valor">' + valorIndicador(clave, d) + '</div>' +
         (d.unidad === '%' ? '' : '<div class="tarjeta__sub">' + esc(d.unidad) + '</div>') +
-        '</div>' +
+        '</div></div>' +
         (d.viejo ? '<span class="badge badge--viejo">' + esc(d.etiqueta) + '</span>' : '<span class="badge badge--periodo">' + esc(/^[A-Za-zñ]+ \d{4}$/.test(d.periodo) ? d.periodo : fechaCorta(d.fecha)) + '</span>') +
         '</div>' +
         '<p class="indicador__detalle">' + esc(detalleIndicador(clave, d)) + '</p>' +
@@ -220,7 +221,7 @@
     if (!resp || !resp.dato) { card.innerHTML = '<div class="tarjeta__titulo">Dato del día</div><p class="texto-suave">Hoy no hay dato disponible.</p>'; return; }
     var d = resp.dato;
     card.innerHTML =
-      '<div class="tarjeta__titulo">Dato del día</div>' +
+      '<div class="dato__cab"><span class="dato__icono" aria-hidden="true">💡</span><div class="tarjeta__titulo">Dato del día</div></div>' +
       '<div class="dato__titulo">' + esc(d.titulo) + '</div>' +
       '<p class="dato__texto">' + esc(d.texto) + '</p>' +
       '<div class="fuente-dato">Calculado con datos de ' + esc(d.fuente) + '.</div>';

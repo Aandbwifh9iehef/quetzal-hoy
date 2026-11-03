@@ -205,3 +205,9 @@
   US$0.287/M salida); (2) el handler `scheduled` dejaba el trabajo en `waitUntil`, que se cancela a los
   30 s → ahora lo espera con `await`, y las 8 llamadas a la IA van en paralelo. Resultado real del primer
   día: 7 resúmenes de 8 (1 descartado por largo), ~45 neuronas (límite gratis 10,000).
+- 3 nov 2026 (diseño): rediseño visual a pedido de Raúl ("se ve muy genérica"): cabecera con degradado y
+  franja tipo tejido (SVG inline, sin imágenes externas), marca "Quetzal *Hoy*", títulos con subrayado
+  naranja, tarjeta del dólar como protagonista con degradado verde, íconos por indicador, dato del día con
+  acento naranja, pastilla activa en la navegación, chips de medio en noticias, botones con degradado.
+  Sin fuentes externas (regla de velocidad). Lighthouse móvil después del cambio: 94/100/100/100.
+  Se descartó una animación de entrada de pestañas porque el panel de pruebas la congelaba.
