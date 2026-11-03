@@ -121,6 +121,7 @@
     var avisoFecha = esHoy ? '' : '<p class="aviso-viejo">Último dato disponible: ' + fechaCorta(d.fecha) + '. Aún no hay dato de hoy.</p>';
 
     card.innerHTML =
+      '<img class="tc__quetzal" src="/icon.svg" alt="" width="160" height="160">' +
       '<div class="tarjeta__titulo">Tipo de cambio del dólar</div>' +
       '<div class="tc__fila"><div class="tarjeta__valor">' + q(d.valor, 4) + '</div>' +
       '<div class="tc__cambio tc__cambio--' + d.tendencia + '">' + flecha + ' ' + esc(textoCambio) + '</div></div>' +
@@ -232,16 +233,39 @@
 
 
   // ─── Noticias ───
+  var TEMAS = [
+    ['combustibles', '⛽', /gasolin|diésel|diesel|combustible|petrol|crudo|energ[ií]a|electricidad/i],
+    ['dolar', '💵', /d[oó]lar|tipo de cambio|quetzal|divisa|cambiari/i],
+    ['remesas', '💸', /remesa|migra|deporta/i],
+    ['bancos', '🏦', /banco|sib\b|superintendencia|cr[eé]dito|tarjeta|tasa|banguat|junta monetaria|intendent/i],
+    ['precios', '🛒', /inflaci|precio|canasta|ipc|costo de vida|tortilla|ma[ií]z/i],
+    ['empleo', '👷', /empleo|trabajo|salario|sueldo|desempleo|igss|pensi/i],
+    ['impuestos', '🧾', /impuesto|sat\b|tributar|fiscal|presupuesto|deuda p[uú]blica|congreso|minfin/i],
+    ['comercio', '🚢', /exportaci|importaci|arancel|comercio|puerto|aduana|tratado|caf[eé]|az[uú]car|banano|cardamomo/i],
+    ['empresas', '🏭', /empresa|inversi|planta|f[aá]brica|negocio|alianza|expansi/i],
+    ['mercados', '📈', /wall street|bolsa|acciones|mercado|fed\b|reserva federal|bce\b|inversor/i],
+    ['tecnologia', '🤖', /inteligencia artificial|\bia\b|tecnolog|digital|cripto|bitcoin/i],
+    ['vivienda', '🏠', /vivienda|casa|alquiler|hipotec|construcci|ciudad|urban/i],
+    ['salud', '💊', /salud|vacuna|farmac|hospital|m[eé]dic/i]
+  ];
+  function temaNoticia(n) {
+    var t = n.titulo + ' ' + (n.resumen || '');
+    for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i][2].test(t)) return { clase: TEMAS[i][0], icono: TEMAS[i][1] };
+    return { clase: n.medio === 'El País' || n.medio === 'DW' ? 'mundo' : 'guatemala', icono: n.medio === 'El País' || n.medio === 'DW' ? '🌎' : '🇬🇹' };
+  }
   function tarjetaNoticia(n) {
+    var tema = temaNoticia(n);
     var auto = n.resumen ? '<span class="badge badge--auto">Resumen automático</span>' : '';
     return (
-      '<article class="tarjeta noticia">' +
+      '<article class="tarjeta noticia noticia--' + tema.clase + '">' +
+      '<div class="noticia__portada" aria-hidden="true"><span class="noticia__emoji">' + tema.icono + '</span><span class="noticia__tema">' + tema.clase.replace('tecnologia', 'tecnología').replace('dolar', 'dólar') + '</span></div>' +
+      '<div class="noticia__cuerpo">' +
       '<div class="noticia__medio">' + esc(n.medio) + (n.fecha ? ' · ' + fechaCorta(n.fecha.slice(0, 10)) : '') + '</div>' +
       '<h3 class="noticia__titulo"><a href="' + esc(n.enlace) + '" target="_blank" rel="noopener">' + esc(n.titulo) + '</a></h3>' +
       (n.resumen ? '<p class="noticia__resumen">' + esc(n.resumen) + '</p>' : '') +
       (n.afecta ? '<p class="noticia__afecta"><strong>¿Cómo te afecta?</strong> ' + esc(n.afecta) + '</p>' : '') +
       '<div class="noticia__pie">' + auto + '<span class="noticia__acciones"><button class="btn-compartir btn-compartir--mini" data-compartir="1" data-titulo="' + esc(n.titulo) + '" data-medio="' + esc(n.medio) + '" data-enlace="' + esc(n.enlace) + '">Compartir ↗</button><a class="noticia__leer" href="' + esc(n.enlace) + '" target="_blank" rel="noopener">Leer en ' + esc(n.medio) + ' →</a></span></div>' +
-      '</article>'
+      '</div></article>'
     );
   }
 
@@ -488,8 +512,9 @@
     }
     for (var j = 0; j < cursosCache.length; j++) {
       var cu = cursosCache[j], av = avance(cu, p);
-      html += '<button class="tarjeta curso" data-curso="' + cu.id + '">' +
-        '<div class="curso__cab"><span class="curso__icono" aria-hidden="true">' + cu.icono + '</span><div><div class="curso__titulo">' + esc(cu.titulo) + (cu.premium ? ' <span class="badge badge--nuevo">Premium</span>' : '') + '</div><div class="texto-suave">' + cu.lecciones.length + ' lecciones · ' + cu.nivel + '</div></div></div>' +
+      html += '<button class="tarjeta curso curso--' + cu.id + '" data-curso="' + cu.id + '">' +
+        '<div class="curso__portada" aria-hidden="true"><span class="curso__icono">' + cu.icono + '</span><span class="curso__num">' + (j + 1) + '</span></div>' +
+        '<div class="curso__cab"><div><div class="curso__titulo">' + esc(cu.titulo) + (cu.premium ? ' <span class="badge badge--nuevo">Premium</span>' : '') + '</div><div class="texto-suave">' + cu.lecciones.length + ' lecciones · ' + cu.nivel + '</div></div></div>' +
         '<p class="curso__desc">' + esc(cu.descripcion) + '</p>' + etiquetaPatrocinio(cu.patrocinio) +
         barra(av) + '<div class="texto-suave curso__avance">' + (av.hechas === av.total ? '✓ Curso terminado' : av.hechas + ' de ' + av.total + ' lecciones') + '</div></button>';
     }

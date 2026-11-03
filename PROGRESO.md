@@ -211,3 +211,9 @@
   acento naranja, pastilla activa en la navegación, chips de medio en noticias, botones con degradado.
   Sin fuentes externas (regla de velocidad). Lighthouse móvil después del cambio: 94/100/100/100.
   Se descartó una animación de entrada de pestañas porque el panel de pruebas la congelaba.
+- 3 nov 2026 (diseño): Raúl pidió "más imágenes" y que los titulares no estuvieran subrayados. Como las
+  reglas prohíben imágenes de los medios y la app debe pesar poco, cada noticia lleva una "portada" propia:
+  degradado de color según el tema detectado por palabras clave (combustibles, dólar, remesas, bancos,
+  precios, empleo, impuestos, comercio, empresas, mercados, tecnología, vivienda, salud, mundo/Guatemala)
+  con un ícono grande y la franja de tejido. Los cursos tienen cabecera ilustrada y el hero del dólar el
+  quetzal como marca de agua. Titulares sin subrayado (solo los enlaces dentro de párrafos lo llevan).

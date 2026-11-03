@@ -1174,3 +1174,75 @@ button:active, .curso:active, .leccion-item:active, .continuar:active { transfor
 /* Páginas internas */
 .pagina-estatica h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.03em; }
 .footer-links a { font-weight: 500; }
+
+/* ═══ Más visual: portadas por tema, cursos ilustrados, quetzal en el hero ═══ */
+.noticia { padding: 0; overflow: hidden; }
+.noticia__cuerpo { padding: var(--espacio); }
+.noticia__portada {
+  height: 92px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px;
+  background: linear-gradient(120deg, var(--p1, #2D6A4F), var(--p2, #52B788));
+  position: relative; overflow: hidden;
+}
+.noticia__portada::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--tejido) repeat-x bottom;
+  background-size: 48px 10px;
+  opacity: 0.55;
+}
+.noticia__emoji { font-size: 2.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); position: relative; z-index: 1; }
+.noticia__tema {
+  position: relative; z-index: 1;
+  color: #fff; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  background: rgba(0,0,0,0.22); padding: 4px 10px; border-radius: 20px;
+}
+.noticia--combustibles { --p1: #3D405B; --p2: #6B7A99; }
+.noticia--dolar       { --p1: #1B4332; --p2: #40916C; }
+.noticia--remesas     { --p1: #B5651D; --p2: #F4A261; }
+.noticia--bancos      { --p1: #0F3D2E; --p2: #2D6A4F; }
+.noticia--precios     { --p1: #9A3B2B; --p2: #E76F51; }
+.noticia--empleo      { --p1: #355070; --p2: #6D597A; }
+.noticia--impuestos   { --p1: #5A4A2F; --p2: #B08968; }
+.noticia--comercio    { --p1: #1D5C63; --p2: #2A9D8F; }
+.noticia--empresas    { --p1: #264653; --p2: #457B9D; }
+.noticia--mercados    { --p1: #2B2D42; --p2: #5C677D; }
+.noticia--tecnologia  { --p1: #3A0CA3; --p2: #7209B7; }
+.noticia--vivienda    { --p1: #6A4C93; --p2: #9D8CC2; }
+.noticia--salud       { --p1: #1B6F6A; --p2: #52B788; }
+.noticia--mundo       { --p1: #1D3557; --p2: #457B9D; }
+.noticia--guatemala   { --p1: #1B4332; --p2: #52B788; }
+.noticia .noticia__titulo a { text-decoration: none; color: var(--c-texto); }
+.noticia .noticia__titulo { font-size: 1.12rem; line-height: 1.3; font-weight: 800; }
+.noticia__resumen { font-size: 0.97rem; line-height: 1.55; }
+
+.curso { padding: 0; overflow: hidden; }
+.curso__cab, .curso__desc, .curso .barra, .curso__avance, .curso .eti-patro--curso { margin-left: var(--espacio); margin-right: var(--espacio); }
+.curso__cab { margin-top: 14px; }
+.curso__avance { margin-bottom: 14px; }
+.curso__portada {
+  height: 110px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(120deg, var(--p1, #1B4332), var(--p2, #52B788));
+}
+.curso__portada::after { content: ''; position: absolute; inset: 0; background: var(--tejido) repeat-x bottom; background-size: 48px 10px; opacity: 0.6; }
+.curso__portada .curso__icono { font-size: 3rem; width: auto; height: auto; background: none; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3)); position: relative; z-index: 1; }
+.curso__num {
+  position: absolute; left: 14px; top: 12px; z-index: 1;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,0.18); color: #fff; font-weight: 800; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.curso--presupuesto { --p1: #1B4332; --p2: #40916C; }
+.curso--deudas      { --p1: #9A3B2B; --p2: #F4A261; }
+.curso--invertir    { --p1: #1D5C63; --p2: #52B788; }
+
+.tc__quetzal {
+  position: absolute; right: -18px; top: -10px;
+  width: 160px; height: 160px;
+  opacity: 0.16;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+.tarjeta--tc > *:not(.tc__quetzal) { position: relative; z-index: 1; }
