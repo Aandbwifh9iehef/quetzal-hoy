@@ -10,7 +10,11 @@ import INVERSIONES from '../data/inversiones.json';
 import CURSOS from '../data/cursos.json';
 import { textoResumen, svgImagen, FORMATOS } from './compartir.js';
 import NOVEDADES from '../data/novedades.json';
-import { INDICADORES_SEO, paginaTipoCambio, paginaIndicador, paginaCursos, paginaCurso, paginaLeccion, paginaInvertir, paginaNovedades, rutasSitemap, sitemapXml } from './paginas.js';
+import { INDICADORES_SEO, paginaTipoCambio, paginaIndicador, paginaCursos, paginaCurso, paginaLeccion, paginaInvertir, paginaNovedades, paginaAnunciate, paginaMediaKit, rutasSitemap, sitemapXml } from './paginas.js';
+import { aplicarAfiliados, aplicarPatrocinioCursos } from './patrocinio.js';
+import { premiumPublico } from './premium.js';
+
+const INVERSIONES_PUB = aplicarAfiliados(INVERSIONES, CONFIG.afiliados);
 import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
 
 const CRON_NOTICIAS = '0 12 * * *';
@@ -81,8 +85,10 @@ async function paginaSeo(path, env, ctx) {
   for (const [clave, seo] of Object.entries(INDICADORES_SEO)) {
     if (clave !== 'tipo-cambio' && ruta === seo.ruta) return htmlRes(paginaIndicador(clave, anotarAntiguedad(INDICADORES.indicadores, hoyIso())[clave], CONFIG));
   }
-  if (ruta === '/invertir-en-guatemala') return htmlRes(paginaInvertir(INVERSIONES, CONFIG));
+  if (ruta === '/invertir-en-guatemala') return htmlRes(paginaInvertir(INVERSIONES_PUB, CONFIG));
   if (ruta === '/novedades') return htmlRes(paginaNovedades(NOVEDADES, CONFIG));
+  if (ruta === '/anunciate') return htmlRes(paginaAnunciate(CONFIG, await metricas(env)));
+  if (ruta === '/media-kit') return new Response(paginaMediaKit(CONFIG, await metricas(env)), { headers: { ...HTML, 'Cache-Control': 'no-store' } });
   if (ruta === '/cursos') return htmlRes(paginaCursos(CURSOS.cursos, CONFIG));
   const m = /^\/cursos\/([a-z-]+)(?:\/(\d+))?$/.exec(ruta);
   if (m) {
@@ -110,6 +116,15 @@ async function apiEvento(env, request) {
   return Response.json({ ok: true }, { headers: { ...CABECERAS, 'Cache-Control': 'no-store' } });
 }
 
+async function metricas(env) {
+  const ev = await (await apiEventos(env)).json();
+  return {
+    eventos: ev.totales,
+    desde: hoyIso(),
+    contenido: { indicadores: Object.keys(INDICADORES.indicadores).length + 1, noticiasPorDia: 8, cursos: CURSOS.cursos.length, lecciones: CURSOS.cursos.reduce((s, c) => s + c.lecciones.length, 0), entidadesTasas: new Set(INVERSIONES.tasasPlazoFijo.filas.map((f) => f.entidad)).size }
+  };
+}
+
 async function apiEventos(env) {
   const dias = {};
   if (env.DATA) {
@@ -127,12 +142,13 @@ async function apiEventos(env) {
 
 async function handleApi(path, env, ctx, urlActual, request) {
   if (path === '/api/evento') return apiEvento(env, request);
+  if (path === '/api/premium/verificar') return apiPremiumVerificar(request);
   if (path === '/api/eventos') return apiEventos(env);
   if (path === '/api/tipo-cambio') return apiTipoCambio(env, ctx);
   if (path === '/api/indicadores') return apiIndicadores();
   if (path === '/api/dato-del-dia') return apiDatoDelDia(env, ctx);
   if (path === '/api/noticias') return apiNoticias(env, urlActual);
-  if (path === '/api/inversiones') return Response.json(INVERSIONES, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
+  if (path === '/api/inversiones') return Response.json(INVERSIONES_PUB, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
   if (path === '/api/cursos') return apiCursos();
   if (path === '/api/resumen') return apiResumen(env, ctx);
   if (path === '/api/imagen-dia.svg') return apiImagenDia(env, ctx, urlActual);
@@ -169,12 +185,21 @@ async function apiImagenDia(env, ctx, url) {
 }
 
 function apiCursos() {
-  const cursos = CURSOS.cursos.map((c) => ({
+  const cursos = aplicarPatrocinioCursos(CURSOS.cursos, CONFIG.patrocinioCursos).map((c) => ({
     ...c,
     premium: CONFIG.cursosPremium?.includes(c.id) ?? false,
     lecciones: c.lecciones.map((l) => ({ ...l, video: CONFIG.videos?.[`${c.id}-${l.id}`] || l.video || null }))
   }));
-  return Response.json({ autor: CURSOS.autor, cursos }, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
+  return Response.json({ autor: CURSOS.autor, premium: premiumPublico(CONFIG.premium), cursos }, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
+}
+
+async function apiPremiumVerificar(request) {
+  if (request.method !== 'POST') return Response.json({ error: 'POST' }, { status: 405, headers: CABECERAS });
+  const codigo = (await request.text()).trim().toUpperCase().slice(0, 64);
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codigo));
+  const hex = [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  const ok = Boolean(codigo) && (CONFIG.premium?.codigosSha256 ?? []).includes(hex);
+  return Response.json({ ok }, { status: ok ? 200 : 403, headers: { ...CABECERAS, 'Cache-Control': 'no-store' } });
 }
 
 function hoyIso() {

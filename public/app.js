@@ -324,12 +324,16 @@
     document.getElementById('lista-opciones').innerHTML = html;
   }
 
+  function enlaceAfiliado(a) {
+    if (!a || !a.url) return '';
+    return '<a class="btn-afiliado" href="' + esc(a.url) + '" target="_blank" rel="sponsored noopener">' + esc(a.texto || 'Abrir cuenta') + ' ↗ <span class="eti-patro">Enlace patrocinado</span></a>';
+  }
   function filaTasa(f, colMonto) {
     var tasa = f.tasa === null ? '<span class="tasa tasa--na">Consultar con la entidad</span>' : '<span class="tasa">' + pct(f.tasa) + '</span><span class="tasa__tipo">' + esc(f.tipoTasa || '') + '</span>';
     return (
       '<div class="fila-tasa">' +
       '<div class="fila-tasa__ent"><strong>' + esc(f.entidad) + '</strong><span class="texto-suave">' + esc(f.producto) + (f[colMonto] && f[colMonto] !== '—' ? ' · ' + esc(f[colMonto]) : '') + '</span>' +
-      '<span class="fila-tasa__fuente">' + fechaCorta(f.fecha) + ' · <a href="' + esc(f.url) + '" target="_blank" rel="noopener">' + esc(f.fuente) + '</a></span></div>' +
+      '<span class="fila-tasa__fuente">' + fechaCorta(f.fecha) + ' · <a href="' + esc(f.url) + '" target="_blank" rel="noopener">' + esc(f.fuente) + '</a></span>' + enlaceAfiliado(f.afiliado) + '</div>' +
       '<div class="fila-tasa__val">' + tasa + '</div>' +
       '</div>'
     );
@@ -442,6 +446,13 @@
     for (var i = 0; i < ids.length; i++) { var id = ids[(desde + i) % ids.length]; if (!(pc.lecciones && pc.lecciones[id] && pc.lecciones[id].terminada)) return id; }
     return ids[0];
   }
+  var premiumCfg = { activo: false };
+  function etiquetaPatrocinio(p) {
+    if (!p || !p.nombre) return '';
+    return '<span class="eti-patro eti-patro--curso">Patrocinado por ' + (p.url ? '<a href="' + esc(p.url) + '" target="_blank" rel="sponsored noopener">' + esc(p.nombre) + '</a>' : esc(p.nombre)) + '</span>';
+  }
+  function desbloqueados() { try { return JSON.parse(localStorage.getItem('quetzal-hoy:premium') || '{}') || {}; } catch (e) { return {}; } }
+  function cursoBloqueado(c) { return Boolean(c.premium && premiumCfg.activo && !desbloqueados()[c.id]); }
   function cursoPorId(id) { for (var i = 0; i < cursosCache.length; i++) if (cursosCache[i].id === id) return cursosCache[i]; return null; }
   function leccionPorId(curso, id) { for (var i = 0; i < curso.lecciones.length; i++) if (curso.lecciones[i].id === id) return curso.lecciones[i]; return null; }
 
@@ -478,7 +489,7 @@
       var cu = cursosCache[j], av = avance(cu, p);
       html += '<button class="tarjeta curso" data-curso="' + cu.id + '">' +
         '<div class="curso__cab"><span class="curso__icono" aria-hidden="true">' + cu.icono + '</span><div><div class="curso__titulo">' + esc(cu.titulo) + (cu.premium ? ' <span class="badge badge--nuevo">Premium</span>' : '') + '</div><div class="texto-suave">' + cu.lecciones.length + ' lecciones · ' + cu.nivel + '</div></div></div>' +
-        '<p class="curso__desc">' + esc(cu.descripcion) + '</p>' +
+        '<p class="curso__desc">' + esc(cu.descripcion) + '</p>' + etiquetaPatrocinio(cu.patrocinio) +
         barra(av) + '<div class="texto-suave curso__avance">' + (av.hechas === av.total ? '✓ Curso terminado' : av.hechas + ' de ' + av.total + ' lecciones') + '</div></button>';
     }
     html += '<p class="texto-suave mt-lg texto-centro">Por ' + esc(autorCursos) + '. Información educativa, no asesoría financiera.</p>';
@@ -493,7 +504,7 @@
   function vistaCurso(cid) {
     var c = cursoPorId(cid), p = leerProgreso(), a = avance(c, p);
     var html = '<button class="volver" id="volver-cursos">← Todos los cursos</button>' +
-      '<h1 class="seccion-titulo"><span aria-hidden="true">' + c.icono + '</span> ' + esc(c.titulo) + '</h1><p class="texto-suave">' + esc(c.descripcion) + '</p>' +
+      '<h1 class="seccion-titulo"><span aria-hidden="true">' + c.icono + '</span> ' + esc(c.titulo) + '</h1><p class="texto-suave">' + esc(c.descripcion) + '</p>' + etiquetaPatrocinio(c.patrocinio) +
       '<div class="mt-md">' + barra(a) + '<div class="texto-suave curso__avance">' + a.hechas + ' de ' + a.total + ' lecciones terminadas</div></div>' +
       '<div class="lecciones mt-md">';
     for (var i = 0; i < c.lecciones.length; i++) {
@@ -508,8 +519,29 @@
     for (var k = 0; k < bs.length; k++) bs[k].addEventListener('click', function () { vistaLeccion(cid, this.getAttribute('data-leccion')); });
   }
 
+  function vistaBloqueo(c) {
+    pintarAprende('<button class="volver" id="volver-curso">← ' + esc(c.titulo) + '</button>' +
+      '<h1 class="seccion-titulo">' + esc(c.titulo) + ' <span class="badge badge--nuevo">Premium</span></h1>' +
+      '<div class="tarjeta"><p>Este curso es de pago. Incluye las ' + c.lecciones.length + ' lecciones completas, el repaso y tu avance guardado.</p>' +
+      (premiumCfg.precio ? '<div class="calc__grande mt-sm">' + esc(premiumCfg.precio) + '</div>' : '') +
+      (premiumCfg.urlPago ? '<a class="btn-principal mt-md" style="display:block;text-align:center" href="' + esc(premiumCfg.urlPago) + '" target="_blank" rel="noopener">Pagar y recibir mi código</a>' : '') +
+      '<p class="texto-suave mt-md">Al pagar recibes un código por correo o WhatsApp.' + (premiumCfg.contacto ? ' Dudas: ' + esc(premiumCfg.contacto) : '') + '</p></div>' +
+      '<div class="tarjeta mt-md"><label class="campo"><span>Ya pagué: escribe tu código</span><input type="text" id="codigo-premium" autocomplete="off" autocapitalize="characters"></label>' +
+      '<button class="btn-principal mt-sm" id="btn-codigo">Desbloquear</button><div class="texto-suave mt-sm" id="codigo-estado"></div></div>');
+    document.getElementById('volver-curso').addEventListener('click', function () { vistaCurso(c.id); });
+    document.getElementById('btn-codigo').addEventListener('click', function () {
+      var cod = document.getElementById('codigo-premium').value, est = document.getElementById('codigo-estado');
+      est.textContent = 'Verificando…';
+      fetch('/api/premium/verificar', { method: 'POST', body: cod }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.ok) { var u = desbloqueados(); u[c.id] = true; try { localStorage.setItem('quetzal-hoy:premium', JSON.stringify(u)); } catch (e) {} est.textContent = 'Listo, curso desbloqueado.'; vistaCurso(c.id); }
+        else est.textContent = 'Código no válido. Revisa mayúsculas y guiones.';
+      }).catch(function () { est.textContent = 'No se pudo verificar. Inténtalo con conexión.'; });
+    });
+  }
+
   function vistaLeccion(cid, lid) {
     var c = cursoPorId(cid), l = leccionPorId(c, lid), p = leerProgreso();
+    if (cursoBloqueado(c)) { vistaBloqueo(c); return; }
     if (!p[cid] || !p[cid].ultima) evento('curso_iniciado');
     p[cid] = p[cid] || { lecciones: {} }; p[cid].lecciones = p[cid].lecciones || {}; p[cid].ultima = lid; guardarProgreso(p);
     var idx = c.lecciones.indexOf(l), sig = c.lecciones[idx + 1];
@@ -553,7 +585,7 @@
 
   var autorCursos = 'Leo Marín';
   function pintarAprende(html) { document.getElementById('aprende-vista').innerHTML = html; }
-  fetch('/api/cursos').then(function (r) { return r.json(); }).then(function (d) { cursosCache = d.cursos; autorCursos = d.autor || autorCursos; vistaCursos(); })
+  fetch('/api/cursos').then(function (r) { return r.json(); }).then(function (d) { cursosCache = d.cursos; premiumCfg = d.premium || premiumCfg; autorCursos = d.autor || autorCursos; vistaCursos(); })
     .catch(function () { pintarAprende('<h1 class="seccion-titulo">Aprende</h1><p class="texto-suave">No pudimos cargar los cursos. Inténtalo de nuevo con conexión.</p>'); });
 
   fetch('/api/tipo-cambio')

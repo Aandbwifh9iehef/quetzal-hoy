@@ -74,7 +74,7 @@ test('renderTexto convierte el mini-markdown y escapa HTML', () => {
 test('el sitemap incluye portada, indicadores, comparador, cursos y las 15 lecciones', () => {
   const rutas = rutasSitemap(cursos);
   const xml = sitemapXml(rutas, config.dominio, '2026-11-03');
-  assert.equal(rutas.length, 14 + 3 + 15, 'portada + 6 indicadores + comparador + cursos + novedades + 4 legales + 3 cursos + 15 lecciones');
+  assert.equal(rutas.length, 15 + 3 + 15, 'portada + 6 indicadores + comparador + cursos + novedades + 4 legales + 3 cursos + 15 lecciones');
   for (const r of ['/', '/tipo-cambio-hoy', '/inflacion-guatemala', '/invertir-en-guatemala', '/cursos', '/cursos/deudas/5', '/novedades']) {
     assert.match(xml, new RegExp(`<loc>https://${config.dominio}${r.replace(/\//g, '\\/')}</loc>`), r);
   }

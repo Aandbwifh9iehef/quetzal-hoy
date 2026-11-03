@@ -13,10 +13,28 @@
   },
   "patrocinador": "",
   "patrocinadorUrl": "",
-  "afiliados": {},
+  "afiliados": {
+    "nota": "Clave = nombre exacto de la entidad en data/inversiones.json. Ej.: \"Banco Azteca\": {\"url\": \"https://...\", \"texto\": \"Abrir cuenta\"}. Siempre se muestra como 'Enlace patrocinado'."
+  },
   "videos": {
     "nota": "ID de YouTube por lección, clave curso-leccion, p. ej. \"presupuesto-1\": \"dQw4w9WgXcQ\". Vacío = solo texto."
   },
   "analytics": "",
-  "cursosPremium": []
+  "cursosPremium": [],
+  "patrocinioCursos": {
+    "nota": "Clave = id del curso. Ej.: \"presupuesto\": {\"nombre\": \"Cooperativa X\", \"url\": \"https://...\"}. Se muestra 'Patrocinado por'."
+  },
+  "premium": {
+    "activo": false,
+    "precio": "",
+    "urlPago": "",
+    "contacto": "CompundClub@proton.me",
+    "codigosSha256": [],
+    "nota": "Ver docs/pagos.md. Con activo=false todos los cursos son gratis aunque estén en cursosPremium."
+  },
+  "anunciate": {
+    "correo": "CompundClub@proton.me",
+    "whatsapp": "",
+    "preciosNota": "Precios a convenir según alcance y duración."
+  }
 }

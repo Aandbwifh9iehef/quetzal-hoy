@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 9 — Listo para ganar dinero
+## Siguiente fase: 10 — App en Google Play
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -12,7 +12,7 @@
 | 6 | Aprende: cursos | Hecha | 3 nov 2026 |
 | 7 | Resumen para WhatsApp | Hecha | 3 nov 2026 |
 | 8 | SEO, analítica y pulido | Hecha | 3 nov 2026 |
-| 9 | Listo para ganar dinero | Pendiente | |
+| 9 | Listo para ganar dinero | Hecha | 3 nov 2026 |
 | 10 | App en Google Play | Pendiente | |
 
 ## Pendientes de Raúl
@@ -155,3 +155,20 @@
 - 3 nov 2026 (fase 8): `node scripts/enlaces.js [url]` revisa todos los enlaces internos y externos
   (68 hoy, 0 rotos). MEM, Minfin y SIB devuelven 403 a robots: no están rotos. Las pestañas de la app
   se pueden abrir por enlace: /#noticias, /#invertir, /#aprende.
+- 3 nov 2026 (fase 9): patrocinios y afiliados salen de `site.config.json`: `afiliados` (clave = nombre
+  exacto de la entidad en `data/inversiones.json`) pone un botón "Abrir cuenta" con `rel="sponsored"` y la
+  etiqueta visible "Enlace patrocinado" en la app y en /invertir-en-guatemala; `patrocinioCursos` (clave =
+  id del curso) muestra "Patrocinado por X" en la tarjeta y la portada del curso; `patrocinador` ya salía
+  en el resumen diario como "Te lo trae". Hay prueba de que cada enlace patrocinado lleva su etiqueta.
+- 3 nov 2026 (fase 9): /anunciate (indexable) y /media-kit (noindex, imprimible con botón "Imprimir o
+  guardar como PDF" y CSS de impresión A4) leen métricas reales de `/api/eventos` y del contenido. Los
+  precios no se inventan: "a convenir" (`anunciate.preciosNota`); contacto `anunciate.correo` y
+  `anunciate.whatsapp` (vacío = no se muestra).
+- 3 nov 2026 (fase 9): flujo premium listo pero apagado (`premium.activo: false`, todo gratis). Al
+  activarlo: precio, link de pago (Recurrente u otra pasarela) y códigos guardados como SHA-256 en
+  `premium.codigosSha256`; la persona escribe el código en la app, el Worker lo verifica en
+  `/api/premium/verificar` y el curso queda desbloqueado en ese celular. Pasos y comparación de pasarelas
+  en `docs/pagos.md` (Recurrente 4.5% por cobro, sin mensualidad, deposita en 24 h hábiles; Stripe no
+  opera en Guatemala). Probado en local activándolo temporalmente con un código de prueba y revertido.
+- 3 nov 2026 (fase 9): la propuesta de cursos para empresas ("bienestar financiero para empleados") está
+  en /anunciate y en el media kit; no hay página aparte.

@@ -29,6 +29,20 @@ export function renderTexto(t) {
   }).join('\n');
 }
 
+export const ETIQUETA_PATROCINIO = 'Enlace patrocinado';
+
+// Todo enlace patrocinado lleva rel="sponsored" y la etiqueta visible, sin excepción
+export function enlaceAfiliado(afiliado) {
+  if (!afiliado?.url) return '';
+  return `<a class="btn-afiliado" href="${esc(afiliado.url)}" target="_blank" rel="sponsored noopener">${esc(afiliado.texto || 'Abrir cuenta')} ↗ <span class="eti-patro">${ETIQUETA_PATROCINIO}</span></a>`;
+}
+
+export function etiquetaPatrocinioCurso(patrocinio) {
+  if (!patrocinio?.nombre) return '';
+  const nombre = patrocinio.url ? `<a href="${esc(patrocinio.url)}" target="_blank" rel="sponsored noopener">${esc(patrocinio.nombre)}</a>` : esc(patrocinio.nombre);
+  return `<span class="eti-patro eti-patro--curso">Patrocinado por ${nombre}</span>`;
+}
+
 export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noindex = false, config, migas = [] }) {
   const url = `https://${config.dominio}${ruta}`;
   const ld = [
@@ -80,6 +94,7 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
     <a href="/privacidad">Privacidad</a>
     <a href="/aviso-legal">Aviso legal</a>
     <a href="/contacto">Contacto</a>
+    <a href="/anunciate">Anúnciate</a>
   </nav>
   <nav class="nav-inferior" aria-label="Navegación principal">
     <a class="nav-btn" href="/#hoy">Hoy</a>
@@ -196,7 +211,7 @@ export function paginaInvertir(inv, config) {
   const filas = inv.tasasPlazoFijo.filas.slice().sort((a, b) => (b.tasa ?? -1) - (a.tasa ?? -1));
   const cuerpo = `<h1>Tasas de plazo fijo en Guatemala: bancos y cooperativas</h1>
 <p class="lede">${esc(inv.tasasPlazoFijo.nota)}</p>
-<table class="tabla"><thead><tr><th>Entidad</th><th>Producto</th><th>Tasa anual</th><th>Fecha y fuente</th></tr></thead><tbody>${filas.map((f) => `<tr><td><strong>${esc(f.entidad)}</strong></td><td>${esc(f.producto)}${f.monto && f.monto !== '—' ? `<br><span class="texto-suave">${esc(f.monto)}</span>` : ''}</td><td>${f.tasa === null ? '<span class="texto-suave">Consultar con la entidad</span>' : `<strong>${f.tasa.toFixed(2)}%</strong> <span class="texto-suave">${esc(f.tipoTasa)}</span>`}</td><td class="texto-suave">${fechaCorta(f.fecha)}<br><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.fuente)}</a></td></tr>`).join('')}</tbody></table>
+<table class="tabla"><thead><tr><th>Entidad</th><th>Producto</th><th>Tasa anual</th><th>Fecha y fuente</th></tr></thead><tbody>${filas.map((f) => `<tr><td><strong>${esc(f.entidad)}</strong></td><td>${esc(f.producto)}${f.monto && f.monto !== '—' ? `<br><span class="texto-suave">${esc(f.monto)}</span>` : ''}</td><td>${f.tasa === null ? '<span class="texto-suave">Consultar con la entidad</span>' : `<strong>${f.tasa.toFixed(2)}%</strong> <span class="texto-suave">${esc(f.tipoTasa)}</span>`}</td><td class="texto-suave">${fechaCorta(f.fecha)}<br><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.fuente)}</a>${f.afiliado ? '<br>' + enlaceAfiliado(f.afiliado) : ''}</td></tr>`).join('')}</tbody></table>
 <p class="texto-suave">${esc(inv.avisoIsr)}</p>
 <h2>Bonos del Tesoro para personas</h2>
 <p>Desde ${q(inv.bonos.minimo, 0)} y hasta ${q(inv.bonos.maximoAnual, 0)} al año: ${inv.bonos.plazos.map((p) => `${p.anios} ${p.anios === 1 ? 'año' : 'años'} al ${p.tasa}%`).join(', ')}; intereses ${esc(inv.bonos.pagoIntereses)}, ${esc(inv.bonos.impuestos)}. <span class="texto-suave">Fuente: <a href="${esc(inv.bonos.url)}" target="_blank" rel="noopener">${esc(inv.bonos.fuente)}</a>, ${fechaCorta(inv.bonos.fecha)}.</span></p>
@@ -220,6 +235,7 @@ export function rutasSitemap(cursos) {
     { ruta: '/invertir-en-guatemala', prioridad: '0.8', freq: 'weekly' },
     { ruta: '/cursos', prioridad: '0.8', freq: 'monthly' },
     { ruta: '/novedades', prioridad: '0.4', freq: 'monthly' },
+    { ruta: '/anunciate', prioridad: '0.5', freq: 'monthly' },
     { ruta: '/acerca', prioridad: '0.5', freq: 'monthly' },
     { ruta: '/contacto', prioridad: '0.4', freq: 'monthly' },
     { ruta: '/privacidad', prioridad: '0.3', freq: 'yearly' },
@@ -234,4 +250,116 @@ export function rutasSitemap(cursos) {
 
 export function sitemapXml(rutas, dominio, hoy) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${rutas.map((r) => `  <url><loc>https://${dominio}${r.ruta}</loc><lastmod>${hoy}</lastmod><changefreq>${r.freq}</changefreq><priority>${r.prioridad}</priority></url>`).join('\n')}\n</urlset>\n`;
+}
+
+function num(n) { return Number(n ?? 0).toLocaleString('en-US'); }
+
+function bloqueMetricas(m) {
+  const e = m.eventos ?? {};
+  return `<div class="metricas">
+<div class="metrica"><span class="metrica__n">${num(m.contenido.noticiasPorDia)}</span><span>noticias explicadas cada día</span></div>
+<div class="metrica"><span class="metrica__n">${num(m.contenido.indicadores)}</span><span>indicadores con fuente</span></div>
+<div class="metrica"><span class="metrica__n">${num(m.contenido.lecciones)}</span><span>lecciones en ${num(m.contenido.cursos)} cursos</span></div>
+<div class="metrica"><span class="metrica__n">${num(m.contenido.entidadesTasas)}</span><span>bancos y cooperativas comparados</span></div>
+<div class="metrica"><span class="metrica__n">${num(e.instalacion)}</span><span>instalaciones en el celular</span></div>
+<div class="metrica"><span class="metrica__n">${num(e.curso_iniciado)}</span><span>cursos empezados</span></div>
+<div class="metrica"><span class="metrica__n">${num(e.curso_terminado)}</span><span>cursos terminados</span></div>
+<div class="metrica"><span class="metrica__n">${num((e.compartir ?? 0) + (e.copiar_resumen ?? 0))}</span><span>veces compartido</span></div>
+</div>
+<p class="texto-suave">Cifras reales medidas por la app desde el ${fechaCorta(m.desde)} (últimos 30 días para instalaciones, cursos y compartidos). Las visitas se miden con Cloudflare Web Analytics, sin cookies.</p>`;
+}
+
+export function paginaAnunciate(config, metricas) {
+  const correo = config.anunciate?.correo || config.contacto;
+  const cuerpo = `<h1>Anúnciate en ${esc(config.nombre)}</h1>
+<p class="lede">${esc(config.nombre)} es la app gratuita de información financiera para guatemaltecos comunes: el dólar de hoy, los indicadores que mueven la economía, noticias explicadas en sencillo, comparación de opciones para invertir y cursos de finanzas personales. Todo desde el celular, en español de Guatemala.</p>
+<h2>A quién llegas</h2>
+<p>Personas que quieren entender su dinero: quien recibe remesas, quien está pagando una tarjeta, quien busca dónde poner sus primeros Q5,000, quien quiere aprender a hacer un presupuesto. Audiencia en Guatemala, mayoritariamente desde celular.</p>
+<h2>Lo que mide la app</h2>
+${bloqueMetricas(metricas)}
+<h2>Formas de participar</h2>
+<div class="tarjeta mt-md"><h3 class="sin-margen">1. Patrocinio del resumen diario</h3><p>Cada mañana se comparte en WhatsApp y redes un resumen con el dólar, 3 noticias y un dato del día. Tu marca aparece al final como <strong>"Te lo trae: [tu marca]"</strong>, en el texto y en la imagen del día.</p></div>
+<div class="tarjeta mt-md"><h3 class="sin-margen">2. Patrocinio de un curso</h3><p>Tres cursos de cinco lecciones: <em>Tu primer presupuesto</em>, <em>Sal de deudas</em> y <em>Empieza a invertir con poco</em>. Tu marca aparece como <strong>"Patrocinado por [tu marca]"</strong> en la portada del curso y en cada lección.</p></div>
+<div class="tarjeta mt-md"><h3 class="sin-margen">3. Enlace de afiliado en el comparador</h3><p>En la tabla de tasas de plazo fijo y ahorro, junto a tu entidad, un botón <strong>"Abrir cuenta"</strong> hacia tu página. Tu tasa sigue mostrándose con su fecha y fuente, igual que las demás.</p></div>
+<div class="tarjeta mt-md"><h3 class="sin-margen">4. Bienestar financiero para empleados</h3><p>Los tres cursos, adaptados para tu empresa o cooperativa: sesión de arranque, acceso para tu equipo, seguimiento de avance y un cierre con preguntas. Ideal para bancos, remesadoras, aseguradoras, call centers y maquilas que quieren reducir el estrés financiero de su gente.</p></div>
+<h2>Nuestras reglas (no son negociables)</h2>
+<ul>
+<li>Todo patrocinio y todo enlace de afiliado lleva una etiqueta visible: <strong>"Patrocinado"</strong> o <strong>"Enlace patrocinado"</strong>.</li>
+<li>Los datos no cambian por un patrocinio: las tasas, fechas y fuentes se muestran igual para todas las entidades.</li>
+<li>Nunca recomendamos una opción específica a la persona ni prometemos rendimientos.</li>
+<li>No aceptamos pirámides, "inversiones" con ganancia garantizada, cripto especulativa ni prestamistas informales.</li>
+</ul>
+<h2>Precios</h2>
+<p>${esc(config.anunciate?.preciosNota || 'Precios a convenir según alcance y duración.')} Pide el <a href="/media-kit">media kit en PDF</a>.</p>
+<h2>Hablemos</h2>
+<div class="tarjeta"><p>Escribe a <a href="mailto:${esc(correo)}"><strong>${esc(correo)}</strong></a>${config.anunciate?.whatsapp ? ` o por WhatsApp al <a href="https://wa.me/${esc(config.anunciate.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">${esc(config.anunciate.whatsapp)}</a>` : ''}. Respondemos en pocos días.</p></div>`;
+  return plantilla({ titulo: 'Anúnciate', descripcion: `Patrocinios y enlaces de afiliado en ${config.nombre}: resumen diario, cursos, comparador y bienestar financiero para empleados. Siempre etiquetados, con métricas reales.`, ruta: '/anunciate', cuerpo, config, migas: [{ nombre: 'Anúnciate', ruta: '/anunciate' }] });
+}
+
+export function paginaMediaKit(config, metricas) {
+  const correo = config.anunciate?.correo || config.contacto;
+  const e = metricas.eventos ?? {};
+  const html = `<!doctype html>
+<html lang="es-GT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Media kit — ${esc(config.nombre)}</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .mk { max-width: 720px; margin: 0 auto; padding: 24px 16px 80px; color: #1A1A2E; background: #fff; }
+    .mk h1 { font-size: 1.8rem; margin: 0 0 4px; color: #1B4332; }
+    .mk h2 { font-size: 1.1rem; margin: 20px 0 6px; color: #1B4332; border-bottom: 2px solid #52B788; padding-bottom: 4px; }
+    .mk p, .mk li { font-size: 0.92rem; color: #1A1A2E; }
+    .mk__cab { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .mk__cab img { width: 56px; height: 56px; border-radius: 12px; }
+    .mk .metricas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+    .mk .metrica { border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px; text-align: center; font-size: 0.72rem; display: flex; flex-direction: column; gap: 2px; }
+    .mk .metrica__n { font-size: 1.3rem; font-weight: 800; color: #1B4332; }
+    .mk table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .mk th, .mk td { text-align: left; padding: 6px; border-bottom: 1px solid #E2E8F0; vertical-align: top; }
+    .mk__pie { margin-top: 24px; font-size: 0.8rem; color: #5A6480; }
+    .mk__btn { display: inline-block; margin: 12px 0; padding: 12px 18px; background: #1B4332; color: #fff; border-radius: 10px; font-weight: 700; border: 0; cursor: pointer; }
+    @media (max-width: 600px) { .mk .metricas { grid-template-columns: repeat(2, 1fr); } }
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      html, body { background: #fff !important; color: #000; }
+      .mk { padding: 0; max-width: none; }
+      .mk__btn, .no-imprimir { display: none !important; }
+      .mk .metricas { grid-template-columns: repeat(4, 1fr); }
+      .tarjeta, .mk .metrica, table, h2 { break-inside: avoid; page-break-inside: avoid; }
+      a { color: #000; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+<main class="mk">
+  <div class="mk__cab"><img src="/icons/icon-192.png" alt=""><div><h1>${esc(config.nombre)} · Media kit</h1><div>${esc(config.tagline)} · hoy.compoundclub.fyi</div></div></div>
+  <button class="mk__btn" onclick="window.print()">Imprimir o guardar como PDF</button>
+  <h2>Qué es</h2>
+  <p>App web gratuita e instalable en el celular con información financiera para guatemaltecos comunes: tipo de cambio del día (Banguat), ${num(metricas.contenido.indicadores)} indicadores con fuente y fecha, ${num(metricas.contenido.noticiasPorDia)} noticias económicas explicadas cada mañana, comparador de opciones para invertir (${num(metricas.contenido.entidadesTasas)} bancos y cooperativas) con calculadoras, y ${num(metricas.contenido.cursos)} cursos de finanzas personales (${num(metricas.contenido.lecciones)} lecciones). Todo en español de Guatemala, sin jerga. Autor: ${esc(config.autor)}.</p>
+  <h2>Audiencia</h2>
+  <p>Personas en Guatemala que quieren entender su dinero: receptores de remesas, quienes pagan tarjetas o préstamos, ahorradores que buscan dónde poner sus primeros quetzales, y gente que quiere aprender a presupuestar. Uso mayoritario desde celular con datos móviles; la app pesa menos de 100 KB.</p>
+  <h2>Cifras (medidas por la app, al ${fechaCorta(metricas.desde)})</h2>
+  ${bloqueMetricas(metricas).replace(/<p class="texto-suave">[\s\S]*<\/p>/, '')}
+  <p>Instalaciones, cursos y compartidos son de los últimos 30 días. Visitas: Cloudflare Web Analytics (se adjunta captura a pedido).</p>
+  <h2>Formatos</h2>
+  <table><thead><tr><th>Formato</th><th>Dónde aparece</th><th>Etiqueta</th></tr></thead><tbody>
+  <tr><td><strong>Patrocinio del resumen diario</strong></td><td>Texto de WhatsApp e imagen del día, cada mañana</td><td>"Te lo trae: [marca]"</td></tr>
+  <tr><td><strong>Patrocinio de un curso</strong></td><td>Portada del curso y sus 5 lecciones</td><td>"Patrocinado por [marca]"</td></tr>
+  <tr><td><strong>Enlace de afiliado</strong></td><td>Botón "Abrir cuenta" junto a tu tasa en el comparador</td><td>"Enlace patrocinado"</td></tr>
+  <tr><td><strong>Bienestar financiero para empleados</strong></td><td>Cursos adaptados para tu empresa, con seguimiento</td><td>Programa cerrado</td></tr>
+  </tbody></table>
+  <h2>Reglas</h2>
+  <ul><li>Todo patrocinio lleva etiqueta visible. Los datos (tasas, fechas, fuentes) no cambian por un patrocinio.</li><li>Nunca recomendamos una opción a la persona ni prometemos rendimientos.</li><li>No aceptamos pirámides, ganancias garantizadas, cripto especulativa ni prestamistas informales.</li></ul>
+  <h2>Precios y contacto</h2>
+  <p>${esc(config.anunciate?.preciosNota || 'Precios a convenir según alcance y duración.')} Escribe a <strong>${esc(correo)}</strong>${config.anunciate?.whatsapp ? ` o por WhatsApp al ${esc(config.anunciate.whatsapp)}` : ''}.</p>
+  <p class="mk__pie">${esc(config.nombre)} · hoy.compoundclub.fyi · Información educativa, no asesoría financiera. Media kit generado el ${fechaCorta(metricas.desde)}.</p>
+  <p class="no-imprimir"><a href="/anunciate">← Volver a Anúnciate</a></p>
+</main>
+</body>
+</html>`;
+  return html;
 }
