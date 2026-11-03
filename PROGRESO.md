@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 7 — Resumen para WhatsApp
+## Siguiente fase: 8 — SEO, analítica y pulido
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -10,12 +10,18 @@
 | 4 | Noticias automáticas | Hecha | 3 nov 2026 |
 | 5 | Invertir: comparador y calculadoras | Hecha | 3 nov 2026 |
 | 6 | Aprende: cursos | Hecha | 3 nov 2026 |
-| 7 | Resumen para WhatsApp | Pendiente | |
+| 7 | Resumen para WhatsApp | Hecha | 3 nov 2026 |
 | 8 | SEO, analítica y pulido | Pendiente | |
 | 9 | Listo para ganar dinero | Pendiente | |
 | 10 | App en Google Play | Pendiente | |
 
 ## Pendientes de Raúl
+- **Canal de WhatsApp (fase 7):** 1) En WhatsApp → Novedades → Canales → "+" → Crear canal. 2) Nombre:
+  "Quetzal Hoy". Descripción sugerida: "Cada mañana, en 1 minuto: el dólar de hoy, 3 noticias
+  económicas de Guatemala explicadas en sencillo y un dato para cuidar tu dinero. Gratis. Por Leo
+  Marín. App: hoy.compoundclub.fyi". 3) Foto: usa `public/icons/icon-512.png`. 4) Cada mañana abre
+  hoy.compoundclub.fyi/compartir, toca "Copiar texto" y pégalo en el canal; si quieres, descarga la
+  imagen y súbela como estado. Comparte el enlace del canal en la app cuando lo tengas (dímelo y lo pongo).
 - **Videos de los cursos (fase 6, no bloquea nada):** hay 15 guiones en `guiones/` (uno por lección,
   3–4 min, lenguaje hablado). Cuando grabes o produzcas un video, súbelo a YouTube como "no listado"
   y pega su ID en `site.config.json` → `videos`, con la clave `curso-leccion` (p. ej. `"deudas-1":
@@ -113,3 +119,14 @@
   `videos` (IDs de YouTube por lección). El API `/api/cursos` aplica ambos.
 - 3 nov 2026 (fase 6): la lógica de progreso vive en `src/progreso.js` (probada) y repetida en
   `public/app.js`, igual que las calculadoras, para no cargar módulos en el navegador.
+- 3 nov 2026 (fase 7): el resumen (`/api/resumen`) y la imagen (`/api/imagen-dia.svg?formato=1080x1350|1080x1920`)
+  se generan en el Worker desde los datos del día (tipo de cambio, 3 noticias —Guatemala primero—, dato
+  del día). La imagen es SVG con fuentes del sistema; el PNG se genera en el navegador con canvas porque
+  el Worker no puede rasterizar. El ancho de línea se estima a 0.6 em por carácter y se verificó con
+  medición real en el navegador.
+- 3 nov 2026 (fase 7): el texto de WhatsApp usa *negritas* de WhatsApp y cada enlace va en su propia
+  línea para que WhatsApp lo detecte. Hay un fixture `tests/fixtures/resumen-whatsapp.txt` que fija el formato.
+- 3 nov 2026 (fase 7): "Compartir" usa la Web Share API (celulares); en computadoras copia el texto
+  al portapapeles. `/compartir` no está en el menú ni en el sitemap y lleva `noindex`.
+- 3 nov 2026 (fase 7): el patrocinador sale de `site.config.json` → `patrocinador` y
+  `patrocinadorUrl`; si está vacío no aparece la línea "Te lo trae".

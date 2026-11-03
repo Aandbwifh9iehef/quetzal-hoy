@@ -8,6 +8,7 @@ import { construirContexto, datoDelDia } from './dato-del-dia.js';
 import FUENTES from '../data/fuentes-noticias.json';
 import INVERSIONES from '../data/inversiones.json';
 import CURSOS from '../data/cursos.json';
+import { textoResumen, svgImagen, FORMATOS } from './compartir.js';
 import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
 
 const CRON_NOTICIAS = '0 12 * * *';
@@ -71,6 +72,8 @@ async function handleApi(path, env, ctx, urlActual) {
   if (path === '/api/noticias') return apiNoticias(env, urlActual);
   if (path === '/api/inversiones') return Response.json(INVERSIONES, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
   if (path === '/api/cursos') return apiCursos();
+  if (path === '/api/resumen') return apiResumen(env, ctx);
+  if (path === '/api/imagen-dia.svg') return apiImagenDia(env, ctx, urlActual);
   if (path === '/api/noticias/archivo') return apiArchivoNoticias(env);
   if (path === '/api/noticias/uso') return apiUsoNoticias(env);
 
@@ -82,6 +85,25 @@ async function handleApi(path, env, ctx, urlActual) {
   }
 
   return Response.json({ error: 'Ruta no encontrada' }, { status: 404, headers: CABECERAS });
+}
+
+async function datosDelDia(env, ctx) {
+  const tipoCambio = await (await apiTipoCambio(env, ctx)).json();
+  const noticias = env.DATA ? await env.DATA.get(CLAVE_ULTIMO, 'json') : null;
+  const hoy = hoyIso();
+  const dato = datoDelDia(construirContexto({ indicadores: INDICADORES, tipoCambio: tipoCambio.disponible ? tipoCambio : null, hoyIso: hoy }), hoy);
+  return { fecha: hoy, tipoCambio, noticias, dato, config: CONFIG };
+}
+
+async function apiResumen(env, ctx) {
+  const d = await datosDelDia(env, ctx);
+  return Response.json({ fecha: d.fecha, texto: textoResumen(d) }, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=900' } });
+}
+
+async function apiImagenDia(env, ctx, url) {
+  const formato = FORMATOS[url.searchParams.get('formato')] ? url.searchParams.get('formato') : '1080x1350';
+  const d = await datosDelDia(env, ctx);
+  return new Response(svgImagen({ ...d, formato }), { headers: { 'Content-Type': 'image/svg+xml; charset=utf-8', 'Cache-Control': 'public, max-age=900' } });
 }
 
 function apiCursos() {

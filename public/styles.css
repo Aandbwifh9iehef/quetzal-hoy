@@ -314,6 +314,7 @@ button {
 /* ─── Página estática (legal, acerca) ─── */
 .pagina-estatica {
   max-width: 600px;
+  overflow-x: hidden;
   margin: 0 auto;
   padding: var(--espacio);
   padding-top: 24px;
@@ -817,3 +818,36 @@ button {
 .quiz__p--mal { border-color: var(--c-acento-oscuro); }
 .quiz__final { font-weight: 700; color: var(--c-primario-claro); text-align: center; padding: 10px; }
 @media (prefers-color-scheme: dark) { .quiz__final { color: var(--c-secundario); } }
+
+/* ─── Compartir ─── */
+.btn-compartir {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--c-borde);
+  background: var(--c-fondo);
+  color: var(--c-secundario);
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-height: 40px;
+}
+.btn-compartir--mini { margin-top: 0; }
+.noticia__acciones { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.resumen-texto {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: var(--c-fondo);
+  border: 1px solid var(--c-borde);
+  border-radius: 10px;
+  padding: 12px;
+  max-height: 60vh;
+  overflow: auto;
+  color: var(--c-texto);
+}
+.formatos { display: flex; gap: 6px; }
+.vista-imagen img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--c-borde); display: block; }

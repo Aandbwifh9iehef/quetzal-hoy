@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es-GT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Compartir el resumen de hoy — Quetzal Hoy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1B4332">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div id="app">
+  <header class="header">
+    <a class="header__logo" href="/">
+      <img src="/icon.svg" alt="" width="32" height="32">
+      <span>Quetzal Hoy</span>
+    </a>
+    <span class="header__fecha" id="fecha-hoy"></span>
+  </header>
+  <main class="pagina-estatica">
+    <h1>Resumen de hoy para compartir</h1>
+    <p>Copia el texto y pégalo en WhatsApp, o descarga la imagen para tu estado o historia. Todo se arma solo con los datos de hoy.</p>
+
+    <h2>1. Texto para WhatsApp</h2>
+    <div class="tarjeta">
+      <pre class="resumen-texto" id="resumen-texto">Cargando…</pre>
+      <button class="btn-principal mt-md" id="btn-copiar">Copiar texto</button>
+      <div class="texto-suave texto-centro mt-sm" id="copiar-estado"></div>
+    </div>
+
+    <h2>2. Imagen del día</h2>
+    <div class="tarjeta">
+      <div class="formatos">
+        <button class="rango activo" data-f="1080x1350">Post (1080×1350)</button>
+        <button class="rango" data-f="1080x1920">Estado / historia (1080×1920)</button>
+      </div>
+      <div class="vista-imagen mt-md"><img id="vista-imagen" alt="Imagen del día" src="/api/imagen-dia.svg?formato=1080x1350"></div>
+      <button class="btn-principal mt-md" id="btn-descargar">Descargar PNG</button>
+      <div class="texto-suave texto-centro mt-sm" id="descargar-estado"></div>
+    </div>
+
+    <p class="texto-suave mt-lg">Esta página no aparece en el menú. Guárdala en favoritos: <strong>hoy.compoundclub.fyi/compartir</strong></p>
+    <p class="mt-md"><a href="/">← Volver al inicio</a></p>
+  </main>
+</div>
+<script>
+(function () {
+  document.getElementById('fecha-hoy').textContent = new Date().toLocaleDateString('es-GT', { weekday: 'short', day: 'numeric', month: 'short' });
+  var pre = document.getElementById('resumen-texto');
+  var formato = '1080x1350';
+
+  fetch('/api/resumen').then(function (r) { return r.json(); }).then(function (d) { pre.textContent = d.texto; })
+    .catch(function () { pre.textContent = 'No se pudo cargar el resumen. Revisa tu conexión.'; });
+
+  function avisar(id, msg) { var e = document.getElementById(id); e.textContent = msg; setTimeout(function () { e.textContent = ''; }, 3000); }
+
+  document.getElementById('btn-copiar').addEventListener('click', function () {
+    var texto = pre.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto).then(function () { avisar('copiar-estado', 'Copiado. Ya puedes pegarlo en WhatsApp.'); }, function () { seleccionar(); });
+    } else seleccionar();
+    function seleccionar() {
+      var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand('copy'); avisar('copiar-estado', 'Copiado.'); } catch (e) { avisar('copiar-estado', 'Selecciona el texto y cópialo a mano.'); }
+    }
+  });
+
+  var botones = document.querySelectorAll('.formatos .rango');
+  for (var i = 0; i < botones.length; i++) botones[i].addEventListener('click', function () {
+    for (var j = 0; j < botones.length; j++) botones[j].classList.remove('activo');
+    this.classList.add('activo');
+    formato = this.getAttribute('data-f');
+    document.getElementById('vista-imagen').src = '/api/imagen-dia.svg?formato=' + formato + '&t=' + Date.now();
+  });
+
+  // SVG → PNG en el navegador (el Worker no puede rasterizar)
+  window.generarPng = function (f) {
+    return fetch('/api/imagen-dia.svg?formato=' + f).then(function (r) { return r.text(); }).then(function (svg) {
+      return new Promise(function (resolve, reject) {
+        var wh = f.split('x');
+        var img = new Image();
+        img.onload = function () {
+          var c = document.createElement('canvas'); c.width = parseInt(wh[0], 10); c.height = parseInt(wh[1], 10);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          c.toBlob(function (b) { b ? resolve(b) : reject(new Error('sin blob')); }, 'image/png');
+        };
+        img.onerror = reject;
+        img.src = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+      });
+    });
+  };
+
+  document.getElementById('btn-descargar').addEventListener('click', function () {
+    var btn = this; btn.disabled = true; btn.textContent = 'Generando…';
+    window.generarPng(formato).then(function (blob) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'quetzal-hoy-' + new Date().toISOString().slice(0, 10) + '-' + formato + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      avisar('descargar-estado', 'Imagen descargada.');
+    }).catch(function () { avisar('descargar-estado', 'No se pudo generar la imagen.'); })
+      .then(function () { btn.disabled = false; btn.textContent = 'Descargar PNG'; });
+  });
+})();
+</script>
+</body>
+</html>

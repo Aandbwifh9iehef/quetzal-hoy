@@ -20,6 +20,15 @@
     return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
   }
 
+  // ─── Compartir (Web Share API; si no existe, copia al portapapeles) ───
+  function compartir(titulo, texto, url) {
+    if (navigator.share) return navigator.share({ title: titulo, text: texto, url: url }).catch(function () {});
+    var todo = texto + '\n' + url;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(todo).then(function () { alert('Copiado. Pégalo en WhatsApp.'); });
+    else prompt('Copia este texto:', todo);
+  }
+  window.compartirQH = compartir;
+
   // ─── Fecha en el encabezado ───
   var hoy = new Date();
   document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-GT', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -91,8 +100,12 @@
       '<button class="rango" data-r="1m">1 mes</button>' +
       '<button class="rango" data-r="1a">1 año</button></div>' +
       '<div id="grafica-tc">' + graficaSvg(d.series['7d']) + '</div>' +
-      '<div class="fuente-dato">Fuente: ' + esc(d.fuente) + ', ' + fechaCorta(d.fecha) + '. Dato de referencia; el oficial está en <a href="' + esc(d.fuenteUrl) + '" target="_blank" rel="noopener">banguat.gob.gt</a>.</div>';
+      '<div class="fuente-dato">Fuente: ' + esc(d.fuente) + ', ' + fechaCorta(d.fecha) + '. Dato de referencia; el oficial está en <a href="' + esc(d.fuenteUrl) + '" target="_blank" rel="noopener">banguat.gob.gt</a>.</div>' +
+      '<button class="btn-compartir" id="btn-compartir-tc">Compartir ↗</button>';
 
+    document.getElementById('btn-compartir-tc').addEventListener('click', function () {
+      compartir('Dólar hoy en Guatemala', 'Dólar hoy: ' + q(d.valor, 4) + (d.ayer ? ' (' + flecha + ' ' + Math.abs(d.cambio).toFixed(4) + ' vs. ayer)' : '') + ' · Referencia Banguat, ' + fechaCorta(d.fecha), 'https://hoy.compoundclub.fyi/');
+    });
     var botones = card.querySelectorAll('.rango');
     for (var i = 0; i < botones.length; i++) {
       botones[i].addEventListener('click', function () {
@@ -195,7 +208,7 @@
       '<h3 class="noticia__titulo"><a href="' + esc(n.enlace) + '" target="_blank" rel="noopener">' + esc(n.titulo) + '</a></h3>' +
       (n.resumen ? '<p class="noticia__resumen">' + esc(n.resumen) + '</p>' : '') +
       (n.afecta ? '<p class="noticia__afecta"><strong>¿Cómo te afecta?</strong> ' + esc(n.afecta) + '</p>' : '') +
-      '<div class="noticia__pie">' + auto + '<a class="noticia__leer" href="' + esc(n.enlace) + '" target="_blank" rel="noopener">Leer en ' + esc(n.medio) + ' →</a></div>' +
+      '<div class="noticia__pie">' + auto + '<span class="noticia__acciones"><button class="btn-compartir btn-compartir--mini" data-compartir="1" data-titulo="' + esc(n.titulo) + '" data-medio="' + esc(n.medio) + '" data-enlace="' + esc(n.enlace) + '">Compartir ↗</button><a class="noticia__leer" href="' + esc(n.enlace) + '" target="_blank" rel="noopener">Leer en ' + esc(n.medio) + ' →</a></span></div>' +
       '</article>'
     );
   }
@@ -219,6 +232,10 @@
       for (var j = 0; j < resp.mundo.length; j++) html += tarjetaNoticia(resp.mundo[j]);
     }
     cont.innerHTML = html || '<p class="texto-suave">Hoy no encontramos noticias económicas.</p>';
+    var bc = cont.querySelectorAll('[data-compartir]');
+    for (var k = 0; k < bc.length; k++) bc[k].addEventListener('click', function () {
+      compartir(this.getAttribute('data-titulo'), this.getAttribute('data-titulo') + ' (' + this.getAttribute('data-medio') + ') — vía Quetzal Hoy', this.getAttribute('data-enlace'));
+    });
   }
 
   function cargarNoticias(fecha) {
