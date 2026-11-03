@@ -2,6 +2,9 @@ import CONFIG from '../site.config.json';
 import SEMILLA from '../data/tipo-cambio-historial.json';
 import { consultarDia } from './banguat.js';
 import { CLAVE_HISTORIAL, construirRespuesta, fusionarHistorial, actualizarTipoCambio } from './tipo-cambio.js';
+import INDICADORES from '../data/indicadores.json';
+import { anotarAntiguedad } from './indicadores.js';
+import { construirContexto, datoDelDia } from './dato-del-dia.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -31,6 +34,8 @@ const CABECERAS = {
 
 async function handleApi(path, env, ctx) {
   if (path === '/api/tipo-cambio') return apiTipoCambio(env, ctx);
+  if (path === '/api/indicadores') return apiIndicadores();
+  if (path === '/api/dato-del-dia') return apiDatoDelDia(env, ctx);
 
   if (path === '/api/config') {
     return Response.json(
@@ -40,6 +45,27 @@ async function handleApi(path, env, ctx) {
   }
 
   return Response.json({ error: 'Ruta no encontrada' }, { status: 404, headers: CABECERAS });
+}
+
+function hoyIso() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function apiIndicadores() {
+  const cuerpo = {
+    actualizado: INDICADORES.actualizado,
+    hoy: hoyIso(),
+    indicadores: anotarAntiguedad(INDICADORES.indicadores, hoyIso()),
+    referencias: INDICADORES.referencias
+  };
+  return Response.json(cuerpo, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
+}
+
+async function apiDatoDelDia(env, ctx) {
+  const tc = await (await apiTipoCambio(env, ctx)).json();
+  const hoy = hoyIso();
+  const dato = datoDelDia(construirContexto({ indicadores: INDICADORES, tipoCambio: tc.disponible ? tc : null, hoyIso: hoy }), hoy);
+  return Response.json({ fecha: hoy, dato }, { headers: { ...CABECERAS, 'Cache-Control': 'public, max-age=3600' } });
 }
 
 async function apiTipoCambio(env, ctx) {

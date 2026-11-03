@@ -1,12 +1,12 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 3 — Indicadores y dato del día
+## Siguiente fase: 4 — Noticias automáticas
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
 | 1 | Esqueleto, diseño y publicación | Hecha | 3 nov 2026 |
 | 2 | Tipo de cambio automático | Hecha | 3 nov 2026 |
-| 3 | Indicadores y dato del día | Pendiente | |
+| 3 | Indicadores y dato del día | Hecha | 3 nov 2026 |
 | 4 | Noticias automáticas | Pendiente | |
 | 5 | Invertir: comparador y calculadoras | Pendiente | |
 | 6 | Aprende: cursos | Pendiente | |
@@ -49,3 +49,17 @@
   agrega el dato del día al KV; el API fusiona semilla + KV. Si KV está vacío, consulta el dato de hoy en
   vivo con caché de 1 hora. Si el Banguat falla 3 veces seguidas, se conserva el último dato con su fecha.
 - 3 nov 2026 (fase 2): wrangler no está autenticado en esta máquina, por eso el KV lo crea Raúl.
+- 3 nov 2026 (fase 3): indicadores en `data/indicadores.json` con valores confirmados en fuentes oficiales
+  el 3 nov 2026: tasa líder 3.50% (Banguat, 23 sep), inflación interanual 4.69% y acumulada 4.17% a
+  septiembre (INE, publicado en la portada del Banguat), remesas sep 2026 US$2,240.8 M y acumulado
+  US$20,015.7 M (tabla del Banguat), combustibles MEM al 2 nov (regular 30.69, superior 33.19, diésel
+  41.69), canasta básica INE sep 2026 (urbana Q966.74, rural Q751.58 por persona).
+- 3 nov 2026 (fase 3): solo las remesas se actualizan solas (`npm run indicadores` lee la tabla HTML del
+  Banguat). Tasa líder, inflación, combustibles y canasta son manuales: el Banguat no tiene API, el INE
+  bloquea robots y el MEM devuelve 403 a scripts. Pasados 45 días sin actualizar, la tarjeta muestra
+  "dato de <mes>". Hay que revisarlos a mano una vez al mes (o pedirle a Claude Code que lo haga).
+- 3 nov 2026 (fase 3): el "dato del día" son 19 plantillas con cálculos sobre los datos reales (sin IA),
+  rotan por día del año. Usan como referencia el salario mínimo 2026 (AG 256-2025: Q4,002.28 + Q250) y la
+  inflación diciembre/diciembre 2019–2025 del INE, ambos en `data/indicadores.json` → `referencias`.
+- 3 nov 2026 (fase 3): la canasta básica enlaza a ine.gob.gt (portada) porque el INE no da enlaces
+  estables a cada informe mensual.

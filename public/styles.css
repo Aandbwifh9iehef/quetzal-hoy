@@ -502,3 +502,79 @@ button {
   color: var(--c-secundario);
   font-size: 1.2rem;
 }
+
+/* ─── Indicadores ─── */
+.subtitulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.indicador + .indicador { margin-top: 12px; }
+
+.indicador__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.indicador__valor {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.indicador__detalle {
+  font-size: 0.85rem;
+  color: var(--c-texto-suave);
+  margin-top: 8px;
+}
+
+.badge--periodo {
+  background: var(--c-fondo);
+  color: var(--c-texto-suave);
+  border: 1px solid var(--c-borde);
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.badge--viejo {
+  background: rgba(231, 111, 81, 0.12);
+  color: var(--c-acento-oscuro);
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.significa {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+.significa summary {
+  cursor: pointer;
+  color: var(--c-secundario);
+  font-weight: 600;
+  padding: 6px 0;
+  min-height: 32px;
+  list-style: none;
+}
+.significa summary::-webkit-details-marker { display: none; }
+.significa summary::before { content: '+ '; }
+.significa[open] summary::before { content: '− '; }
+.significa p { color: var(--c-texto-suave); padding: 4px 0 2px; }
+
+/* ─── Dato del día ─── */
+.tarjeta--dato {
+  border-left: 4px solid var(--c-acento);
+}
+.dato__titulo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.dato__texto {
+  font-size: 1rem;
+  line-height: 1.5;
+}

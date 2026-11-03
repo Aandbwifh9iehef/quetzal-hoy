@@ -124,6 +124,67 @@
     usd.dispatchEvent(new Event('input'));
   }
 
+
+  // ─── Indicadores ───
+  var ORDEN = ['inflacion', 'tasa-lider', 'remesas', 'combustibles', 'canasta-basica'];
+
+  function valorIndicador(clave, d) {
+    if (clave === 'inflacion') return d.valor.toFixed(2) + '%';
+    if (clave === 'tasa-lider') return d.valor.toFixed(2) + '%';
+    if (clave === 'remesas') return '$' + d.valor.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' M';
+    if (clave === 'combustibles') return q(d.regular, 2);
+    if (clave === 'canasta-basica') return q(d.urbana, 2);
+    return String(d.valor);
+  }
+
+  function detalleIndicador(clave, d) {
+    if (clave === 'inflacion') return 'Acumulada en el año: ' + d.acumulada.toFixed(2) + '% · del mes: ' + d.mensual.toFixed(2) + '%';
+    if (clave === 'remesas') return 'Acumulado del año: $' + d.acumuladoAnio.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' millones (' + ((d.acumuladoAnio / d.acumuladoAnioAnterior - 1) * 100).toFixed(1) + '% más que el año pasado)';
+    if (clave === 'combustibles') return 'Superior ' + q(d.superior, 2) + ' · Diésel ' + q(d.diesel, 2) + ' por galón';
+    if (clave === 'canasta-basica') return 'Área rural: ' + q(d.rural, 2) + ' por persona al mes';
+    if (clave === 'tasa-lider') return 'Sin cambios desde febrero de 2026';
+    return '';
+  }
+
+  function pintarIndicadores(resp) {
+    var cont = document.getElementById('lista-indicadores');
+    if (!resp || !resp.indicadores) { cont.innerHTML = '<p class="texto-suave">No pudimos cargar los indicadores.</p>'; return; }
+    var html = '';
+    for (var i = 0; i < ORDEN.length; i++) {
+      var clave = ORDEN[i];
+      var d = resp.indicadores[clave];
+      if (!d) continue;
+      html +=
+        '<div class="tarjeta indicador">' +
+        '<div class="indicador__fila"><div>' +
+        '<div class="tarjeta__titulo">' + esc(d.nombre) + '</div>' +
+        '<div class="indicador__valor">' + valorIndicador(clave, d) + '</div>' +
+        (d.unidad === '%' ? '' : '<div class="tarjeta__sub">' + esc(d.unidad) + '</div>') +
+        '</div>' +
+        (d.viejo ? '<span class="badge badge--viejo">' + esc(d.etiqueta) + '</span>' : '<span class="badge badge--periodo">' + esc(/^[A-Za-zñ]+ \d{4}$/.test(d.periodo) ? d.periodo : fechaCorta(d.fecha)) + '</span>') +
+        '</div>' +
+        '<p class="indicador__detalle">' + esc(detalleIndicador(clave, d)) + '</p>' +
+        '<details class="significa"><summary>¿Qué significa esto?</summary><p>' + esc(d.significado) + '</p></details>' +
+        '<div class="fuente-dato">Fuente: <a href="' + esc(d.url) + '" target="_blank" rel="noopener">' + esc(d.fuente) + '</a>, ' + fechaCorta(d.fecha) + '.</div>' +
+        '</div>';
+    }
+    cont.innerHTML = html;
+  }
+
+  function pintarDatoDelDia(resp) {
+    var card = document.getElementById('card-dato-del-dia');
+    if (!resp || !resp.dato) { card.innerHTML = '<div class="tarjeta__titulo">Dato del día</div><p class="texto-suave">Hoy no hay dato disponible.</p>'; return; }
+    var d = resp.dato;
+    card.innerHTML =
+      '<div class="tarjeta__titulo">Dato del día</div>' +
+      '<div class="dato__titulo">' + esc(d.titulo) + '</div>' +
+      '<p class="dato__texto">' + esc(d.texto) + '</p>' +
+      '<div class="fuente-dato">Calculado con datos de ' + esc(d.fuente) + '.</div>';
+  }
+
+  fetch('/api/indicadores').then(function (r) { return r.json(); }).then(pintarIndicadores).catch(function () { pintarIndicadores(null); });
+  fetch('/api/dato-del-dia').then(function (r) { return r.json(); }).then(pintarDatoDelDia).catch(function () { pintarDatoDelDia(null); });
+
   fetch('/api/tipo-cambio')
     .then(function (r) { return r.json(); })
     .then(pintarTipoCambio)

@@ -1,0 +1,90 @@
+{
+  "actualizado": "2026-11-03",
+  "indicadores": {
+    "tasa-lider": {
+      "nombre": "Tasa líder de política monetaria",
+      "valor": 3.5,
+      "unidad": "%",
+      "fecha": "2026-09-23",
+      "periodo": "Decisión del 23 de septiembre de 2026",
+      "fuente": "Banco de Guatemala",
+      "url": "https://banguat.gob.gt/destacado/boletin-de-prensa-la-junta-monetaria-decidio-por-unanimidad-mantener-el-nivel-de-la-tasa",
+      "automatico": false,
+      "significado": "Es la tasa de interés que fija el Banco de Guatemala y que sirve de guía para los bancos. Cuando sube, los préstamos se encarecen y ahorrar paga un poco más; cuando baja, pasa lo contrario."
+    },
+    "inflacion": {
+      "nombre": "Inflación interanual",
+      "valor": 4.69,
+      "unidad": "%",
+      "acumulada": 4.17,
+      "mensual": 1.18,
+      "fecha": "2026-10-07",
+      "periodo": "Septiembre 2026",
+      "fuente": "INE (publicado por Banguat)",
+      "url": "https://banguat.gob.gt/",
+      "automatico": false,
+      "significado": "Es cuánto subieron los precios en los últimos 12 meses. Si tu sueldo no subió por lo menos eso, hoy compras menos con el mismo dinero. La meta del Banguat es 4% (entre 3% y 5%)."
+    },
+    "remesas": {
+      "nombre": "Remesas familiares",
+      "valor": 2240.8,
+      "unidad": "millones de US$",
+      "acumuladoAnio": 20015.7,
+      "acumuladoAnioAnterior": 18968.4,
+      "totalAnioAnterior": 25530.2,
+      "mesesAcumulados": 9,
+      "fecha": "2026-10-21",
+      "periodo": "Septiembre 2026",
+      "fuente": "Banco de Guatemala",
+      "url": "https://www.banguat.gob.gt/sites/default/files/banguat/estaeco/remesas/remfam2002_2026.htm",
+      "automatico": true,
+      "significado": "Es el dinero que los guatemaltecos que viven fuera mandan a sus familias. Es la mayor fuente de dólares del país: sostiene el gasto de millones de hogares y ayuda a que el quetzal se mantenga estable."
+    },
+    "combustibles": {
+      "nombre": "Combustibles (precio de referencia)",
+      "valor": 30.69,
+      "unidad": "Q por galón (regular)",
+      "superior": 33.19,
+      "regular": 30.69,
+      "diesel": 41.69,
+      "fecha": "2026-11-02",
+      "periodo": "Semana del 2 de noviembre de 2026",
+      "fuente": "Ministerio de Energía y Minas",
+      "url": "https://mem.gob.gt/que-hacemos/hidrocarburos/comercializacion-downstream/precios-combustible-nacionales/",
+      "automatico": false,
+      "significado": "Es el precio de referencia que publica el MEM cada semana para el área metropolitana en autoservicio. Cada gasolinera pone su precio, así que puede variar. Cuando sube el combustible, suele subir el transporte y luego la comida."
+    },
+    "canasta-basica": {
+      "nombre": "Canasta básica alimentaria",
+      "valor": 966.74,
+      "unidad": "Q por persona al mes (urbana)",
+      "urbana": 966.74,
+      "rural": 751.58,
+      "fecha": "2026-10-08",
+      "periodo": "Septiembre 2026",
+      "fuente": "Instituto Nacional de Estadística",
+      "url": "https://www.ine.gob.gt/",
+      "automatico": false,
+      "significado": "Es lo mínimo que cuesta la comida de una persona durante un mes, según el INE. Multiplícalo por las personas de tu casa para saber cuánto necesita tu familia solo en alimentos."
+    }
+  },
+  "referencias": {
+    "salario-minimo": {
+      "nombre": "Salario mínimo mensual 2026 (no agrícola, depto. de Guatemala)",
+      "valor": 4002.28,
+      "bonificacion": 250,
+      "unidad": "Q",
+      "fecha": "2026-01-01",
+      "fuente": "Acuerdo Gubernativo 256-2025",
+      "url": "https://agn.gt/asi-quedan-los-montos-del-salario-minimo-para-el-2026/"
+    },
+    "inflacion-anual": {
+      "nombre": "Inflación de diciembre a diciembre",
+      "unidad": "%",
+      "fuente": "INE, serie del IPC",
+      "url": "https://www.ine.gob.gt/",
+      "valores": { "2019": 3.41, "2020": 4.82, "2021": 3.07, "2022": 9.24, "2023": 4.18, "2024": 1.7, "2025": 1.65 }
+    },
+    "meta-inflacion": { "valor": 4, "margen": 1, "fuente": "Banco de Guatemala" }
+  }
+}

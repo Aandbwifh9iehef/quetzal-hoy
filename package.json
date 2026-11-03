@@ -7,6 +7,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "test": "node --test tests/*.test.js",
-    "historial": "node scripts/historial.js"
+    "historial": "node scripts/historial.js",
+    "indicadores": "node scripts/indicadores.js"
   }
 }
