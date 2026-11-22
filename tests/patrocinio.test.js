@@ -66,7 +66,7 @@ test('premium: códigos por huella, bloqueo solo con cobro activo, API sin hashe
 test('Anúnciate y media kit se generan con métricas reales y sin texto roto', () => {
   const metricas = { eventos: { instalacion: 12, curso_iniciado: 30, curso_terminado: 5, compartir: 8, copiar_resumen: 20 }, desde: '2026-11-03', contenido: { indicadores: 6, noticiasPorDia: 8, cursos: 3, lecciones: 15, entidadesTasas: 17 } };
   const a = paginaAnunciate(config, metricas);
-  assert.match(a, /<h1[^>]*>Anúnciate en Quetzal Hoy<\/h1>/);
+  assert.match(a, /<h1[^>]*>Anúnciate en Al cambio<\/h1>/);
   assert.match(a, /Te lo trae/);
   assert.match(a, /bienestar financiero/i);
   assert.match(a, /12/);

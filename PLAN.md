@@ -248,3 +248,31 @@ Criterios de terminado:
 - [ ] Contraste AA claro y oscuro, sin errores en consola, rendimiento móvil ≥ 90.
 - [ ] Cada dato con fuente y fecha (sello); avisos legales intactos.
 - [ ] Publicado y comprobado en la URL en vivo.
+
+## Fase 11 — Nombre nuevo y colores del quetzal
+**Objetivo:** que la app tenga un nombre propio y se vea más viva y llamativa. Pedido de Raúl el 22 nov
+2026: "se ve super plana, los colores son muy x, hay que cambiarle el nombre".
+
+Decisiones de Raúl:
+- Nombre: **Al cambio** (como se pregunta en Guatemala "¿a cómo está el cambio?"). El dominio
+  hoy.compoundclub.fyi no cambia.
+- Colores: **Quetzal vivo**, los del ave: verde jade intenso, rojo del pecho y dorado, en bloques de color
+  fuerte (cabecera, tarjeta del dólar, dato del día, cursos), no solo en detalles.
+
+Tareas:
+- Cambiar el nombre en `site.config.json` y en todo lo que se ve: páginas, manifest, imagen del día,
+  texto de WhatsApp, media kit, ficha de Google Play. No se tocan los nombres internos (Worker, KV,
+  claves guardadas en el celular) para no perder el avance de nadie.
+- Logo nuevo para "Al cambio", ícono de la app, favicon, imagen para redes y gráfico de Play.
+- Paleta nueva con jade, rojo y dorado; cabecera de color; tarjeta del dólar en jade; íconos de línea en
+  mosaicos de color para indicadores, noticias y cursos; barra inferior con la pestaña activa resaltada.
+- Actualizar `DISENO.md` con la paleta y los componentes nuevos; sigue la checklist de unslop (sin
+  degradados de moda, sin emojis, sin brillos).
+
+Criterios de terminado:
+- [ ] `npm test` pasa.
+- [ ] El nombre "Al cambio" aparece en toda la app y en lo que se comparte; ninguna pantalla dice "Quetzal Hoy".
+- [ ] Contraste AA en claro y oscuro, rendimiento móvil ≥ 90 en vivo, sin errores en consola.
+- [ ] Capturas antes y después en `docs/fase-11/`.
+- [ ] Publicado y comprobado en la URL en vivo.
+

@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: ninguna — las 10 fases del plan están hechas. Lo que sigue es mantenimiento (ver "Rutina mensual").
+## Siguiente fase: 11 — Nombre nuevo y colores del quetzal (en curso). Después: mantenimiento (ver "Rutina mensual").
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -15,6 +15,7 @@
 | 9 | Listo para ganar dinero | Hecha | 3 nov 2026 |
 | 10 | App en Google Play | Hecha (lista para que Raúl la suba) | 3 nov 2026 |
 | U | Rediseño con Unslop | Hecha | 22 nov 2026 |
+| 11 | Nombre nuevo y colores del quetzal | En curso | 22 nov 2026 |
 
 ## Publicación
 - **La app está publicada:** https://hoy.compoundclub.fyi (también https://quetzal-hoy.academi-q1.workers.dev).

@@ -1,4 +1,4 @@
-/* Quetzal Hoy — estilos. Todos los valores salen de las variables de :root (ver DISENO.md). */
+/* Al cambio — estilos. Todos los valores salen de las variables de :root (ver DISENO.md). */
 
 @font-face {
   font-family: 'Figtree';
@@ -10,20 +10,29 @@
 
 /* ─── Tokens ─── */
 :root {
-  /* Papel y tinta: grafito con un toque cálido, tinta verde de grabado */
-  --fondo: #f4f4f0;
+  /* Quetzal vivo: papel crema, verde jade del plumaje, rojo del pecho y dorado */
+  --fondo: #f7f4ec;
   --superficie: #ffffff;
-  --superficie-2: #ebebe5;
-  --linea: rgba(23, 32, 27, 0.10);
-  --linea-fuerte: rgba(23, 32, 27, 0.20);
-  --texto: #17201b;
-  --texto-2: #47504b;
-  --texto-3: #5c6560;
-  --acento: #1d6b4f;
+  --superficie-2: #efeadd;
+  --linea: rgba(20, 33, 27, 0.10);
+  --linea-fuerte: rgba(20, 33, 27, 0.20);
+  --texto: #14211b;
+  --texto-2: #46534c;
+  --texto-3: #5b6660;
+  --acento: #0b7552;
   --acento-texto: #ffffff;
-  --acento-suave: rgba(29, 107, 79, 0.10);
-  --mal: #a3302a;
-  --bien: #1d6b4f;
+  --acento-suave: #dcefe5;
+  --mal: #b8293a;
+  --bien: #0b7552;
+  --hondo: #06422f;          /* cabecera */
+  --tarjeta-dolar: #0a6b4b;  /* tarjeta del dólar */
+  --crema: #f7f4ec;          /* texto sobre verde */
+  --rojo: #c62d3a;           /* pecho del quetzal: punto del logo y gráficos */
+  --rojo-suave: #fbe3e3;
+  --rojo-hondo: #b8293a;     /* fondo rojo con texto blanco, igual en los dos temas */
+  --oro: #e9a81b;
+  --oro-texto: #7a5200;
+  --oro-suave: #fbeac0;
 
   --fuente: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -59,19 +68,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --fondo: #111412;
-    --superficie: #191d1b;
-    --superficie-2: #232826;
-    --linea: rgba(233, 237, 235, 0.10);
-    --linea-fuerte: rgba(233, 237, 235, 0.20);
-    --texto: #e9edeb;
-    --texto-2: #b5bdb9;
-    --texto-3: #98a19c;
-    --acento: #5fbf94;
-    --acento-texto: #0d1a13;
-    --acento-suave: rgba(95, 191, 148, 0.12);
-    --mal: #f08b81;
-    --bien: #5fbf94;
+    --fondo: #0c1411;
+    --superficie: #14201a;
+    --superficie-2: #1c2a23;
+    --linea: rgba(236, 241, 238, 0.10);
+    --linea-fuerte: rgba(236, 241, 238, 0.20);
+    --texto: #ecf1ee;
+    --texto-2: #b4c0b9;
+    --texto-3: #93a199;
+    --acento: #3ccf93;
+    --acento-texto: #0c1411;
+    --acento-suave: #173a2c;
+    --mal: #ff7a80;
+    --bien: #3ccf93;
+    --hondo: #0d3a2a;
+    --tarjeta-dolar: #0d3a2a;
+    --rojo: #ff6b72;
+    --rojo-suave: #3a1c1f;
+    --oro: #f4bf45;
+    --oro-texto: #f4bf45;
+    --oro-suave: #2e2614;
     --sombra-flotante: 0 8px 24px rgba(0, 0, 0, 0.5);
     color-scheme: dark;
   }
@@ -116,13 +132,17 @@ em { font-style: normal; font-weight: 500; }
 
 .cabecera {
   display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
-  max-width: var(--ancho-max); margin: 0 auto;
-  padding: calc(var(--s3) + env(safe-area-inset-top)) var(--s4) var(--s3);
+  margin: 0 0 var(--s5);
+  padding: calc(var(--s3) + env(safe-area-inset-top)) max(var(--s4), calc((100% - var(--ancho-max)) / 2 + var(--s4))) var(--s3);
+  background: var(--hondo); color: var(--crema);
 }
-.marca { display: inline-flex; align-items: center; gap: var(--s2); min-height: var(--toque); color: var(--texto); text-decoration: none; }
-.marca__signo { width: 28px; height: 28px; color: var(--acento); }
-.marca__nombre { font-size: var(--t-tarjeta); font-weight: 600; letter-spacing: 0; }
-.cabecera__fecha { font-size: var(--t-2); color: var(--texto-2); }
+.marca { display: inline-flex; align-items: center; gap: var(--s2); min-height: var(--toque); color: var(--crema); text-decoration: none; }
+.marca__signo { width: 30px; height: 30px; color: var(--crema); }
+.signo-pluma { stroke: var(--oro); }
+.signo-pecho { fill: var(--rojo); }
+.marca__nombre { font-size: 20px; font-weight: 600; letter-spacing: 0; }
+.cabecera__fecha { font-size: var(--t-2); color: color-mix(in srgb, var(--crema) 85%, var(--hondo)); }
+.cabecera :focus-visible { outline-color: var(--crema); }
 
 .main { max-width: var(--ancho-max); margin: 0 auto; padding: var(--s2) var(--s4) var(--s12); }
 .seccion { display: none; }
@@ -242,7 +262,7 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
   border-top: 1px solid var(--linea);
   font-size: var(--t-2); color: var(--texto-2);
 }
-.aviso-legal--arriba { margin: 0 0 var(--s5); padding: var(--s3) var(--s4); border: 0; border-radius: var(--r-control); background: var(--superficie-2); }
+.aviso-legal--arriba { margin: 0 0 var(--s5); padding: var(--s3) var(--s4); border: 0; border-radius: var(--r-control); background: var(--oro-suave); color: var(--texto); }
 
 /* ─── Instalar: tarjeta flotante sobre la barra, no empuja el contenido ─── */
 .instalar {
@@ -262,10 +282,30 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 .instalar .btn-principal { width: auto; }
 
 /* ─── Tipo de cambio (momento 1) ─── */
-.tarjeta--tc { position: relative; overflow: hidden; padding: var(--s5) var(--s4) var(--s4); }
+.tarjeta--tc {
+  --sobre: color-mix(in srgb, var(--crema) 85%, var(--tarjeta-dolar));
+  position: relative; overflow: hidden; padding: var(--s5) var(--s4) var(--s4);
+  background: var(--tarjeta-dolar); border: 0; color: var(--crema);
+}
+.tarjeta--tc .etiqueta, .tarjeta--tc .tc__moneda, .tarjeta--tc .tc__cambio, .tarjeta--tc .meta,
+.tarjeta--tc .grafica__y span, .tarjeta--tc .grafica__x { color: var(--sobre); }
+.tarjeta--tc a { color: var(--crema); }
+.tarjeta--tc .sello { color: var(--sobre); border-color: color-mix(in srgb, var(--crema) 40%, transparent); }
+.tarjeta--tc .segmentos { background: color-mix(in srgb, var(--crema) 12%, transparent); }
+.tarjeta--tc .rango { color: var(--sobre); }
+.tarjeta--tc .rango.activo { background: var(--crema); color: var(--tarjeta-dolar); box-shadow: none; }
+.tarjeta--tc .btn-secundario { color: var(--crema); border-color: color-mix(in srgb, var(--crema) 45%, transparent); }
+.tarjeta--tc .btn-secundario:hover { background: color-mix(in srgb, var(--crema) 10%, transparent); }
+.tarjeta--tc .grafica__rejilla { stroke: color-mix(in srgb, var(--crema) 20%, transparent); }
+.tarjeta--tc .grafica__linea { stroke: var(--crema); stroke-width: 2; }
+.tarjeta--tc .grafica__punto { background: var(--oro); box-shadow: 0 0 0 3px var(--tarjeta-dolar); }
+.tarjeta--tc .grafica__vacia { border-color: color-mix(in srgb, var(--crema) 30%, transparent); color: var(--sobre); }
+.tarjeta--tc .esqueleto { background: color-mix(in srgb, var(--crema) 14%, transparent); }
+.tarjeta--tc .tc__aviso { background: color-mix(in srgb, var(--crema) 12%, transparent); color: var(--crema); }
+.tarjeta--tc :focus-visible { outline-color: var(--crema); }
 .tarjeta--tc::before {
-  content: ''; position: absolute; top: -80px; right: -80px; width: 260px; height: 260px;
-  background: var(--acento); opacity: 0.07; pointer-events: none;
+  content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px;
+  background: var(--crema); opacity: 0.12; pointer-events: none;
   -webkit-mask: url('/guilloche.svg') center / contain no-repeat; mask: url('/guilloche.svg') center / contain no-repeat;
 }
 .tarjeta--tc > * { position: relative; }
@@ -302,15 +342,32 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 /* ─── Indicadores y dato del día ─── */
 .indicador .desplegable { margin-top: var(--s1); }
 .indicador .desplegable p { color: var(--texto-2); font-size: var(--t-2); }
-.dato__titulo { font-size: var(--t-tarjeta); font-weight: 500; margin-top: var(--s2); }
+.tarjeta--dato { background: var(--oro-suave); border-color: transparent; }
+.tarjeta--dato .etiqueta { color: var(--oro-texto); }
+.tarjeta--dato .sello { color: var(--oro-texto); border-color: color-mix(in srgb, var(--oro-texto) 40%, transparent); }
+.tarjeta--dato .dato__texto, .tarjeta--dato .meta { color: var(--texto-2); }
+.dato__cab { display: flex; align-items: center; gap: var(--s3); }
+.dato__titulo { font-size: var(--t-tarjeta); font-weight: 500; margin-top: var(--s3); }
+
+/* Mosaico: ícono de línea sobre un cuadro de color (jade, rojo u oro) */
+.mosaico { width: 40px; height: 40px; flex: none; display: inline-grid; place-items: center; border-radius: var(--r-control); }
+.mosaico .icono { width: 20px; height: 20px; }
+.mosaico--jade { background: var(--acento-suave); color: var(--acento); }
+.mosaico--rojo { background: var(--rojo-suave); color: var(--mal); }
+.mosaico--oro { background: var(--oro-suave); color: var(--oro-texto); }
+.tarjeta--dato .mosaico--oro { background: var(--oro); color: var(--hondo); }
+.con-mosaico { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s3); }
 .dato__texto { margin-top: var(--s1); color: var(--texto-2); }
 
 /* ─── Noticias ─── */
 .noticias__intro { color: var(--texto-2); margin-bottom: var(--s2); }
 .noticia { padding: var(--s5) var(--s4); }
 .noticia + .noticia { margin-top: var(--s3); }
+.noticia__cab { display: flex; align-items: center; gap: var(--s3); }
+.noticia__tema { font-size: var(--t-2); font-weight: 500; color: var(--texto-2); margin-bottom: var(--s1); }
+.noticia__cab .sello { white-space: nowrap; }
 #noticias-contenido > .titulo-seccion:first-child { margin-top: var(--s5); }
-.noticia__titulo { font-size: var(--t-tarjeta); font-weight: 500; line-height: 1.35; margin-top: var(--s2); }
+.noticia__titulo { font-size: var(--t-tarjeta); font-weight: 500; line-height: 1.35; margin-top: var(--s3); }
 .noticia__titulo a { color: var(--texto); text-decoration: none; }
 .noticia__titulo a:hover { text-decoration: underline; }
 .noticia__resumen { margin-top: var(--s2); color: var(--texto-2); }
@@ -338,7 +395,11 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 .opcion > summary::-webkit-details-marker { display: none; }
 .opcion > summary .icono { color: var(--texto-3); transition: transform var(--rapido) var(--curva); }
 .opcion[open] > summary .icono { transform: rotate(180deg); }
-.opcion__riesgo { margin-left: auto; color: var(--texto-2); font-size: var(--t-2); white-space: nowrap; }
+.opcion__riesgo { margin-left: auto; display: inline-flex; align-items: center; gap: var(--s2); color: var(--texto-2); font-size: var(--t-2); white-space: nowrap; }
+.punto { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.punto--bajo { background: var(--acento); }
+.punto--medio { background: var(--oro); }
+.punto--alto { background: var(--mal); }
 .opcion__que { margin-top: var(--s2); color: var(--texto-2); }
 .datos { display: grid; grid-template-columns: minmax(96px, auto) 1fr; gap: var(--s2) var(--s4); margin-top: var(--s4); font-size: var(--t-2); }
 .datos dt { color: var(--texto-3); }
@@ -353,7 +414,8 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 .eti-patro { font-size: var(--t-meta); color: var(--texto-3); font-weight: 400; }
 
 .bonos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
-.bono { padding: var(--s3); background: var(--superficie-2); border-radius: var(--r-sello); }
+.bono { padding: var(--s3); background: var(--acento-suave); border-radius: var(--r-sello); }
+.bono__tasa { color: var(--acento); }
 .bono__plazo { display: block; font-size: var(--t-2); color: var(--texto-2); }
 .bono__tasa { display: block; font-size: var(--t-seccion); font-weight: 500; }
 .bono__vence { display: block; font-size: var(--t-meta); color: var(--texto-3); }
@@ -395,7 +457,17 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 .curso:hover, .leccion-item:hover { border-color: var(--linea-fuerte); }
 .curso:active, .leccion-item:active, .continuar:active { transform: scale(0.99); }
 .curso + .curso { margin-top: var(--s3); }
-.curso > span { display: block; }
+.curso > span, .curso__cuerpo > span { display: block; }
+.curso > .portada { display: flex; }
+.curso { padding: 0; overflow: hidden; }
+.curso__cuerpo { padding: var(--s4); }
+.portada { display: flex; align-items: center; justify-content: space-between; height: 88px; padding: 0 var(--s4); }
+.portada .icono { width: 44px; height: 44px; stroke-width: 1.5; }
+.portada__num { font-size: var(--t-seccion); font-weight: 600; opacity: 0.85; }
+.portada--jade { background: var(--tarjeta-dolar); color: var(--crema); }
+.portada--rojo { background: var(--rojo-hondo); color: var(--crema); }
+.portada--oro { background: var(--oro); color: var(--hondo); }
+.curso-cabecera { margin-bottom: var(--s5); border-radius: var(--r-tarjeta); }
 .curso__titulo { font-size: var(--t-tarjeta); font-weight: 500; }
 .curso__meta { margin-top: var(--s1); color: var(--texto-3); font-size: var(--t-2); }
 .curso__desc { margin-top: var(--s2); color: var(--texto-2); }
@@ -456,6 +528,7 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 .nav-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .nav-btn:hover { color: var(--texto); }
 .nav-btn.activo { color: var(--acento); }
+.nav-btn.activo svg { width: 56px; height: 30px; padding: var(--s1) 17px; border-radius: 15px; background: var(--acento-suave); }
 
 /* ─── Pie ─── */
 .pie {
@@ -498,16 +571,19 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 /* ─── Escritorio ─── */
 @media (min-width: 900px) {
   #app { padding-bottom: 0; }
-  .cabecera { padding: var(--s5) var(--s6); }
+  .cabecera { padding: var(--s5) max(var(--s6), calc((100% - var(--ancho-max)) / 2 + var(--s6))); margin-bottom: var(--s6); }
   #app { position: relative; }
   .nav-inferior {
-    position: absolute; top: var(--s5); bottom: auto; left: auto;
+    position: absolute; top: calc(var(--s5) + env(safe-area-inset-top)); bottom: auto; left: auto;
     right: max(var(--s6), calc((100% - var(--ancho-max)) / 2 + var(--s6)));
     display: flex; gap: var(--s1); height: var(--toque); padding: 0;
     background: none; border: 0;
   }
-  .nav-btn { flex-direction: row; gap: var(--s2); padding: 0 var(--s3); border-radius: var(--r-control); font-size: var(--t-2); color: var(--texto-2); }
-  .nav-btn.activo { background: var(--superficie); box-shadow: 0 0 0 1px var(--linea); }
+  .nav-btn { flex-direction: row; gap: var(--s2); padding: 0 var(--s3); border-radius: var(--r-control); font-size: var(--t-2); color: color-mix(in srgb, var(--crema) 85%, var(--hondo)); }
+  .nav-btn:hover { color: var(--crema); background: color-mix(in srgb, var(--crema) 8%, transparent); }
+  .nav-btn.activo { background: var(--crema); color: var(--hondo); }
+  .nav-btn.activo svg { width: 22px; height: 22px; padding: 0; background: none; }
+  .nav-btn:focus-visible { outline-color: var(--crema); }
   .columnas--parejas > * + *, .columnas > .col + .col { margin-top: 0; }
   .instalar { left: auto; right: var(--s6); bottom: var(--s6); width: 400px; }
   .cabecera__fecha { display: none; }

@@ -1,4 +1,4 @@
-# Declaraciones para Google Play Console — Quetzal Hoy
+# Declaraciones para Google Play Console — Al cambio
 
 Respuestas listas para cada sección de "Configuración de la app". Copia tal cual.
 

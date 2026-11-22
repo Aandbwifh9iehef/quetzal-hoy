@@ -1,10 +1,10 @@
-# Ficha de Play Store — Quetzal Hoy
+# Ficha de Play Store — Al cambio
 
 Idioma: español (Guatemala) · Categoría: **Finanzas** · Gratis · Sin anuncios · Sin compras dentro de la app (por ahora)
 
 ## Título (máx. 30)
 
-Quetzal Hoy: tu dinero claro
+Al cambio: tu dinero, claro
 
 ## Descripción corta (máx. 80)
 
@@ -12,7 +12,7 @@ Dólar de hoy, noticias explicadas, dónde invertir y cursos gratis. Sin jerga.
 
 ## Descripción completa (máx. 4,000)
 
-Quetzal Hoy te explica tu dinero en español de Guatemala, sin palabras complicadas y sin vender nada.
+Al cambio te explica tu dinero en español de Guatemala, sin palabras complicadas y sin vender nada.
 
 HOY
 • El tipo de cambio del dólar de hoy según el Banco de Guatemala, con gráfica de 7 días, 1 mes y 1 año, y cuánto subió o bajó frente a ayer.
@@ -39,7 +39,7 @@ HECHA PARA GUATEMALA
 • No pide cuenta, ni nombre, ni teléfono. No usa cookies de rastreo.
 • Modo claro y oscuro.
 
-Quetzal Hoy es información educativa, no asesoría financiera. No recomendamos opciones específicas ni prometemos rendimientos. Verifica siempre las condiciones con la entidad antes de invertir.
+Al cambio es información educativa, no asesoría financiera. No recomendamos opciones específicas ni prometemos rendimientos. Verifica siempre las condiciones con la entidad antes de invertir.
 
 Escrito por Leo Marín, el mismo autor de Compound Club.
 

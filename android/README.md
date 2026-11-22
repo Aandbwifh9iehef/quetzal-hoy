@@ -1,4 +1,4 @@
-# Quetzal Hoy en Google Play
+# Al cambio en Google Play
 
 La app de Play es una "Trusted Web Activity" (TWA): un envoltorio Android que abre la web publicada en
 `hoy.compoundclub.fyi` a pantalla completa, sin barra de navegador. Toda la app vive en la web, así que
@@ -12,7 +12,7 @@ Requisito previo: la web debe estar publicada en https://hoy.compoundclub.fyi (f
 2. Cuando termine el análisis, pulsa **Package for stores** → **Android** → **Generate package**.
 3. En el formulario deja los valores que trae del manifest y revisa:
    - Package ID: `fyi.compoundclub.hoy`
-   - App name: `Quetzal Hoy` · Launcher name: `Quetzal Hoy`
+   - App name: `Al cambio` · Launcher name: `Al cambio`
    - Version: `1.0.0.0` · Version code: `1`
    - Display mode: `Standalone` · Status bar color: `#1B4332`
    - Signing key: **Create new** (PWABuilder crea la llave de firma por ti).
@@ -49,7 +49,7 @@ no debe subirse al repo (está en `.gitignore`).
 1. Cuenta de desarrollador: https://play.google.com/console → pago único de US$25 → verificación de identidad
    (puede tardar unos días). Como desarrollador individual, Google pide además una prueba cerrada con al menos
    12 personas durante 14 días antes de poder publicar; prepara una lista de amigos/familia con cuenta de Google.
-2. **Crear app** → nombre `Quetzal Hoy` → idioma español (Guatemala) → "App" → "Gratis".
+2. **Crear app** → nombre `Al cambio` → idioma español (Guatemala) → "App" → "Gratis".
 3. **Configuración de la app** (panel izquierdo): completa cada punto con `declaraciones.md`
    (política de privacidad, acceso a la app, anuncios, clasificación de contenido, público objetivo,
    seguridad de datos, funciones financieras, app gubernamental, noticias).

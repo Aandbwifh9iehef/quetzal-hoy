@@ -34,7 +34,7 @@ test('el texto para WhatsApp tiene el formato esperado (fixture)', () => {
 
 test('el texto usa negritas de WhatsApp, enlaces en línea propia y nada roto', () => {
   const texto = textoResumen(datos);
-  assert.match(texto, /^\*Quetzal Hoy — martes 3 de noviembre\*\n/);
+  assert.match(texto, /^\*Al cambio — martes 3 de noviembre\*\n/);
   assert.match(texto, /\*Dólar:\* Q 7\.6362, Q 0\.0057 menos que ayer/);
   assert.doesNotMatch(texto, /[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u, 'sin emojis');
   assert.match(texto, /\n  https:\/\/www\.prensalibre\.com\/a\n/);
@@ -48,7 +48,7 @@ test('con patrocinador aparece "Te lo trae"; sin datos de hoy no revienta', () =
   const con = textoResumen({ ...datos, config: { ...config, patrocinador: 'Banco Ejemplo', patrocinadorUrl: 'https://ejemplo.gt' } });
   assert.match(con, /Te lo trae: Banco Ejemplo · https:\/\/ejemplo\.gt/);
   const vacio = textoResumen({ fecha: '2026-11-03', tipoCambio: { disponible: false }, noticias: null, dato: null, config });
-  assert.match(vacio, /^\*Quetzal Hoy — martes 3 de noviembre\*\n\nMás en/);
+  assert.match(vacio, /^\*Al cambio — martes 3 de noviembre\*\n\nMás en/);
   assert.doesNotMatch(vacio, /Dólar|Lo que importa/);
 });
 

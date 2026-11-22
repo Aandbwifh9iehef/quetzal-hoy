@@ -1,14 +1,14 @@
 {
-  "name": "Quetzal Hoy — Tu dinero, explicado",
-  "short_name": "Quetzal Hoy",
+  "name": "Al cambio — Tu dinero, explicado",
+  "short_name": "Al cambio",
   "description": "Tipo de cambio, noticias económicas de Guatemala explicadas en sencillo, comparador de inversiones y cursos de finanzas.",
   "lang": "es-GT",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f4f4f0",
-  "theme_color": "#f4f4f0",
+  "background_color": "#f7f4ec",
+  "theme_color": "#06422f",
   "categories": [
     "finance",
     "education",

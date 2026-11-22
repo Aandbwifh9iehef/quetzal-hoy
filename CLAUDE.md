@@ -1,6 +1,6 @@
-# Quetzal Hoy — instrucciones para Claude Code
+# Al cambio — instrucciones para Claude Code
 
-> Nombre de trabajo: **Quetzal Hoy** (se puede cambiar en `site.config.json`; nunca escribas el nombre a mano en el código).
+> Nombre: **Al cambio** desde la Fase 11 (antes "Quetzal Hoy"; se puede cambiar en `site.config.json`; nunca escribas el nombre a mano en el código).
 
 ## Qué es
 Una app web instalable en el celular (PWA) de información financiera centrada en Guatemala:

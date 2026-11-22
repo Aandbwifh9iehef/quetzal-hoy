@@ -1,4 +1,4 @@
-# Quetzal Hoy
+# Al cambio
 
 App web instalable en el celular con información financiera de Guatemala: tipo de cambio del día,
 indicadores, noticias explicadas en sencillo, comparador de inversiones y cursos cortos.

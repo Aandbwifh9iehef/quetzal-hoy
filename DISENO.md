@@ -1,23 +1,27 @@
-# Diseño de Quetzal Hoy
+# Diseño de Al cambio
 
 Fuente única de verdad del diseño. Los valores viven en `public/styles.css` (`:root`). Si algo no está
 aquí, no se inventa: se usa lo que hay o se agrega aquí primero.
 
-Rediseño de la Fase U, guiado por unslop de Damir Sokolovsky (@heydamir), CC BY 4.0.
+Base de la Fase U (guiada por unslop de Damir Sokolovsky, @heydamir, CC BY 4.0). Desde la Fase 11 la app
+se llama **Al cambio** y usa la paleta **Quetzal vivo**, que Raúl pidió porque la anterior se veía plana.
 
 ## Dirección
 
 - **Producto.** App gratis para que cualquier guatemalteco sepa cada mañana a cómo está el dólar, qué
   pasa con la economía y aprenda a manejar su dinero desde un celular sencillo.
-- **Carácter.** Exacto, sereno, cercano.
-- **Mundo.** El billete de quetzal y la libreta de ahorro: papel, tinta verde de grabado, sello con
-  fecha, boleta de depósito.
+- **Nombre.** Al cambio: como se pregunta en Guatemala "¿a cómo está el cambio?".
+- **Carácter.** Exacto, cercano, con orgullo chapín. Vivo, no chillón.
+- **Mundo.** El quetzal y su billete: plumaje verde jade, pecho rojo, dorado de las monedas, papel crema
+  y la roseta (guilloché) de los billetes.
 - **Momentos.**
-  1. La tarjeta del dólar: cifra grande con números tabulares, gráfica de línea fina, el punto de hoy
-     en el color de acento y una rejilla tenue con etiquetas pequeñas. Lleva un guilloché (roseta de
-     billete) muy tenue en la esquina; es el único lugar donde aparece.
+  1. La tarjeta del dólar, en verde jade: cifra grande crema con números tabulares, gráfica de línea
+     crema, el punto de hoy en dorado y la roseta de billete al 12% en la esquina.
   2. Las gráficas de las calculadoras: lo que tú pones en neutro, los intereses en acento. Lo que se
      pierde por inflación, en rojo (es un resultado de verdad malo).
+  3. Bloques de color con sentido: cabecera verde hondo en todas las páginas, dato del día en dorado,
+     portadas de los cursos (jade, rojo, dorado) y mosaicos de color con íconos de línea en indicadores y
+     noticias.
 - **Firma.** El sello: `Banguat · 22 nov 2026`, en letra monoespaciada, borde fino, radio 4 y color
   apagado. Es el mismo componente en toda la app para la fuente y la fecha de cada dato. Nada más
   tiene ese aspecto.
@@ -28,24 +32,35 @@ Rediseño de la Fase U, guiado por unslop de Damir Sokolovsky (@heydamir), CC BY
 
 | Token | Claro | Oscuro | Uso |
 |---|---|---|---|
-| `--fondo` | `#f4f4f0` | `#111412` | Fondo de página (papel) |
-| `--superficie` | `#ffffff` | `#191d1b` | Tarjetas, barra inferior |
-| `--superficie-2` | `#ebebe5` | `#232826` | Pasos internos: avisos, bonos, segmentos |
-| `--linea` | tinta al 10% | blanco al 10% | Bordes finos y separadores |
-| `--linea-fuerte` | tinta al 20% | blanco al 20% | Bordes de controles y del sello |
-| `--texto` | `#17201b` | `#e9edeb` | Texto principal |
-| `--texto-2` | `#47504b` | `#b5bdb9` | Texto secundario |
-| `--texto-3` | `#5c6560` | `#98a19c` | Metadatos, sellos, ejes |
-| `--acento` | `#1d6b4f` | `#5fbf94` | Acción principal, selección, punto de hoy, intereses |
-| `--acento-texto` | `#ffffff` | `#0d1a13` | Texto sobre el acento |
-| `--mal` | `#a3302a` | `#f08b81` | Solo errores y resultados malos de verdad (pérdida por inflación, respuesta incorrecta) |
-| `--bien` | = acento | = acento | Solo resultados buenos de verdad (respuesta correcta) |
+| `--fondo` | `#f7f4ec` | `#0c1411` | Fondo de página (papel crema) |
+| `--superficie` | `#ffffff` | `#14201a` | Tarjetas, barra inferior |
+| `--superficie-2` | `#efeadd` | `#1c2a23` | Pasos internos: segmentos, campos |
+| `--linea` / `--linea-fuerte` | tinta al 10% / 20% | crema al 10% / 20% | Bordes y separadores |
+| `--texto` | `#14211b` | `#ecf1ee` | Texto principal |
+| `--texto-2` | `#46534c` | `#b4c0b9` | Texto secundario |
+| `--texto-3` | `#5b6660` | `#93a199` | Metadatos, sellos, ejes |
+| `--acento` | `#0b7552` | `#3ccf93` | Jade: acción principal, selección, intereses |
+| `--acento-suave` | `#dcefe5` | `#173a2c` | Fondo de mosaicos jade, bonos, pestaña activa |
+| `--hondo` | `#06422f` | `#0d3a2a` | Cabecera de todas las páginas |
+| `--tarjeta-dolar` | `#0a6b4b` | `#0d3a2a` | Tarjeta del dólar |
+| `--crema` | `#f7f4ec` | `#f7f4ec` | Texto sobre verde (al 85% para lo secundario) |
+| `--rojo` | `#c62d3a` | `#ff6b72` | Pecho del quetzal: punto del logo |
+| `--rojo-hondo` | `#b8293a` | `#b8293a` | Portada roja con texto crema |
+| `--rojo-suave` | `#fbe3e3` | `#3a1c1f` | Fondo de mosaicos rojos |
+| `--oro` | `#e9a81b` | `#f4bf45` | Dorado: punto de hoy, pluma del logo, portada dorada |
+| `--oro-texto` | `#7a5200` | `#f4bf45` | Texto dorado sobre `--oro-suave` |
+| `--oro-suave` | `#fbeac0` | `#2e2614` | Dato del día, aviso de Invertir, mosaicos dorados |
+| `--mal` | `#b8293a` | `#ff7a80` | Errores y resultados malos de verdad (pérdida por inflación, respuesta incorrecta) |
+| `--bien` | = acento | = acento | Resultados buenos de verdad |
 
-Contraste comprobado (WCAG AA ≥ 4.5:1) para los tres textos, el acento y `--mal` sobre las tres
-superficies, y para el botón principal, en claro y en oscuro.
+Contraste comprobado (WCAG AA ≥ 4.5:1) en claro y oscuro para: los tres textos, el acento y `--mal`
+sobre las tres superficies; crema sobre la cabecera y la tarjeta del dólar (secundario al 85%); texto y
+enlaces sobre `--oro-suave`; jade sobre `--acento-suave`; crema sobre `--rojo-hondo`; verde hondo sobre
+`--oro`; botón principal.
 
-Las subidas y bajadas del dólar **no** llevan rojo ni verde: flecha y "Q 0.0116 más que ayer" en
-`--texto-2`.
+El rojo y el verde **no** se usan para decir si el dólar subió o bajó: flecha y "Q 0.0116 más que ayer"
+en texto secundario. El rojo de marca vive en el logo, la portada de "Sal de deudas" y los mosaicos de
+temas como combustibles o precios; como color de significado solo marca pérdidas y errores.
 
 ### Tipografía
 
@@ -92,8 +107,16 @@ Las subidas y bajadas del dólar **no** llevan rojo ni verde: flecha y "Q 0.0116
   área de toque ampliada). La fuente completa va en el `title`. Las notas largas ("Cálculo propio con
   datos de Banguat") van al lado en `.meta`, nunca dentro del sello. En JS: `sello(fuente, fecha, url)`
   en `public/app.js` y en `src/paginas.js`.
+- **Cabecera** (`.cabecera`): banda `--hondo` a todo lo ancho con la marca en crema; en escritorio
+  lleva también las cuatro pestañas (la activa en fondo crema).
 - **Tarjeta** (`.tarjeta`): `--superficie`, borde `--linea`, radio 12, relleno 16 (20 en escritorio).
-  Sin sombra. Variante `.tarjeta--plana` en `--superficie-2` para "Continuar donde te quedaste".
+  Sin sombra. Variantes: `.tarjeta--tc` (jade, texto crema), `.tarjeta--dato` (dorado suave),
+  `.tarjeta--plana` (`--superficie-2`, "Continuar donde te quedaste").
+- **Mosaico** (`.mosaico--jade|rojo|oro`): cuadro de 40 px, radio 8, con un ícono de línea de 20 px en
+  el color fuerte sobre su tono suave. Indicadores, temas de noticias y dato del día.
+- **Portada de curso** (`.portada--jade|rojo|oro`): franja de 88 px con un ícono de línea de 44 px y el
+  número del curso. Presupuesto en jade, deudas en rojo, invertir en dorado.
+- **Punto de riesgo** (`.punto--bajo|medio|alto`): 8 px en jade, dorado o rojo junto a "Riesgo …".
 - **Botón principal** (`.btn-principal`): fondo acento, 48 px de alto, radio 8, peso 500. Uno por
   pantalla o por bloque.
 - **Botón secundario** (`.btn-secundario`): transparente con borde `--linea-fuerte`. Para Compartir,
@@ -103,7 +126,7 @@ Las subidas y bajadas del dólar **no** llevan rojo ni verde: flecha y "Q 0.0116
   indicadores, opciones, tasas, señales de estafa, lecciones. Nombre a la izquierda, valor a la
   derecha alineado.
 - **Barra inferior** (`.nav-inferior`): 4 pestañas con ícono de 22 px y texto de 13 px; la activa en
-  acento.
+  jade con una pastilla `--acento-suave` detrás del ícono.
 - **Gráfica del dólar** (`graficaSvg`): línea de 1.5 px en `--texto-2`, rejilla de 3 líneas en
   `--linea`, etiquetas en mono 13 px, punto de hoy en acento con anillo del color de la tarjeta.
 - **Gráfica de calculadora**: columnas (hasta 12) o barra partida; neutro = lo que pones, acento =
@@ -112,24 +135,25 @@ Las subidas y bajadas del dólar **no** llevan rojo ni verde: flecha y "Q 0.0116
   variante `--arriba` en `--superficie-2` al inicio de Invertir.
 - **Estado vacío** (`.vacio`): título, una frase y como máximo un botón secundario. Sin íconos.
 
-Íconos: Lucide, trazo 1.5, en línea (sin librería). 22 px en la navegación, 18 px en todo lo demás.
+Íconos: Lucide, trazo 1.5, en línea (sin librería). 22 px en la navegación, 20 px dentro de mosaicos,
+44 px en portadas de cursos, 18 px en todo lo demás.
 
-Marca: el nombre (de `site.config.json`) en Figtree 600 y una Q con la cola larga del quetzal, en un
-solo color. Los íconos y la imagen para redes se generan con `node scripts/iconos.mjs`.
+Marca: el nombre (de `site.config.json`) en Figtree 600 y una C de "cambio" con el punto rojo del pecho del
+quetzal y la punta dorada de la pluma. Los íconos y la imagen para redes se generan con `node scripts/iconos.mjs`.
 
 ## Sí y no
 
 Sí:
 - Fuente y fecha de cada dato en un sello.
-- Un acento usado poco: acción principal, selección, punto de hoy, intereses.
+- Color en bloques con sentido: cabecera, tarjeta del dólar, dato del día, portadas y mosaicos.
 - Frases en tipo oración, sin punto final en títulos, botones y etiquetas.
 - Comparaciones con referencia en palabras: "Q 0.0116 más que ayer", "más que el 3 nov".
 
 No:
-- Degradados, brillos, sombras de color, manchas de color, fondos teñidos.
+- Degradados, brillos, sombras de color, manchas de color.
 - Emojis en la interfaz (tampoco en el resumen de WhatsApp).
 - Etiquetas en mayúsculas, pesos 700+, cursivas.
-- Pastillas para todo: el sello es lo único con borde y texto pequeño.
+- Pastillas para todo: el sello es lo único con borde y texto pequeño (la pestaña activa es la excepción).
 - Rojo o verde para el dólar.
 - Exclamaciones, saludos, palabras de moda, cifras que no se pueden comprobar.
 - Animaciones en bucle o con rebote; escalas al pasar el mouse.

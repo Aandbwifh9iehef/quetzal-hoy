@@ -33,7 +33,7 @@ export function renderTexto(t) {
 
 export const ETIQUETA_PATROCINIO = 'Enlace patrocinado';
 
-export const SIGNO = '<svg class="marca__signo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="13" cy="13" r="9" stroke-width="3"/><path d="M17 21.2c2.6 4 6.5 7 12 8" stroke-width="3"/><path d="M20.3 18.6c2.4 3 5.4 5 9.7 5.6" stroke-width="2"/></svg>';
+export const SIGNO = '<svg class="marca__signo" viewBox="0 0 32 32" fill="none" stroke-linecap="round" aria-hidden="true"><path d="M26.5 9.5A12 12 0 1 0 26.5 22.5" stroke="currentColor" stroke-width="4.2"/><path class="signo-pluma" d="M26.5 22.5c1.4 2.4 2.6 3.7 4 4.4" stroke-width="2.2"/><circle class="signo-pecho" cx="16" cy="16" r="3.6"/></svg>';
 
 const CORTOS = { 'Banco de Guatemala': 'Banguat', 'Superintendencia de Bancos': 'SIB', 'Ministerio de Energía y Minas': 'MEM', 'Ministerio de Finanzas': 'Minfin', 'Instituto Nacional de Estadística': 'INE' };
 // Sello: fuente · fecha, el mismo componente que usa la app
@@ -79,8 +79,8 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
   <meta property="og:image" content="https://${esc(config.dominio)}/og-image.png">
   <meta property="og:url" content="${esc(url)}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#06422f" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d3a2a" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">

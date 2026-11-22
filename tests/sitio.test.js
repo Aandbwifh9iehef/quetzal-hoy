@@ -8,7 +8,7 @@ const publico = join(raiz, 'public');
 const config = JSON.parse(readFileSync(join(raiz, 'site.config.json'), 'utf8'));
 
 test('site.config.json tiene lo mínimo', () => {
-  assert.equal(config.nombre, 'Quetzal Hoy');
+  assert.equal(config.nombre, 'Al cambio');
   assert.match(config.contacto, /@/);
   assert.equal(config.autor, 'Leo Marín');
 });

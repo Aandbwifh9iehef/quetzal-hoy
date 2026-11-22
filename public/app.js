@@ -34,8 +34,31 @@
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
     alerta: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
     compartirIos: '<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
-    menu: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>'
+    menu: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+    tendencia: '<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',
+    banco: '<path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M12 2 20 7H4z"/>',
+    enviar: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+    gasolina: '<path d="M3 22h12"/><path d="M4 9h10"/><path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"/><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.83a2 2 0 0 0-.59-1.42L18 5"/>',
+    canasta: '<path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/>',
+    foco: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+    billete: '<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
+    carrito: '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+    maletin: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+    recibo: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+    barco: '<path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"/><path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6"/><path d="M12 10v4"/><path d="M12 2v3"/>',
+    fabrica: '<path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/>',
+    mercado: '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>',
+    chip: '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
+    casa: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    salud: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
+    pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    mundo: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+    billetera: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+    tijeras: '<circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/>',
+    brote: '<path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>'
   };
+  // Mosaico: ícono de línea sobre un cuadro de color de la paleta del quetzal
+  function mosaico(icono, color) { return '<span class="mosaico mosaico--' + color + '" aria-hidden="true">' + ico(icono) + '</span>'; }
   function ico(n) { return '<svg class="icono" viewBox="0 0 24 24" aria-hidden="true">' + ICONOS[n] + '</svg>'; }
 
   // Sello: fuente · fecha. El mismo componente para todo dato de la app.
@@ -215,6 +238,7 @@
 
   // ─── Indicadores ───
   var ORDEN = ['inflacion', 'tasa-lider', 'remesas', 'combustibles', 'canasta-basica'];
+  var MOSAICO_IND = { inflacion: ['tendencia', 'rojo'], 'tasa-lider': ['banco', 'jade'], remesas: ['enviar', 'oro'], combustibles: ['gasolina', 'rojo'], 'canasta-basica': ['canasta', 'oro'] };
 
   function valorIndicador(clave, d) {
     if (clave === 'inflacion') return d.valor.toFixed(2) + '%';
@@ -226,7 +250,7 @@
   }
 
   function detalleIndicador(clave, d) {
-    if (clave === 'inflacion') return 'Acumulada en el año: ' + d.acumulada.toFixed(2) + '% · del mes: ' + d.mensual.toFixed(2) + '%';
+    if (clave === 'inflacion') return 'Acumulada en el año: ' + d.acumulada.toFixed(2).replace('-', '−') + '% · del mes: ' + d.mensual.toFixed(2).replace('-', '−') + '%';
     if (clave === 'remesas') return 'Acumulado del año: US$' + d.acumuladoAnio.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' millones (' + ((d.acumuladoAnio / d.acumuladoAnioAnterior - 1) * 100).toFixed(1) + '% más que el año pasado)';
     if (clave === 'combustibles') return 'Superior ' + q(d.superior, 2) + ' · Diésel ' + q(d.diesel, 2) + ' por galón';
     if (clave === 'canasta-basica') return 'Área rural: ' + q(d.rural, 2) + ' por persona al mes';
@@ -245,13 +269,13 @@
       var periodo = /^[A-Za-zñ]+ \d{4}$/.test(d.periodo) ? d.periodo : '';
       var sub = [periodo, d.unidad === '%' ? '' : d.unidad].filter(Boolean).join(' · ');
       html +=
-        '<div class="fila indicador">' +
+        '<div class="fila indicador con-mosaico">' + mosaico(MOSAICO_IND[clave][0], MOSAICO_IND[clave][1]) + '<div>' +
         '<div class="fila__cab"><span class="fila__nombre">' + esc(d.nombre) + '</span><span class="fila__valor">' + valorIndicador(clave, d) + '</span></div>' +
         (sub ? '<div class="meta">' + esc(sub) + '</div>' : '') +
         '<p class="fila__detalle">' + esc(detalleIndicador(clave, d)) + '</p>' +
         '<div class="sello-linea">' + sello(d.fuente, fechaCorta(d.fecha), d.url) + (d.viejo ? '<span class="meta">Es el ' + esc(d.etiqueta) + '; aún no hay uno más reciente</span>' : '') + '</div>' +
         '<details class="desplegable"><summary>¿Qué significa esto? ' + ico('abajo') + '</summary><p>' + esc(d.significado) + '</p></details>' +
-        '</div>';
+        '</div></div>';
     }
     cont.innerHTML = '<div class="filas">' + html + '</div>';
   }
@@ -261,7 +285,7 @@
     if (!resp || !resp.dato) { card.innerHTML = '<h2 class="etiqueta">Dato del día</h2><p class="texto-2 mt-sm">Hoy no hay dato disponible</p>'; return; }
     var d = resp.dato;
     card.innerHTML =
-      '<h2 class="etiqueta">Dato del día</h2>' +
+      '<div class="dato__cab">' + mosaico('foco', 'oro') + '<h2 class="etiqueta">Dato del día</h2></div>' +
       '<div class="dato__titulo">' + esc(d.titulo) + '</div>' +
       '<p class="dato__texto">' + esc(d.texto) + '</p>' +
       '<div class="sello-linea">' + sello(d.fuente, resp.fecha ? fechaCorta(resp.fecha) : '') + '<span class="meta">Cálculo propio con datos de ' + esc(d.fuente) + '</span></div>';
@@ -272,10 +296,33 @@
 
 
   // ─── Noticias ───
+  // Tema de cada noticia por palabras del titular: un ícono y un color, sin cambiar el contenido
+  var TEMAS = [
+    ['Combustibles', 'gasolina', 'rojo', /gasolin|diésel|diesel|combustible|petrol|crudo|energ[ií]a|electricidad/i],
+    ['Dólar', 'billete', 'jade', /d[oó]lar|tipo de cambio|quetzal|divisa|cambiari/i],
+    ['Remesas', 'enviar', 'oro', /remesa|migra|deporta/i],
+    ['Bancos', 'banco', 'jade', /banco|sib\b|superintendencia|cr[eé]dito|tarjeta|tasa|banguat|junta monetaria|intendent/i],
+    ['Precios', 'carrito', 'rojo', /inflaci|precio|canasta|ipc|costo de vida|tortilla|ma[ií]z/i],
+    ['Empleo', 'maletin', 'oro', /empleo|trabajo|salario|sueldo|desempleo|igss|pensi/i],
+    ['Impuestos', 'recibo', 'jade', /impuesto|sat\b|tributar|fiscal|presupuesto|deuda p[uú]blica|congreso|minfin/i],
+    ['Comercio', 'barco', 'oro', /exportaci|importaci|arancel|comercio|puerto|aduana|tratado|caf[eé]|az[uú]car|banano|cardamomo/i],
+    ['Empresas', 'fabrica', 'jade', /empresa|inversi|planta|f[aá]brica|negocio|alianza|expansi|emprend/i],
+    ['Mercados', 'mercado', 'jade', /wall street|bolsa|acciones|mercado|fed\b|reserva federal|bce\b|inversor/i],
+    ['Tecnología', 'chip', 'oro', /inteligencia artificial|\bia\b|tecnolog|digital|cripto|bitcoin/i],
+    ['Vivienda', 'casa', 'rojo', /vivienda|casa|alquiler|hipotec|construcci|ciudad|urban/i],
+    ['Salud', 'salud', 'rojo', /salud|vacuna|farmac|hospital|m[eé]dic/i]
+  ];
+  function temaNoticia(n) {
+    var t = n.titulo + ' ' + (n.resumen || '');
+    for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i][3].test(t)) return TEMAS[i];
+    return n.medio === 'El País' || n.medio === 'DW' ? ['Mundo', 'mundo', 'oro'] : ['Guatemala', 'pin', 'jade'];
+  }
   function tarjetaNoticia(n) {
+    var tema = temaNoticia(n);
     return (
       '<article class="tarjeta noticia">' +
-      sello(n.medio, n.fecha ? fechaCorta(n.fecha.slice(0, 10)) : '') +
+      '<div class="noticia__cab">' + mosaico(tema[1], tema[2]) + '<div><div class="noticia__tema">' + tema[0] + '</div>' +
+      sello(n.medio, n.fecha ? fechaCorta(n.fecha.slice(0, 10)) : '') + '</div></div>' +
       '<h3 class="noticia__titulo"><a href="' + esc(n.enlace) + '" target="_blank" rel="noopener">' + esc(n.titulo) + '</a></h3>' +
       (n.resumen ? '<p class="noticia__resumen">' + esc(n.resumen) + '</p>' : '') +
       (n.afecta ? '<p class="noticia__afecta"><strong>Cómo te afecta:</strong> ' + esc(n.afecta) + '</p>' : '') +
@@ -307,7 +354,7 @@
     cont.innerHTML = html || '<p class="texto-2">Hoy no encontramos noticias económicas.</p>';
     var bc = cont.querySelectorAll('[data-compartir]');
     for (var k = 0; k < bc.length; k++) bc[k].addEventListener('click', function () {
-      compartir(this.getAttribute('data-titulo'), this.getAttribute('data-titulo') + ' (' + this.getAttribute('data-medio') + ') — vía Quetzal Hoy', this.getAttribute('data-enlace'));
+      compartir(this.getAttribute('data-titulo'), this.getAttribute('data-titulo') + ' (' + this.getAttribute('data-medio') + ') — vía Al cambio', this.getAttribute('data-enlace'));
     });
   }
 
@@ -349,7 +396,7 @@
       var t = tipos[i];
       html +=
         '<details class="fila opcion">' +
-        '<summary><span class="fila__nombre">' + esc(t.nombre) + '</span><span class="opcion__riesgo">Riesgo ' + esc(t.riesgo) + '</span>' + ico('abajo') + '</summary>' +
+        '<summary><span class="fila__nombre">' + esc(t.nombre) + '</span><span class="opcion__riesgo"><i class="punto punto--' + (t.riesgo.indexOf('alto') >= 0 ? 'alto' : t.riesgo.indexOf('medio') >= 0 ? 'medio' : 'bajo') + '"></i>Riesgo ' + esc(t.riesgo) + '</span>' + ico('abajo') + '</summary>' +
         '<p class="opcion__que">' + esc(t.queEs) + '</p>' +
         '<dl class="datos">' +
         '<dt>Desde</dt><dd>' + esc(t.desde) + '</dd>' +
@@ -551,6 +598,7 @@
 
   function barra(a) { return '<div class="progreso" role="progressbar" aria-label="Avance" aria-valuenow="' + a.pct + '" aria-valuemin="0" aria-valuemax="100"><div class="progreso__relleno" style="width:' + a.pct + '%"></div></div>'; }
 
+  var PORTADA = { presupuesto: ['billetera', 'jade'], deudas: ['tijeras', 'rojo'], invertir: ['brote', 'oro'] };
   function vistaCursos() {
     var p = leerProgreso(), html = '<h1 class="titulo-pagina">Aprende</h1><p class="texto-2 mb-md">Cursos cortos y gratuitos. Tu avance se guarda en este celular.</p>';
     var cont = null;
@@ -564,11 +612,13 @@
     }
     for (var j = 0; j < cursosCache.length; j++) {
       var cu = cursosCache[j], av = avance(cu, p);
+      var pc = PORTADA[cu.id] || ['billetera', 'jade'];
       html += '<button class="tarjeta curso" data-curso="' + cu.id + '">' +
+        '<span class="portada portada--' + pc[1] + '" aria-hidden="true">' + ico(pc[0]) + '<span class="portada__num">' + (j + 1) + '</span></span><span class="curso__cuerpo">' +
         '<span class="curso__titulo">' + esc(cu.titulo) + '</span>' +
         '<span class="curso__meta">' + cu.lecciones.length + ' lecciones · ' + esc(cu.nivel.toLowerCase()) + (cu.premium ? ' · premium' : '') + '</span>' +
         '<span class="curso__desc">' + esc(cu.descripcion) + '</span>' + etiquetaPatrocinio(cu.patrocinio) +
-        barra(av) + '<span class="curso__avance">' + (av.hechas === av.total ? 'Curso terminado' : av.hechas + ' de ' + av.total + ' lecciones') + '</span></button>';
+        barra(av) + '<span class="curso__avance">' + (av.hechas === av.total ? 'Curso terminado' : av.hechas + ' de ' + av.total + ' lecciones') + '</span></span></button>';
     }
     html += '<p class="texto-2 mt-lg">Por ' + esc(autorCursos) + '. Información educativa, no asesoría financiera.</p>';
     pintarAprende(html);
@@ -582,6 +632,7 @@
   function vistaCurso(cid) {
     var c = cursoPorId(cid), p = leerProgreso(), a = avance(c, p);
     var html = '<button class="volver" id="volver-cursos">' + ico('atras') + 'Todos los cursos</button>' +
+      '<div class="portada portada--' + (PORTADA[c.id] || ['', 'jade'])[1] + ' curso-cabecera" aria-hidden="true">' + ico((PORTADA[c.id] || ['billetera'])[0]) + '</div>' +
       '<h1 class="titulo-pagina">' + esc(c.titulo) + '</h1><p class="texto-2">' + esc(c.descripcion) + '</p>' + etiquetaPatrocinio(c.patrocinio) +
       '<div class="mt-md">' + barra(a) + '<div class="curso__avance">' + a.hechas + ' de ' + a.total + ' lecciones terminadas</div></div>' +
       '<div class="filas lecciones mt-md">';

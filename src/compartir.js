@@ -103,8 +103,9 @@ export const FORMATOS = {
 };
 
 // Imagen del día en SVG para 1080×1350 (post) y 1080×1920 (estado).
-// Papel y tinta verde, como la app. Sin fuentes externas: si Figtree no está, usa la del sistema.
-const SIGNO = '<circle cx="13" cy="13" r="9" stroke-width="3"/><path d="M17 21.2c2.6 4 6.5 7 12 8" stroke-width="3"/><path d="M20.3 18.6c2.4 3 5.4 5 9.7 5.6" stroke-width="2"/>';
+// Cabecera verde y papel crema, como la app. Sin fuentes externas: si Figtree no está, usa la del sistema.
+// Marca: C de "cambio" con el pecho rojo y la punta dorada del quetzal
+const signo = (color) => `<path d="M26.5 9.5A12 12 0 1 0 26.5 22.5" stroke="${color}" stroke-width="4.2"/><path d="M26.5 22.5c1.4 2.4 2.6 3.7 4 4.4" stroke="#e9a81b" stroke-width="2.2"/><circle cx="16" cy="16" r="3.6" fill="#c62d3a" stroke="none"/>`;
 
 export function svgImagen({ fecha, tipoCambio, noticias, dato, config, formato = '1080x1350' }) {
   const { ancho, alto } = FORMATOS[formato] ?? FORMATOS['1080x1350'];
@@ -113,19 +114,19 @@ export function svgImagen({ fecha, tipoCambio, noticias, dato, config, formato =
   const W = ancho - M * 2;
   const fuente = 'Figtree, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif';
   const mono = 'ui-monospace, SF Mono, Menlo, Consolas, monospace';
-  const c = { papel: '#f4f4f0', tinta: '#17201b', tinta2: '#47504b', tinta3: '#5c6560', linea: '#d9dad5', acento: '#1d6b4f' };
+  const c = { papel: '#f7f4ec', tinta: '#14211b', tinta2: '#46534c', tinta3: '#5b6660', linea: '#dcd7ca', acento: '#0b7552', hondo: '#06422f', crema: '#f7f4ec', crema2: '#cfd9d3', oro: '#e9a81b' };
   let y = alto_ ? 200 : 120;
   const partes = [];
   const t = (texto, tam, color, peso = 400, x = M, extra = '') => `<text x="${x}" y="${y}" font-family="${fuente}" font-size="${tam}" font-weight="${peso}" fill="${color}" ${extra}>${escXml(texto)}</text>`;
   const pie = alto - (alto_ ? 260 : 190);
 
   partes.push(`<rect width="${ancho}" height="${alto}" fill="${c.papel}"/>`);
-
-  // Marca + nombre + fecha
-  partes.push(`<g transform="translate(${M} ${y - 52}) scale(2.2)" fill="none" stroke="${c.acento}" stroke-linecap="round">${SIGNO}</g>`);
-  partes.push(t(config.nombre, 52, c.tinta, 600, M + 92));
+  // Cabecera verde con la marca, el nombre y la fecha
+  partes.push(`<rect width="${ancho}" height="${y + 84}" fill="${c.hondo}"/>`);
+  partes.push(`<g transform="translate(${M} ${y - 54}) scale(2.3)" fill="none" stroke-linecap="round">${signo(c.crema)}</g>`);
+  partes.push(t(config.nombre, 52, c.crema, 600, M + 96));
   y += 50;
-  partes.push(t(fechaLarga(fecha).replace(/^./, (l) => l.toUpperCase()), 34, c.tinta2, 400, M + 92));
+  partes.push(t(fechaLarga(fecha).replace(/^./, (l) => l.toUpperCase()), 34, c.crema2, 400, M + 96));
   y += alto_ ? 150 : 96;
 
   if (tipoCambio?.disponible) {
@@ -152,7 +153,7 @@ export function svgImagen({ fecha, tipoCambio, noticias, dato, config, formato =
     y += 56;
     for (const n of lista) {
       const lineas = envolver(n.titulo, 36, W - 40, 2);
-      partes.push(`<rect x="${M}" y="${y - 22}" width="10" height="10" fill="${c.tinta3}"/>`);
+      partes.push(`<rect x="${M}" y="${y - 22}" width="10" height="10" fill="${c.oro}"/>`);
       for (const l of lineas) { partes.push(t(l, 36, c.tinta, 500, M + 36)); y += 46; }
       partes.push(t(n.medio, 26, c.tinta3, 400, M + 36));
       y += alto_ ? 60 : 40;
