@@ -309,3 +309,43 @@
   de los botones). Lighthouse móvil en vivo: rendimiento, accesibilidad, buenas prácticas y SEO en 100.
 - 22 nov 2026 (fase 11): capturas antes y después en `docs/fase-11/`; capturas de Google Play y gráfico
   destacado rehechos con el nombre y los colores nuevos. Caché del service worker v19.
+- 22 nov 2026 (correcciones tras revisar en vivo, pedido de Raúl):
+  1. **Instalar:** la tarjeta flotante pasó a ser una barra de una línea encima de las pestañas. Sale desde
+     la segunda visita (se cuenta una por sesión en `quetzal-hoy:visitas`), con instrucciones según el
+     sistema: Android con aviso del navegador → botón "Instalar"; Android sin aviso → "menú ⋮ y luego
+     Instalar app"; iPhone en Safari → "Compartir y luego Agregar a inicio"; iPhone en otro navegador →
+     "abre en Safari". En computadora solo sale si el navegador ofrece instalar. Mientras se ve, la página
+     suma su alto abajo (`body.con-barra-instalar`), así nunca tapa contenido. La X la oculta para siempre.
+     Android se detecta antes que iPad, porque iPadOS se presenta como Mac táctil y confundía a algunos
+     Android.
+  2. **Gráfica del dólar:** el eje nunca muestra menos de Q0.05 (centrado en los datos) y arriba va el
+     cambio del período: "+Q 0.007 en 7 días", "Sin cambio en 1 año". Se escribe "Q 0.007" con espacio,
+     igual que todas las cifras en quetzales de la app.
+  3. **Noticias sin resumen:** la causa era que Cloudflare retiró el modelo `@cf/meta/llama-3.1-8b-instruct-fp8`
+     el 20 nov 2026 (error 5028); desde ese día las 8 llamadas fallaban y solo se mostraban titulares.
+     Ahora se usa **Gemma 4** (`@cf/google/gemma-4-26b-a4b-it`, sin el modo de razonamiento, unas 5
+     neuronas por noticia) y, si falla, **Llama 3.3 70B** como respaldo. El último error de la IA queda en
+     `/api/noticias/uso` (`errorIa`) para notarlo rápido. Las reglas no cambiaron: la IA solo ve titular y
+     descripción del RSS, la validación descarta resúmenes con cifras que no están en la fuente o con más
+     frases de las permitidas, y en ese caso se muestra solo el titular. Se volvió a correr la tarea de
+     noticias del 22 nov: 7 de 8 con resumen y "¿Cómo te afecta?", 1 descartada por la validación, 32
+     neuronas. Se probaron los dos modelos en vivo antes de cambiar.
+     **Categorías:** el tema ahora se decide por puntos (palabra en el titular = 2, en el resumen = 1) y no
+     por el primer tema que coincidía; mencionar al Banguat como fuente ya no cuenta como "Bancos". El café
+     y las exportaciones salen como "Comercio".
+  4. **Restos de plantilla quitados:** cuadritos de color detrás de los íconos (indicadores y noticias),
+     fondo dorado del dato del día, portadas de color de los cursos, fondos de color en bonos y en el aviso
+     de Invertir. La cabecera también volvió a ser neutra, porque la instrucción fue que la tarjeta del dólar
+     sea lo único con color fuerte en Hoy; el logo sigue en color. DISENO.md actualizado.
+  5. **Contenido en el HTML (SEO):** el HTML de Hoy, Noticias e Invertir sale de `public/render.js`, un
+     módulo que usan el Worker y el navegador. El Worker arma la portada con HTMLRewriter (tipo de cambio,
+     dato del día, indicadores, noticias, opciones, tasas, bonos y estafas) y el navegador solo conecta los
+     botones; si el Worker no pudo, el navegador lo pinta como antes. `app.js` pasó a ser un módulo. En
+     `wrangler.jsonc`, `run_worker_first` manda las páginas y la API al Worker y deja los archivos estáticos
+     directos (con solo `["/"]`, la API y las páginas SEO daban 404: se probó y corrigió antes de publicar).
+     Aprende sigue cargándose en el navegador (no estaba en el pedido).
+  Un error propio en el camino: la barra de instalar usaba el mismo nombre de variable que la barra de
+  avance de los cursos y Aprende dejó de cargar unos minutos en vivo. Se corrigió, se agregó una prueba que
+  detecta nombres repetidos en `app.js` y se subió el service worker para que nadie se quede con la copia
+  rota. Caché del service worker v23. Capturas en `docs/fase-11/correcciones/`. Lighthouse móvil en vivo:
+  100 en todo, CLS 0, 102 KB transferidos.

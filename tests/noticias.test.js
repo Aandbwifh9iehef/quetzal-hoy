@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parsearRss, limpiarTexto } from '../src/rss.js';
-import { esFinanciera, puntuarFinanciera, quitarDuplicados, similitud, validarResumen, extraerCifras, actualizarNoticias, elegir, neuronasEstimadas, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from '../src/noticias.js';
+import { esFinanciera, puntuarFinanciera, quitarDuplicados, similitud, validarResumen, extraerCifras, actualizarNoticias, elegir, neuronasEstimadas, jsonDeRespuesta, MODELOS_IA, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from '../src/noticias.js';
 
 const fx = (n) => readFileSync(new URL(`./fixtures/rss/${n}.xml`, import.meta.url), 'utf8');
 const FUENTES = JSON.parse(readFileSync(new URL('../data/fuentes-noticias.json', import.meta.url), 'utf8')).fuentes;
@@ -123,13 +123,18 @@ test('validarResumen descarta cifras inventadas, frases de más y textos vacíos
 
 test('actualizarNoticias con fixtures reales: 5 de Guatemala, 3 del mundo, resúmenes validados y archivo', async () => {
   const env = { DATA: kvFalso() };
-  let llamadas = 0;
+  // Por titular: la 1.ª inventa cifras; la 2.ª hace fallar a los dos modelos; la 3.ª falla en el
+  // primer modelo y la resuelve el de respaldo (formato de OpenAI); el resto responde normal.
+  const orden = [];
   const ai = {
-    async run(_m, { messages }) {
-      llamadas++;
+    async run(modelo, { messages }) {
       const titular = /Titular: (.*)/.exec(messages[1].content)[1];
-      if (llamadas === 1) return { response: '{"resumen":"Subió 99.9% según nadie.","afecta":"Pagas 77 veces más."}', usage: { prompt_tokens: 300, completion_tokens: 40 } };
-      if (llamadas === 2) throw new Error('IA caída');
+      if (!orden.includes(titular)) orden.push(titular);
+      const i = orden.indexOf(titular);
+      if (i === 0) return { response: '{"resumen":"Subió 99.9% según nadie.","afecta":"Pagas 77 veces más."}', usage: { prompt_tokens: 300, completion_tokens: 40 } };
+      if (i === 1) throw new Error('IA caída');
+      if (i === 2 && modelo === MODELOS_IA[0].id) throw new Error('5028: modelo retirado');
+      if (i === 2) return { choices: [{ message: { content: '```json\n{"resumen":"' + titular.replace(/"/g, '') + '.","afecta":"Conviene estar atento."}\n```' } }], usage: { prompt_tokens: 300, completion_tokens: 40 } };
       return { response: `Claro: {"resumen":"${titular.replace(/"/g, '')}.","afecta":"Conviene estar atento."}`, usage: { prompt_tokens: 300, completion_tokens: 40 } };
     }
   };
@@ -139,9 +144,11 @@ test('actualizarNoticias con fixtures reales: 5 de Guatemala, 3 del mundo, resú
   assert.deepEqual(r.errores, []);
   assert.equal(r.guatemala[0].resumen, null, 'cifras inventadas → solo titular');
   assert.equal(r.guatemala[1].resumen, null, 'IA caída → solo titular');
-  assert.ok(r.guatemala[2].resumen, 'resumen válido se conserva');
+  assert.ok(r.guatemala[3].resumen, 'resumen válido se conserva');
   assert.equal(r.uso.descartados, 1);
   assert.equal(r.uso.sinIa, 1);
+  assert.match(r.uso.errorIa, /IA caída/, 'el error de la IA queda registrado');
+  assert.ok(r.guatemala[2].resumen, 'si el primer modelo falla, resume el de respaldo');
   assert.equal(r.uso.resumenes, 6);
   assert.ok(r.uso.neuronas > 0 && r.uso.neuronas < 200, `neuronas ${r.uso.neuronas}`);
   for (const n of [...r.guatemala, ...r.mundo]) {
@@ -171,3 +178,11 @@ test('estimación de neuronas: 8 noticias al día quedan muy por debajo de 10,00
   const n = neuronasEstimadas({ entrada: 8 * 350, salida: 8 * 80 });
   assert.ok(n < 300, `${n} neuronas`);
 });
+
+test('lee la respuesta de la IA en sus tres formatos', () => {
+  assert.deepEqual(jsonDeRespuesta({ response: 'Listo: {"resumen":"a","afecta":"b"}' }), { resumen: 'a', afecta: 'b' });
+  assert.deepEqual(jsonDeRespuesta({ response: { resumen: 'a', afecta: 'b' } }), { resumen: 'a', afecta: 'b' });
+  assert.deepEqual(jsonDeRespuesta({ choices: [{ message: { content: '```json\n{"resumen":"a","afecta":"b"}\n```' } }] }), { resumen: 'a', afecta: 'b' });
+  assert.equal(jsonDeRespuesta({ choices: [{ message: { content: '' } }] }), null);
+});
+

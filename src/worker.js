@@ -17,6 +17,7 @@ import { assetLinks } from './android.js';
 
 const INVERSIONES_PUB = aplicarAfiliados(INVERSIONES, CONFIG.afiliados);
 import { actualizarNoticias, CLAVE_ULTIMO, CLAVE_INDICE, CLAVE_USO } from './noticias.js';
+import { contenidoPortada } from '../public/render.js';
 
 const CRON_NOTICIAS = '0 12 * * *';
 
@@ -24,6 +25,7 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/')) return handleApi(url.pathname, env, ctx, url, request);
+    if (url.pathname === '/' && request.method === 'GET') return portada(request, env, ctx);
     const pagina = await paginaSeo(url.pathname, env, ctx);
     if (pagina) return pagina;
     return env.ASSETS.fetch(request);
@@ -104,6 +106,47 @@ async function paginaSeo(path, env, ctx) {
     return l ? htmlRes(paginaLeccion(c, l, CONFIG)) : null;
   }
   return null;
+}
+
+// Portada con el contenido del día ya escrito en el HTML: Hoy, Noticias e Invertir.
+// Los textos salen de public/render.js, el mismo módulo que usa el navegador.
+async function datosPortada(env, ctx) {
+  const hoy = hoyIso();
+  const [tipoCambio, noticias] = await Promise.all([
+    apiTipoCambio(env, ctx).then((r) => r.json()).catch(() => null),
+    env.DATA ? env.DATA.get(CLAVE_ULTIMO, 'json').catch(() => null) : null
+  ]);
+  const indicadores = { indicadores: anotarAntiguedad(INDICADORES.indicadores, hoy) };
+  const dato = { fecha: hoy, dato: datoDelDia(construirContexto({ indicadores: INDICADORES, tipoCambio: tipoCambio?.disponible ? tipoCambio : null, hoyIso: hoy }), hoy) };
+  const { errores, ...publico } = noticias ?? {};
+  return { hoy, tipoCambio, indicadores, dato, noticias: noticias ? { disponible: true, ...publico } : null, inversiones: INVERSIONES_PUB };
+}
+
+async function portada(request, env, ctx) {
+  const base = await env.ASSETS.fetch(request);
+  if (!base.ok || !(base.headers.get('content-type') ?? '').includes('text/html')) return base;
+  let piezas;
+  try {
+    piezas = contenidoPortada(await datosPortada(env, ctx));
+  } catch (err) {
+    console.error('Portada sin contenido del Worker:', err?.message ?? err);
+    return base;
+  }
+  let rw = new HTMLRewriter();
+  for (const [id, html] of Object.entries(piezas)) {
+    rw = rw.on(`#${id}`, {
+      element(e) {
+        e.setInnerContent(html, { html: true });
+        e.setAttribute('data-ssr', '');
+        if (id === 'card-tipo-cambio') e.removeAttribute('aria-busy');
+      }
+    });
+  }
+  const headers = new Headers(base.headers);
+  headers.set('Cache-Control', 'public, max-age=300');
+  headers.delete('ETag');
+  headers.delete('Content-Length');
+  return new Response(rw.transform(base).body, { status: 200, headers });
 }
 
 const EVENTOS_VALIDOS = new Set(['instalacion', 'curso_iniciado', 'curso_terminado', 'clic_afiliado', 'compartir', 'copiar_resumen']);

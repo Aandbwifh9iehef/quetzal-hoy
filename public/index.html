@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Al cambio — Tu dinero, explicado</title>
   <meta name="description" content="Tipo de cambio del día, noticias económicas de Guatemala explicadas en sencillo, comparador de inversiones y cursos de finanzas personales.">
-  <meta name="theme-color" content="#06422f" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d3a2a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1411" media="(prefers-color-scheme: dark)">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Al cambio">
 
   <!-- Open Graph -->
@@ -27,6 +27,7 @@
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="preload" href="/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
+  <link rel="modulepreload" href="/render.js">
 </head>
 <body>
 <a class="saltar" href="#contenido-principal">Ir al contenido</a>
@@ -42,18 +43,6 @@
 
   <main class="main" id="contenido-principal">
 
-    <!-- Instalación: visible hasta que la app esté instalada -->
-    <div class="tarjeta instalar" id="instalar" hidden>
-      <div class="instalar__cab">
-        <img src="/icon.svg" alt="" width="44" height="44">
-        <div><div class="instalar__tit">Lleva Al cambio en tu celular</div><div class="texto-2">Gratis, pesa poco y funciona sin internet</div></div>
-      </div>
-      <ol class="instalar__pasos" id="instalar-pasos" hidden></ol>
-      <div class="acciones">
-        <button id="btn-instalar" class="btn-principal" hidden>Instalar app</button>
-        <button class="btn-secundario" id="btn-instalar-cerrar">Ahora no</button>
-      </div>
-    </div>
 
     <!-- Pestaña: Hoy -->
     <section id="tab-hoy" class="seccion activa" role="tabpanel" aria-labelledby="nav-hoy">
@@ -66,6 +55,7 @@
             <div class="tc__valor"><span class="tc__moneda">Q</span><span class="esqueleto">7.0000</span></div>
             <p class="tc__cambio"><span class="esqueleto">Cargando el dato de hoy</span></p>
             <div class="tc__controles" aria-hidden="true"><div class="segmentos"><span class="rango activo">7 días</span><span class="rango">1 mes</span><span class="rango">1 año</span></div></div>
+            <p class="grafica__cambio" aria-hidden="true"><span class="esqueleto">+Q 0.000 en 7 días</span></p>
             <div class="grafica" aria-hidden="true"><div class="grafica__area"></div><div class="grafica__x"><span>&nbsp;</span></div></div>
             <div class="sello-linea" aria-hidden="true"><span class="sello esqueleto">Banguat · 22 nov 2026</span><span class="meta esqueleto">Referencia. El oficial está en banguat.gob.gt</span></div>
             <div class="acciones" aria-hidden="true"><span class="btn-secundario esqueleto">Compartir</span></div>
@@ -91,7 +81,7 @@
         </div>
 
         <div class="col">
-          <div class="tarjeta tarjeta--dato" id="card-dato-del-dia">
+          <div class="tarjeta" id="card-dato-del-dia">
             <h2 class="etiqueta">Dato del día</h2>
             <div class="cargando">Cargando…</div>
           </div>
@@ -237,21 +227,31 @@
     <a href="/anunciate">Anúnciate</a>
   </nav>
 
+  <!-- Instalar: barra pequeña sobre las pestañas, desde la segunda visita -->
+  <div class="barra-instalar" id="instalar" role="region" aria-label="Instalar la app" hidden>
+    <img src="/icon.svg" alt="" width="32" height="32">
+    <p class="barra-instalar__texto" id="instalar-texto"></p>
+    <button class="btn-principal btn-chico" id="btn-instalar" hidden>Instalar</button>
+    <button class="barra-instalar__cerrar" id="btn-instalar-cerrar" aria-label="No mostrar más">
+      <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+
   <!-- Navegación principal: barra inferior en el celular, arriba en pantallas anchas -->
   <nav class="nav-inferior" aria-label="Navegación principal" role="tablist">
-    <button class="nav-btn activo" id="nav-hoy" onclick="cambiarTab('hoy', this)" role="tab" aria-selected="true" aria-controls="tab-hoy">
+    <button class="nav-btn activo" id="nav-hoy" role="tab" aria-selected="true" aria-controls="tab-hoy">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
       Hoy
     </button>
-    <button class="nav-btn" id="nav-noticias" onclick="cambiarTab('noticias', this)" role="tab" aria-selected="false" aria-controls="tab-noticias">
+    <button class="nav-btn" id="nav-noticias" role="tab" aria-selected="false" aria-controls="tab-noticias">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
       Noticias
     </button>
-    <button class="nav-btn" id="nav-invertir" onclick="cambiarTab('invertir', this)" role="tab" aria-selected="false" aria-controls="tab-invertir">
+    <button class="nav-btn" id="nav-invertir" role="tab" aria-selected="false" aria-controls="tab-invertir">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg>
       Invertir
     </button>
-    <button class="nav-btn" id="nav-aprende" onclick="cambiarTab('aprende', this)" role="tab" aria-selected="false" aria-controls="tab-aprende">
+    <button class="nav-btn" id="nav-aprende" role="tab" aria-selected="false" aria-controls="tab-aprende">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
       Aprende
     </button>
@@ -259,6 +259,6 @@
 
 </div>
 
-<script src="/app.js"></script>
+<script type="module" src="/app.js"></script>
 </body>
 </html>

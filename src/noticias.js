@@ -1,9 +1,16 @@
 import { parsearRss } from './rss.js';
 
-export const MODELO_IA = '@cf/meta/llama-3.1-8b-instruct-fp8';
-// Estimación de neuronas por token según la ficha del modelo en Workers AI
-// (US$0.152 / M tokens de entrada y US$0.287 / M de salida; 1,000 neuronas = US$0.011).
-export const NEURONAS_POR_TOKEN = { entrada: 0.01382, salida: 0.02609 };
+// Modelos de Workers AI, en orden: si el primero falla (p. ej. lo retiran del catálogo), se usa el siguiente.
+// El anterior, @cf/meta/llama-3.1-8b-instruct-fp8, lo retiró Cloudflare el 20 nov 2026 (error 5028) y
+// desde ese día las noticias salían solo con titular.
+// Neuronas por token según la tabla de precios de Workers AI (1,000 neuronas = US$0.011).
+export const MODELOS_IA = [
+  // Gemma 4: sin el modo de razonamiento, que gasta tokens antes de responder
+  { id: '@cf/google/gemma-4-26b-a4b-it', opciones: { chat_template_kwargs: { enable_thinking: false } }, neuronas: { entrada: 0.009091, salida: 0.027273 } },
+  { id: '@cf/meta/llama-3.3-70b-instruct-fp8-fast', opciones: {}, neuronas: { entrada: 0.026668, salida: 0.204805 } }
+];
+export const MODELO_IA = MODELOS_IA[0].id;
+export const NEURONAS_POR_TOKEN = MODELOS_IA[0].neuronas;
 export const CLAVE_ULTIMO = 'noticias:ultimo';
 export const CLAVE_INDICE = 'noticias:indice';
 export const CLAVE_USO = 'noticias:uso';
@@ -137,12 +144,30 @@ function extraerJson(texto) {
   try { return JSON.parse(m[0]); } catch { return null; }
 }
 
+// Workers AI responde de tres formas según el modelo: texto en `response`, `response` ya convertido
+// en objeto, o el formato de OpenAI en `choices[0].message.content`.
+export function jsonDeRespuesta(r) {
+  if (r?.response && typeof r.response === 'object') return r.response;
+  return extraerJson(typeof r?.response === 'string' ? r.response : r?.choices?.[0]?.message?.content);
+}
+
 export async function generarResumen(ai, item) {
-  const respuesta = await ai.run(MODELO_IA, { messages: construirPrompt(item), max_tokens: 200, temperature: 0.2 });
-  const uso = { entrada: respuesta?.usage?.prompt_tokens ?? 0, salida: respuesta?.usage?.completion_tokens ?? 0 };
-  const json = extraerJson(respuesta?.response);
-  const val = validarResumen(json?.resumen, json?.afecta, `${item.titulo} ${item.descripcion}`);
-  return { ok: val.ok, motivo: val.motivo, resumen: val.ok ? json.resumen.trim() : null, afecta: val.ok ? json.afecta.trim() : null, uso };
+  const errores = [];
+  for (const modelo of MODELOS_IA) {
+    let respuesta;
+    try {
+      respuesta = await ai.run(modelo.id, { messages: construirPrompt(item), max_tokens: 300, temperature: 0.2, ...modelo.opciones });
+    } catch (err) {
+      errores.push(`${modelo.id}: ${err?.message ?? err}`);
+      continue;
+    }
+    const uso = { entrada: respuesta?.usage?.prompt_tokens ?? 0, salida: respuesta?.usage?.completion_tokens ?? 0 };
+    uso.neuronas = respuesta?.usage?.neurons ?? (uso.entrada * modelo.neuronas.entrada + uso.salida * modelo.neuronas.salida);
+    const json = jsonDeRespuesta(respuesta);
+    const val = validarResumen(json?.resumen, json?.afecta, `${item.titulo} ${item.descripcion}`);
+    return { ok: val.ok, motivo: val.motivo, modelo: modelo.id, resumen: val.ok ? json.resumen.trim() : null, afecta: val.ok ? json.afecta.trim() : null, uso };
+  }
+  throw new Error(errores.join(' | '));
 }
 
 export function neuronasEstimadas(uso) {
@@ -184,25 +209,30 @@ export async function actualizarNoticias(env, { fuentes, fetchFn = fetch, ai = e
     mundo: elegir(unicos.filter((i) => i.region === 'mundo'), CUOTA.mundo, 2)
   };
 
-  const uso = { entrada: 0, salida: 0, resumenes: 0, descartados: 0, sinIa: 0 };
+  const uso = { entrada: 0, salida: 0, resumenes: 0, descartados: 0, sinIa: 0, neuronas: 0 };
+  let errorIa = null;
   const salida = { fecha: hoy, generado: ahora.toISOString(), guatemala: [], mundo: [] };
   const resumir = async (it) => {
     const noticia = { titulo: it.titulo, enlace: it.enlace, medio: it.medio, fecha: it.fecha, resumen: null, afecta: null };
     if (!ai) { uso.sinIa++; return noticia; }
     try {
       const r = await generarResumen(ai, it);
-      uso.entrada += r.uso.entrada; uso.salida += r.uso.salida;
+      uso.entrada += r.uso.entrada; uso.salida += r.uso.salida; uso.neuronas += r.uso.neuronas;
+      uso.modelo = r.modelo;
       if (r.ok) { noticia.resumen = r.resumen; noticia.afecta = r.afecta; uso.resumenes++; }
       else { uso.descartados++; console.log(`Resumen descartado (${r.motivo}): ${it.titulo.slice(0, 60)}`); }
     } catch (err) {
       uso.sinIa++;
-      console.error(`IA falló en "${it.titulo.slice(0, 60)}": ${err?.message ?? err}`);
+      errorIa = String(err?.message ?? err).slice(0, 300);
+      console.error(`IA falló en "${it.titulo.slice(0, 60)}": ${errorIa}`);
     }
     return noticia;
   };
   // Las llamadas a la IA van en paralelo (cada una tarda varios segundos)
   [salida.guatemala, salida.mundo] = await Promise.all([Promise.all(elegidas.guatemala.map(resumir)), Promise.all(elegidas.mundo.map(resumir))]);
-  uso.neuronas = neuronasEstimadas(uso);
+  uso.neuronas = Math.round(uso.neuronas);
+  // Queda a la vista en /api/noticias/uso para notar rápido si la IA deja de responder
+  if (errorIa) uso.errorIa = errorIa;
   salida.uso = uso;
   salida.errores = errores;
 

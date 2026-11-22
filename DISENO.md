@@ -19,9 +19,10 @@ se llama **Al cambio** y usa la paleta **Quetzal vivo**, que Raúl pidió porque
      crema, el punto de hoy en dorado y la roseta de billete al 12% en la esquina.
   2. Las gráficas de las calculadoras: lo que tú pones en neutro, los intereses en acento. Lo que se
      pierde por inflación, en rojo (es un resultado de verdad malo).
-  3. Bloques de color con sentido: cabecera verde hondo en todas las páginas, dato del día en dorado,
-     portadas de los cursos (jade, rojo, dorado) y mosaicos de color con íconos de línea en indicadores y
-     noticias.
+  La tarjeta del dólar es lo **único con color fuerte** en Hoy (corrección del 22 nov 2026, después
+  de revisar la app en vivo: los mosaicos de color, el fondo dorado del dato del día y las portadas
+  de color de los cursos se veían como restos de plantilla y se quitaron). La cabecera es neutra, con
+  el logo en color.
 - **Firma.** El sello: `Banguat · 22 nov 2026`, en letra monoespaciada, borde fino, radio 4 y color
   apagado. Es el mismo componente en toda la app para la fuente y la fecha de cada dato. Nada más
   tiene ese aspecto.
@@ -40,27 +41,20 @@ se llama **Al cambio** y usa la paleta **Quetzal vivo**, que Raúl pidió porque
 | `--texto-2` | `#46534c` | `#b4c0b9` | Texto secundario |
 | `--texto-3` | `#5b6660` | `#93a199` | Metadatos, sellos, ejes |
 | `--acento` | `#0b7552` | `#3ccf93` | Jade: acción principal, selección, intereses |
-| `--acento-suave` | `#dcefe5` | `#173a2c` | Fondo de mosaicos jade, bonos, pestaña activa |
-| `--hondo` | `#06422f` | `#0d3a2a` | Cabecera de todas las páginas |
-| `--tarjeta-dolar` | `#0a6b4b` | `#0d3a2a` | Tarjeta del dólar |
-| `--crema` | `#f7f4ec` | `#f7f4ec` | Texto sobre verde (al 85% para lo secundario) |
-| `--rojo` | `#c62d3a` | `#ff6b72` | Pecho del quetzal: punto del logo |
-| `--rojo-hondo` | `#b8293a` | `#b8293a` | Portada roja con texto crema |
-| `--rojo-suave` | `#fbe3e3` | `#3a1c1f` | Fondo de mosaicos rojos |
-| `--oro` | `#e9a81b` | `#f4bf45` | Dorado: punto de hoy, pluma del logo, portada dorada |
-| `--oro-texto` | `#7a5200` | `#f4bf45` | Texto dorado sobre `--oro-suave` |
-| `--oro-suave` | `#fbeac0` | `#2e2614` | Dato del día, aviso de Invertir, mosaicos dorados |
+| `--acento-suave` | `#dcefe5` | `#173a2c` | Pestaña activa |
+| `--tarjeta-dolar` | `#0a6b4b` | `#0d3a2a` | Tarjeta del dólar (el único bloque de color fuerte) |
+| `--crema` | `#f7f4ec` | `#f7f4ec` | Texto sobre la tarjeta del dólar (al 85% para lo secundario) |
+| `--rojo` | `#c62d3a` | `#ff6b72` | Punto rojo del logo (pecho del quetzal) |
+| `--oro` | `#e9a81b` | `#f4bf45` | Punto de hoy en la gráfica, pluma del logo, punto de riesgo medio |
 | `--mal` | `#b8293a` | `#ff7a80` | Errores y resultados malos de verdad (pérdida por inflación, respuesta incorrecta) |
 | `--bien` | = acento | = acento | Resultados buenos de verdad |
 
 Contraste comprobado (WCAG AA ≥ 4.5:1) en claro y oscuro para: los tres textos, el acento y `--mal`
-sobre las tres superficies; crema sobre la cabecera y la tarjeta del dólar (secundario al 85%); texto y
-enlaces sobre `--oro-suave`; jade sobre `--acento-suave`; crema sobre `--rojo-hondo`; verde hondo sobre
-`--oro`; botón principal.
+sobre las tres superficies; crema sobre la tarjeta del dólar (secundario al 85%); jade sobre
+`--acento-suave`; botón principal.
 
 El rojo y el verde **no** se usan para decir si el dólar subió o bajó: flecha y "Q 0.0116 más que ayer"
-en texto secundario. El rojo de marca vive en el logo, la portada de "Sal de deudas" y los mosaicos de
-temas como combustibles o precios; como color de significado solo marca pérdidas y errores.
+en texto secundario. El rojo de marca vive solo en el logo; como color de significado marca pérdidas y errores.
 
 ### Tipografía
 
@@ -107,15 +101,13 @@ temas como combustibles o precios; como color de significado solo marca pérdida
   área de toque ampliada). La fuente completa va en el `title`. Las notas largas ("Cálculo propio con
   datos de Banguat") van al lado en `.meta`, nunca dentro del sello. En JS: `sello(fuente, fecha, url)`
   en `public/app.js` y en `src/paginas.js`.
-- **Cabecera** (`.cabecera`): banda `--hondo` a todo lo ancho con la marca en crema; en escritorio
-  lleva también las cuatro pestañas (la activa en fondo crema).
+- **Cabecera** (`.cabecera`): neutra, sobre el fondo; logo en color y nombre en texto. En escritorio
+  lleva las cuatro pestañas (la activa en jade sobre `--acento-suave`).
 - **Tarjeta** (`.tarjeta`): `--superficie`, borde `--linea`, radio 12, relleno 16 (20 en escritorio).
-  Sin sombra. Variantes: `.tarjeta--tc` (jade, texto crema), `.tarjeta--dato` (dorado suave),
-  `.tarjeta--plana` (`--superficie-2`, "Continuar donde te quedaste").
-- **Mosaico** (`.mosaico--jade|rojo|oro`): cuadro de 40 px, radio 8, con un ícono de línea de 20 px en
-  el color fuerte sobre su tono suave. Indicadores, temas de noticias y dato del día.
-- **Portada de curso** (`.portada--jade|rojo|oro`): franja de 88 px con un ícono de línea de 44 px y el
-  número del curso. Presupuesto en jade, deudas en rojo, invertir en dorado.
+  Sin sombra. Variantes: `.tarjeta--tc` (jade, texto crema) y `.tarjeta--plana` (`--superficie-2`,
+  "Continuar donde te quedaste"). El dato del día es una tarjeta normal.
+- **Ícono en columna** (`.con-icono`): ícono de línea de 20 px, sin fondo, en su propia columna a la
+  izquierda (indicadores en `--texto-2`, cursos en acento). En noticias va en línea con el tema y el sello.
 - **Punto de riesgo** (`.punto--bajo|medio|alto`): 8 px en jade, dorado o rojo junto a "Riesgo …".
 - **Botón principal** (`.btn-principal`): fondo acento, 48 px de alto, radio 8, peso 500. Uno por
   pantalla o por bloque.
@@ -127,16 +119,22 @@ temas como combustibles o precios; como color de significado solo marca pérdida
   derecha alineado.
 - **Barra inferior** (`.nav-inferior`): 4 pestañas con ícono de 22 px y texto de 13 px; la activa en
   jade con una pastilla `--acento-suave` detrás del ícono.
-- **Gráfica del dólar** (`graficaSvg`): línea de 1.5 px en `--texto-2`, rejilla de 3 líneas en
-  `--linea`, etiquetas en mono 13 px, punto de hoy en acento con anillo del color de la tarjeta.
+- **Gráfica del dólar** (`graficaSvg` en `public/render.js`): línea crema de 2 px, rejilla de 3 líneas,
+  etiquetas en mono 13 px, punto de hoy dorado. El eje nunca muestra menos de **Q0.05** para no
+  exagerar cambios chicos, y arriba de la gráfica va el cambio del período en texto
+  ("+Q 0.007 en 7 días").
+- **Barra de instalar** (`.barra-instalar`): una línea fija encima de las pestañas, desde la segunda
+  visita, con botón "Instalar" (Android con el aviso del navegador) o instrucciones cortas (iPhone:
+  Compartir › Agregar a inicio; Android sin aviso: menú ⋮ › Instalar app). Mientras se ve, la página
+  suma su alto abajo para que nunca tape contenido. La X la oculta para siempre.
 - **Gráfica de calculadora**: columnas (hasta 12) o barra partida; neutro = lo que pones, acento =
   intereses, `--mal` = lo que pierdes. Siempre con leyenda.
 - **Aviso legal** (`.aviso-legal`): texto secundario con línea fina arriba al final de cada sección;
   variante `--arriba` en `--superficie-2` al inicio de Invertir.
 - **Estado vacío** (`.vacio`): título, una frase y como máximo un botón secundario. Sin íconos.
 
-Íconos: Lucide, trazo 1.5, en línea (sin librería). 22 px en la navegación, 20 px dentro de mosaicos,
-44 px en portadas de cursos, 18 px en todo lo demás.
+Íconos: Lucide, trazo 1.5, en línea (sin librería). 22 px en la navegación, 20 px en columnas de
+íconos, 18 px en todo lo demás.
 
 Marca: el nombre (de `site.config.json`) en Figtree 600 y una C de "cambio" con el punto rojo del pecho del
 quetzal y la punta dorada de la pluma. Los íconos y la imagen para redes se generan con `node scripts/iconos.mjs`.
@@ -145,7 +143,9 @@ quetzal y la punta dorada de la pluma. Los íconos y la imagen para redes se gen
 
 Sí:
 - Fuente y fecha de cada dato en un sello.
-- Color en bloques con sentido: cabecera, tarjeta del dólar, dato del día, portadas y mosaicos.
+- Un solo bloque de color fuerte en Hoy: la tarjeta del dólar.
+- El HTML de Hoy, Noticias e Invertir sale de `public/render.js`: lo usa el Worker para mandar la
+  portada ya llena (SEO) y el navegador para actualizar. No dupliques ese HTML en otro lado.
 - Frases en tipo oración, sin punto final en títulos, botones y etiquetas.
 - Comparaciones con referencia en palabras: "Q 0.0116 más que ayer", "más que el 3 nov".
 

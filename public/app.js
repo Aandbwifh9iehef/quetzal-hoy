@@ -1,79 +1,13 @@
+// Al cambio — lógica del navegador. El HTML de Hoy, Noticias e Invertir sale de /render.js, el mismo
+// módulo que usa el Worker para mandar la página ya llena (los elementos llegan con data-ssr).
+import { esc, q, pct, fechaCorta, ico, graficaSvg, tarjetaTipoCambio, notaConvertidor, textoCambio, indicadoresHtml, datoDelDiaHtml, noticiasHtml, opcionesHtml, tasasHtml, bonosHtml, estafasHtml, verificarHtml } from '/render.js';
+
 (function () {
   'use strict';
 
-  var MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-
-  function fechaCorta(iso) {
-    var p = iso.split('-');
-    return parseInt(p[2], 10) + ' ' + MESES[parseInt(p[1], 10) - 1] + ' ' + p[0];
-  }
-  function fechaMini(iso) {
-    var p = iso.split('-');
-    return parseInt(p[2], 10) + ' ' + MESES[parseInt(p[1], 10) - 1];
-  }
-  function q(n, dec) {
-    var p = n.toFixed(dec == null ? 2 : dec).split('.');
-    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return 'Q ' + p.join('.');
-  }
-  function esc(s) {
-    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
-  }
-
-  // Íconos de línea (Lucide, trazo 1.5)
-  var ICONOS = {
-    sube: '<path d="M7 7h10v10"/><path d="M7 17 17 7"/>',
-    baja: '<path d="m7 7 10 10"/><path d="M17 7v10H7"/>',
-    igual: '<path d="M5 12h14"/>',
-    compartir: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/>',
-    externo: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
-    atras: '<path d="m15 18-6-6 6-6"/>',
-    adelante: '<path d="m9 18 6-6-6-6"/>',
-    abajo: '<path d="m6 9 6 6 6-6"/>',
-    check: '<path d="M20 6 9 17l-5-5"/>',
-    x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-    alerta: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
-    compartirIos: '<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
-    menu: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
-    tendencia: '<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',
-    banco: '<path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M12 2 20 7H4z"/>',
-    enviar: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
-    gasolina: '<path d="M3 22h12"/><path d="M4 9h10"/><path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"/><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.83a2 2 0 0 0-.59-1.42L18 5"/>',
-    canasta: '<path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/>',
-    foco: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
-    billete: '<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
-    carrito: '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
-    maletin: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
-    recibo: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
-    barco: '<path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"/><path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6"/><path d="M12 10v4"/><path d="M12 2v3"/>',
-    fabrica: '<path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/>',
-    mercado: '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>',
-    chip: '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
-    casa: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
-    salud: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
-    pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
-    mundo: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
-    billetera: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
-    tijeras: '<circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/>',
-    brote: '<path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>'
-  };
-  // Mosaico: ícono de línea sobre un cuadro de color de la paleta del quetzal
-  function mosaico(icono, color) { return '<span class="mosaico mosaico--' + color + '" aria-hidden="true">' + ico(icono) + '</span>'; }
-  function ico(n) { return '<svg class="icono" viewBox="0 0 24 24" aria-hidden="true">' + ICONOS[n] + '</svg>'; }
-
-  // Sello: fuente · fecha. El mismo componente para todo dato de la app.
-  var CORTOS = { 'Banco de Guatemala': 'Banguat', 'Superintendencia de Bancos': 'SIB', 'Ministerio de Energía y Minas': 'MEM', 'Ministerio de Finanzas': 'Minfin', 'Instituto Nacional de Estadística': 'INE' };
-  function fuenteCorta(f) {
-    var c = String(f).split(/ \(|, /)[0].trim();
-    return CORTOS[c] || c;
-  }
-  function sello(fuente, fecha, url) {
-    var texto = esc(fuenteCorta(fuente)) + (fecha ? ' · ' + esc(fecha) : '');
-    var titulo = 'Fuente: ' + esc(fuente) + (fecha ? ', ' + esc(fecha) : '');
-    return url
-      ? '<a class="sello" href="' + esc(url) + '" target="_blank" rel="noopener" title="' + titulo + '">' + texto + '</a>'
-      : '<span class="sello" title="' + titulo + '">' + texto + '</span>';
-  }
+  var $ = function (id) { return document.getElementById(id); };
+  var yaVino = function (id) { var e = $(id); return Boolean(e && e.hasAttribute('data-ssr')); };
+  var json = function (url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
 
   // ─── Compartir (Web Share API; si no existe, copia al portapapeles) ───
   function compartir(titulo, texto, url) {
@@ -86,8 +20,7 @@
   window.compartirQH = compartir;
 
   // ─── Fecha en el encabezado ───
-  var hoy = new Date();
-  document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long' }).replace(/^./, function (c) { return c.toUpperCase(); });
+  $('fecha-hoy').textContent = new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long' }).replace(/^./, function (c) { return c.toUpperCase(); });
 
   // ─── Analítica (Cloudflare Web Analytics si hay token) y eventos simples ───
   function evento(nombre) {
@@ -97,7 +30,7 @@
     } catch (e) {}
   }
   window.eventoQH = evento;
-  fetch('/api/config').then(function (r) { return r.json(); }).then(function (c) {
+  json('/api/config').then(function (c) {
     if (c && c.analytics) {
       var s = document.createElement('script');
       s.defer = true; s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
@@ -113,121 +46,53 @@
 
   // ─── Pestañas ───
   var TABS = ['hoy', 'noticias', 'invertir', 'aprende'];
-  window.cambiarTab = function (tab, btn) {
+  function cambiarTab(tab, btn) {
     var secs = document.querySelectorAll('.seccion');
     for (var i = 0; i < secs.length; i++) secs[i].classList.remove('activa');
     var btns = document.querySelectorAll('.nav-btn');
     for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('activo'); btns[j].setAttribute('aria-selected', 'false'); }
-    document.getElementById('tab-' + tab).classList.add('activa');
+    $('tab-' + tab).classList.add('activa');
     btn.classList.add('activo');
     btn.setAttribute('aria-selected', 'true');
     if (history.replaceState) history.replaceState(null, '', tab === 'hoy' ? location.pathname : '#' + tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }
+  window.cambiarTab = cambiarTab;
+  TABS.forEach(function (t) { var b = $('nav-' + t); if (b) b.addEventListener('click', function () { cambiarTab(t, b); }); });
   function abrirDesdeHash() {
     var h = (location.hash || '').replace('#', '');
-    if (TABS.indexOf(h) > 0) window.cambiarTab(h, document.getElementById('nav-' + h));
+    if (TABS.indexOf(h) > 0) cambiarTab(h, $('nav-' + h));
   }
   abrirDesdeHash();
   window.addEventListener('hashchange', abrirDesdeHash);
 
-  // ─── Gráfica del dólar: línea fina, rejilla tenue, punto de hoy en acento ───
-  function graficaSvg(serie) {
-    if (!serie || serie.length < 2) return '<div class="grafica__vacia">Aún no hay suficientes días para la gráfica</div>';
-    var min = Infinity, max = -Infinity;
-    for (var i = 0; i < serie.length; i++) { min = Math.min(min, serie[i].valor); max = Math.max(max, serie[i].valor); }
-    if (max - min < 0.004) { max += 0.002; min -= 0.002; }
-    var pad = (max - min) * 0.12; max += pad; min -= pad;
-    var dec = max - min < 0.05 ? 3 : 2;
-    var pts = [];
-    for (var k = 0; k < serie.length; k++) {
-      var x = (k / (serie.length - 1)) * 100;
-      var y = (1 - (serie[k].valor - min) / (max - min)) * 100;
-      pts.push(x.toFixed(2) + ',' + y.toFixed(2));
-    }
-    var ult = pts[pts.length - 1].split(',');
-    var rejilla = '', etiquetas = '';
-    for (var g = 0; g < 3; g++) {
-      var yy = 15 + g * 35, val = max - (yy / 100) * (max - min);
-      rejilla += '<line class="grafica__rejilla" x1="0" x2="100" y1="' + yy + '" y2="' + yy + '"/>';
-      etiquetas += '<span style="top:' + yy + '%">' + val.toFixed(dec) + '</span>';
-    }
-    return (
-      '<figure class="grafica" aria-label="Gráfica del tipo de cambio del ' + fechaCorta(serie[0].fecha) + ' al ' + fechaCorta(serie[serie.length - 1].fecha) + '">' +
-      '<div class="grafica__area"><div class="grafica__plano">' +
-      '<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + rejilla +
-      '<polyline class="grafica__linea" points="' + pts.join(' ') + '"/></svg>' +
-      '<span class="grafica__punto" style="left:' + ult[0] + '%;top:' + ult[1] + '%"></span></div>' +
-      '<div class="grafica__y" aria-hidden="true">' + etiquetas + '</div></div>' +
-      '<div class="grafica__x" aria-hidden="true"><span>' + fechaMini(serie[0].fecha) + '</span><span>' + fechaMini(serie[serie.length - 1].fecha) + '</span></div>' +
-      '</figure>'
-    );
-  }
-
-  // ─── Tarjeta de tipo de cambio ───
-  function diaAnterior(iso) { var d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); }
-  function textoCambio(d) {
-    if (!d.ayer) return '';
-    var contra = d.ayer.fecha === diaAnterior(d.fecha) ? 'ayer' : 'el ' + fechaMini(d.ayer.fecha);
-    if (d.tendencia === 'igual') return 'Igual que ' + contra;
-    return q(Math.abs(d.cambio), 4) + (d.cambio > 0 ? ' más' : ' menos') + ' que ' + contra;
-  }
-
-  function pintarTipoCambio(d) {
-    var card = document.getElementById('card-tipo-cambio');
-    if (!d || !d.disponible) {
-      card.removeAttribute('aria-busy');
-      card.innerHTML =
-        '<h2 class="etiqueta">Precio del dólar</h2>' +
-        '<p class="texto-2 mt-sm">No pudimos cargar el dato. Consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>';
+  // ─── Tipo de cambio y convertidor ───
+  var tc = null;
+  var cardTc = $('card-tipo-cambio');
+  cardTc.addEventListener('click', function (e) {
+    var rango = e.target.closest('.rango');
+    if (rango && tc) {
+      var botones = cardTc.querySelectorAll('.rango');
+      for (var j = 0; j < botones.length; j++) { botones[j].classList.remove('activo'); botones[j].setAttribute('aria-pressed', 'false'); }
+      rango.classList.add('activo');
+      rango.setAttribute('aria-pressed', 'true');
+      var r = rango.getAttribute('data-r');
+      $('grafica-tc').innerHTML = graficaSvg(tc.series[r], r);
       return;
     }
-    var cambio = textoCambio(d);
-    var esHoy = d.fecha === new Date().toISOString().slice(0, 10);
-    var avisoFecha = esHoy ? '' : '<p class="tc__aviso">Último dato disponible: ' + fechaCorta(d.fecha) + '. Aún no hay dato de hoy.</p>';
-
-    card.removeAttribute('aria-busy');
-    card.innerHTML =
-      '<h2 class="etiqueta">Precio del dólar en quetzales</h2>' +
-      '<div class="tc__valor"><span class="tc__moneda">Q</span>' + d.valor.toFixed(4) + '</div>' +
-      (cambio ? '<p class="tc__cambio">' + ico(d.tendencia === 'igual' ? 'igual' : d.tendencia) + esc(cambio) + '</p>' : '') +
-      avisoFecha +
-      '<div class="tc__controles"><div class="segmentos" role="group" aria-label="Periodo de la gráfica">' +
-      '<button class="rango activo" data-r="7d" aria-pressed="true">7 días</button>' +
-      '<button class="rango" data-r="1m" aria-pressed="false">1 mes</button>' +
-      '<button class="rango" data-r="1a" aria-pressed="false">1 año</button></div></div>' +
-      '<div id="grafica-tc">' + graficaSvg(d.series['7d']) + '</div>' +
-      '<div class="sello-linea">' + sello(d.fuente, fechaCorta(d.fecha), d.fuenteUrl) + '<span class="meta">Referencia. El oficial está en <a href="' + esc(d.fuenteUrl) + '" target="_blank" rel="noopener">banguat.gob.gt</a></span></div>' +
-      '<div class="acciones"><button class="btn-secundario" id="btn-compartir-tc">' + ico('compartir') + 'Compartir</button></div>';
-
-    document.getElementById('btn-compartir-tc').addEventListener('click', function () {
-      compartir('Dólar hoy en Guatemala', 'Dólar hoy: ' + q(d.valor, 4) + (cambio ? ', ' + cambio.charAt(0).toLowerCase() + cambio.slice(1) : '') + '. Referencia Banguat, ' + fechaCorta(d.fecha), 'https://hoy.compoundclub.fyi/');
-    });
-    var botones = card.querySelectorAll('.rango');
-    for (var i = 0; i < botones.length; i++) {
-      botones[i].addEventListener('click', function () {
-        for (var j = 0; j < botones.length; j++) { botones[j].classList.remove('activo'); botones[j].setAttribute('aria-pressed', 'false'); }
-        this.classList.add('activo');
-        this.setAttribute('aria-pressed', 'true');
-        document.getElementById('grafica-tc').innerHTML = graficaSvg(d.series[this.getAttribute('data-r')]);
-      });
+    if (e.target.closest('#btn-compartir-tc') && tc) {
+      var cambio = textoCambio(tc);
+      compartir('Dólar hoy en Guatemala', 'Dólar hoy: ' + q(tc.valor, 4) + (cambio ? ', ' + cambio.charAt(0).toLowerCase() + cambio.slice(1) : '') + '. Referencia Banguat, ' + fechaCorta(tc.fecha), 'https://hoy.compoundclub.fyi/');
     }
+  });
 
-    iniciarConvertidor(d.valor, d.fecha);
-  }
-
-  // ─── Convertidor USD ⇄ GTQ ───
-  function iniciarConvertidor(tasa, fecha) {
-    var card = document.getElementById('card-convertidor');
-    var usd = document.getElementById('usd');
-    var gtq = document.getElementById('gtq');
-    card.hidden = false;
-    document.getElementById('convertidor-nota').textContent = 'Con el tipo de cambio de referencia del ' + fechaCorta(fecha) + ' (' + q(tasa, 4) + '). Los bancos y las remesadoras usan su propia tasa.';
-
+  function iniciarConvertidor(d) {
+    var usd = $('usd'), gtq = $('gtq'), tasa = d.valor;
+    $('convertidor-nota').textContent = notaConvertidor(d);
     function limpiar(v) { var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n >= 0 ? n : null; }
     usd.addEventListener('input', function () { var n = limpiar(usd.value); gtq.value = n == null ? '' : (n * tasa).toFixed(2); });
     gtq.addEventListener('input', function () { var n = limpiar(gtq.value); usd.value = n == null ? '' : (n / tasa).toFixed(2); });
-    document.getElementById('btn-swap').addEventListener('click', function () {
+    $('btn-swap').addEventListener('click', function () {
       var a = usd.value; usd.value = gtq.value; gtq.value = a;
       usd.dispatchEvent(new Event('input'));
     });
@@ -235,237 +100,62 @@
     usd.dispatchEvent(new Event('input'));
   }
 
+  json('/api/tipo-cambio').then(function (d) {
+    tc = d && d.disponible ? d : null;
+    if (!yaVino('card-tipo-cambio')) { cardTc.innerHTML = tarjetaTipoCambio(d, new Date().toISOString().slice(0, 10)); cardTc.removeAttribute('aria-busy'); }
+    if (tc) iniciarConvertidor(tc);
+  }).catch(function () {
+    if (!yaVino('card-tipo-cambio')) { cardTc.innerHTML = tarjetaTipoCambio(null); cardTc.removeAttribute('aria-busy'); }
+  });
 
-  // ─── Indicadores ───
-  var ORDEN = ['inflacion', 'tasa-lider', 'remesas', 'combustibles', 'canasta-basica'];
-  var MOSAICO_IND = { inflacion: ['tendencia', 'rojo'], 'tasa-lider': ['banco', 'jade'], remesas: ['enviar', 'oro'], combustibles: ['gasolina', 'rojo'], 'canasta-basica': ['canasta', 'oro'] };
-
-  function valorIndicador(clave, d) {
-    if (clave === 'inflacion') return d.valor.toFixed(2) + '%';
-    if (clave === 'tasa-lider') return d.valor.toFixed(2) + '%';
-    if (clave === 'remesas') return 'US$' + d.valor.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    if (clave === 'combustibles') return q(d.regular, 2);
-    if (clave === 'canasta-basica') return q(d.urbana, 2);
-    return String(d.valor);
-  }
-
-  function detalleIndicador(clave, d) {
-    if (clave === 'inflacion') return 'Acumulada en el año: ' + d.acumulada.toFixed(2).replace('-', '−') + '% · del mes: ' + d.mensual.toFixed(2).replace('-', '−') + '%';
-    if (clave === 'remesas') return 'Acumulado del año: US$' + d.acumuladoAnio.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' millones (' + ((d.acumuladoAnio / d.acumuladoAnioAnterior - 1) * 100).toFixed(1) + '% más que el año pasado)';
-    if (clave === 'combustibles') return 'Superior ' + q(d.superior, 2) + ' · Diésel ' + q(d.diesel, 2) + ' por galón';
-    if (clave === 'canasta-basica') return 'Área rural: ' + q(d.rural, 2) + ' por persona al mes';
-    if (clave === 'tasa-lider') return 'Sin cambios desde febrero de 2026';
-    return '';
-  }
-
-  function pintarIndicadores(resp) {
-    var cont = document.getElementById('lista-indicadores');
-    if (!resp || !resp.indicadores) { cont.innerHTML = '<p class="texto-2">No pudimos cargar los indicadores.</p>'; return; }
-    var html = '';
-    for (var i = 0; i < ORDEN.length; i++) {
-      var clave = ORDEN[i];
-      var d = resp.indicadores[clave];
-      if (!d) continue;
-      var periodo = /^[A-Za-zñ]+ \d{4}$/.test(d.periodo) ? d.periodo : '';
-      var sub = [periodo, d.unidad === '%' ? '' : d.unidad].filter(Boolean).join(' · ');
-      html +=
-        '<div class="fila indicador con-mosaico">' + mosaico(MOSAICO_IND[clave][0], MOSAICO_IND[clave][1]) + '<div>' +
-        '<div class="fila__cab"><span class="fila__nombre">' + esc(d.nombre) + '</span><span class="fila__valor">' + valorIndicador(clave, d) + '</span></div>' +
-        (sub ? '<div class="meta">' + esc(sub) + '</div>' : '') +
-        '<p class="fila__detalle">' + esc(detalleIndicador(clave, d)) + '</p>' +
-        '<div class="sello-linea">' + sello(d.fuente, fechaCorta(d.fecha), d.url) + (d.viejo ? '<span class="meta">Es el ' + esc(d.etiqueta) + '; aún no hay uno más reciente</span>' : '') + '</div>' +
-        '<details class="desplegable"><summary>¿Qué significa esto? ' + ico('abajo') + '</summary><p>' + esc(d.significado) + '</p></details>' +
-        '</div></div>';
-    }
-    cont.innerHTML = '<div class="filas">' + html + '</div>';
-  }
-
-  function pintarDatoDelDia(resp) {
-    var card = document.getElementById('card-dato-del-dia');
-    if (!resp || !resp.dato) { card.innerHTML = '<h2 class="etiqueta">Dato del día</h2><p class="texto-2 mt-sm">Hoy no hay dato disponible</p>'; return; }
-    var d = resp.dato;
-    card.innerHTML =
-      '<div class="dato__cab">' + mosaico('foco', 'oro') + '<h2 class="etiqueta">Dato del día</h2></div>' +
-      '<div class="dato__titulo">' + esc(d.titulo) + '</div>' +
-      '<p class="dato__texto">' + esc(d.texto) + '</p>' +
-      '<div class="sello-linea">' + sello(d.fuente, resp.fecha ? fechaCorta(resp.fecha) : '') + '<span class="meta">Cálculo propio con datos de ' + esc(d.fuente) + '</span></div>';
-  }
-
-  fetch('/api/indicadores').then(function (r) { return r.json(); }).then(pintarIndicadores).catch(function () { pintarIndicadores(null); });
-  fetch('/api/dato-del-dia').then(function (r) { return r.json(); }).then(pintarDatoDelDia).catch(function () { pintarDatoDelDia(null); });
-
+  // ─── Indicadores y dato del día ───
+  if (!yaVino('lista-indicadores')) json('/api/indicadores').then(function (r) { $('lista-indicadores').innerHTML = indicadoresHtml(r); }).catch(function () { $('lista-indicadores').innerHTML = indicadoresHtml(null); });
+  if (!yaVino('card-dato-del-dia')) json('/api/dato-del-dia').then(function (r) { $('card-dato-del-dia').innerHTML = datoDelDiaHtml(r); }).catch(function () { $('card-dato-del-dia').innerHTML = datoDelDiaHtml(null); });
 
   // ─── Noticias ───
-  // Tema de cada noticia por palabras del titular: un ícono y un color, sin cambiar el contenido
-  var TEMAS = [
-    ['Combustibles', 'gasolina', 'rojo', /gasolin|diésel|diesel|combustible|petrol|crudo|energ[ií]a|electricidad/i],
-    ['Dólar', 'billete', 'jade', /d[oó]lar|tipo de cambio|quetzal|divisa|cambiari/i],
-    ['Remesas', 'enviar', 'oro', /remesa|migra|deporta/i],
-    ['Bancos', 'banco', 'jade', /banco|sib\b|superintendencia|cr[eé]dito|tarjeta|tasa|banguat|junta monetaria|intendent/i],
-    ['Precios', 'carrito', 'rojo', /inflaci|precio|canasta|ipc|costo de vida|tortilla|ma[ií]z/i],
-    ['Empleo', 'maletin', 'oro', /empleo|trabajo|salario|sueldo|desempleo|igss|pensi/i],
-    ['Impuestos', 'recibo', 'jade', /impuesto|sat\b|tributar|fiscal|presupuesto|deuda p[uú]blica|congreso|minfin/i],
-    ['Comercio', 'barco', 'oro', /exportaci|importaci|arancel|comercio|puerto|aduana|tratado|caf[eé]|az[uú]car|banano|cardamomo/i],
-    ['Empresas', 'fabrica', 'jade', /empresa|inversi|planta|f[aá]brica|negocio|alianza|expansi|emprend/i],
-    ['Mercados', 'mercado', 'jade', /wall street|bolsa|acciones|mercado|fed\b|reserva federal|bce\b|inversor/i],
-    ['Tecnología', 'chip', 'oro', /inteligencia artificial|\bia\b|tecnolog|digital|cripto|bitcoin/i],
-    ['Vivienda', 'casa', 'rojo', /vivienda|casa|alquiler|hipotec|construcci|ciudad|urban/i],
-    ['Salud', 'salud', 'rojo', /salud|vacuna|farmac|hospital|m[eé]dic/i]
-  ];
-  function temaNoticia(n) {
-    var t = n.titulo + ' ' + (n.resumen || '');
-    for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i][3].test(t)) return TEMAS[i];
-    return n.medio === 'El País' || n.medio === 'DW' ? ['Mundo', 'mundo', 'oro'] : ['Guatemala', 'pin', 'jade'];
-  }
-  function tarjetaNoticia(n) {
-    var tema = temaNoticia(n);
-    return (
-      '<article class="tarjeta noticia">' +
-      '<div class="noticia__cab">' + mosaico(tema[1], tema[2]) + '<div><div class="noticia__tema">' + tema[0] + '</div>' +
-      sello(n.medio, n.fecha ? fechaCorta(n.fecha.slice(0, 10)) : '') + '</div></div>' +
-      '<h3 class="noticia__titulo"><a href="' + esc(n.enlace) + '" target="_blank" rel="noopener">' + esc(n.titulo) + '</a></h3>' +
-      (n.resumen ? '<p class="noticia__resumen">' + esc(n.resumen) + '</p>' : '') +
-      (n.afecta ? '<p class="noticia__afecta"><strong>Cómo te afecta:</strong> ' + esc(n.afecta) + '</p>' : '') +
-      '<div class="noticia__pie"><span class="meta">' + (n.resumen ? 'Resumen automático' : '') + '</span><span class="noticia__acciones">' +
-      '<button class="btn-texto" data-compartir="1" data-titulo="' + esc(n.titulo) + '" data-medio="' + esc(n.medio) + '" data-enlace="' + esc(n.enlace) + '">' + ico('compartir') + 'Compartir</button>' +
-      '<a class="btn-texto" href="' + esc(n.enlace) + '" target="_blank" rel="noopener">Leer en ' + esc(n.medio) + ico('externo') + '</a></span></div>' +
-      '</article>'
-    );
-  }
-
+  $('noticias-contenido').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-compartir]');
+    if (b) compartir(b.getAttribute('data-titulo'), b.getAttribute('data-titulo') + ' (' + b.getAttribute('data-medio') + ') — vía Al cambio', b.getAttribute('data-enlace'));
+  });
   function pintarNoticias(resp) {
-    var cont = document.getElementById('noticias-contenido');
-    var fecha = document.getElementById('noticias-fecha');
-    if (!resp || !resp.disponible) {
-      fecha.textContent = '';
-      cont.innerHTML = '<div class="vacio"><h2 class="vacio__titulo">Aún no hay noticias de hoy</h2><p class="vacio__texto">Las noticias se preparan cada mañana a las 6:00. Vuelve en un rato.</p></div>';
-      return;
-    }
-    fecha.textContent = 'Resumen del ' + fechaCorta(resp.fecha);
-    var html = '';
-    if (resp.guatemala && resp.guatemala.length) {
-      html += '<h2 class="titulo-seccion">Guatemala</h2>';
-      for (var i = 0; i < resp.guatemala.length; i++) html += tarjetaNoticia(resp.guatemala[i]);
-    }
-    if (resp.mundo && resp.mundo.length) {
-      html += '<h2 class="titulo-seccion">Mundo</h2>';
-      for (var j = 0; j < resp.mundo.length; j++) html += tarjetaNoticia(resp.mundo[j]);
-    }
-    cont.innerHTML = html || '<p class="texto-2">Hoy no encontramos noticias económicas.</p>';
-    var bc = cont.querySelectorAll('[data-compartir]');
-    for (var k = 0; k < bc.length; k++) bc[k].addEventListener('click', function () {
-      compartir(this.getAttribute('data-titulo'), this.getAttribute('data-titulo') + ' (' + this.getAttribute('data-medio') + ') — vía Al cambio', this.getAttribute('data-enlace'));
-    });
+    var n = noticiasHtml(resp);
+    $('noticias-fecha').textContent = n.fecha;
+    $('noticias-contenido').innerHTML = n.contenido;
   }
-
   function cargarNoticias(fecha) {
-    document.getElementById('noticias-contenido').innerHTML = '<div class="cargando">Cargando noticias…</div>';
-    fetch('/api/noticias' + (fecha ? '?fecha=' + fecha : ''))
-      .then(function (r) { return r.json(); })
-      .then(pintarNoticias)
-      .catch(function () { pintarNoticias(null); });
+    $('noticias-contenido').innerHTML = '<div class="cargando">Cargando noticias…</div>';
+    json('/api/noticias' + (fecha ? '?fecha=' + fecha : '')).then(pintarNoticias).catch(function () { pintarNoticias(null); });
   }
-
   function pintarArchivo(resp) {
     var fechas = (resp && resp.fechas) || [];
     if (fechas.length < 2) return;
-    var lista = document.getElementById('archivo-lista');
-    var html = '';
-    for (var i = 0; i < fechas.length; i++) html += '<button class="archivo__dia" data-f="' + esc(fechas[i]) + '">' + fechaCorta(fechas[i]) + '</button>';
-    lista.innerHTML = html;
-    var botones = lista.querySelectorAll('.archivo__dia');
-    for (var k = 0; k < botones.length; k++) {
-      botones[k].addEventListener('click', function () {
-        cargarNoticias(this.getAttribute('data-f'));
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-    document.getElementById('archivo-noticias').hidden = false;
+    var lista = $('archivo-lista');
+    lista.innerHTML = fechas.map(function (f) { return '<button class="archivo__dia" data-f="' + esc(f) + '">' + fechaCorta(f) + '</button>'; }).join('');
+    lista.addEventListener('click', function (e) {
+      var b = e.target.closest('.archivo__dia');
+      if (!b) return;
+      cargarNoticias(b.getAttribute('data-f'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    $('archivo-noticias').hidden = false;
   }
-
-  cargarNoticias();
-  fetch('/api/noticias/archivo').then(function (r) { return r.json(); }).then(pintarArchivo).catch(function () {});
-
+  if (!yaVino('noticias-contenido')) cargarNoticias();
+  json('/api/noticias/archivo').then(pintarArchivo).catch(function () {});
 
   // ─── Invertir ───
-  function pct(n) { return (Math.round(n * 100) / 100).toFixed(2) + '%'; }
-
-  function pintarOpciones(tipos) {
-    var html = '';
-    for (var i = 0; i < tipos.length; i++) {
-      var t = tipos[i];
-      html +=
-        '<details class="fila opcion">' +
-        '<summary><span class="fila__nombre">' + esc(t.nombre) + '</span><span class="opcion__riesgo"><i class="punto punto--' + (t.riesgo.indexOf('alto') >= 0 ? 'alto' : t.riesgo.indexOf('medio') >= 0 ? 'medio' : 'bajo') + '"></i>Riesgo ' + esc(t.riesgo) + '</span>' + ico('abajo') + '</summary>' +
-        '<p class="opcion__que">' + esc(t.queEs) + '</p>' +
-        '<dl class="datos">' +
-        '<dt>Desde</dt><dd>' + esc(t.desde) + '</dd>' +
-        '<dt>Plazo</dt><dd>' + esc(t.plazo) + '</dd>' +
-        '<dt>Riesgo</dt><dd>' + esc(t.riesgoExplicado) + '</dd>' +
-        '<dt>Liquidez</dt><dd>' + esc(t.liquidez) + '</dd>' +
-        '<dt>Quién supervisa</dt><dd>' + esc(t.supervisa) + '</dd>' +
-        '</dl>' +
-        '<div class="pros-contras"><div><strong>A favor</strong><ul>' + t.pros.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>' +
-        '<div><strong>En contra</strong><ul>' + t.contras.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div></div>' +
-        '</details>';
-    }
-    document.getElementById('lista-opciones').innerHTML = '<div class="filas">' + html + '</div>';
-  }
-
-  function enlaceAfiliado(a) {
-    if (!a || !a.url) return '';
-    return '<a class="btn-afiliado" href="' + esc(a.url) + '" target="_blank" rel="sponsored noopener">' + esc(a.texto || 'Abrir cuenta') + ico('externo') + '<span class="eti-patro">Enlace patrocinado</span></a>';
-  }
-  // Si la "fuente" es una nota y no un nombre, el sello lleva el sitio y la nota va al lado
-  function selloTasa(f) {
-    if (fuenteCorta(f.fuente).indexOf('.') > 0) return sello(f.fuente, fechaCorta(f.fecha), f.url);
-    var sitio = String(f.url).replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
-    return sello(sitio, fechaCorta(f.fecha), f.url) + '<span class="meta">' + esc(f.fuente) + '</span>';
-  }
-  function filaTasa(f, colMonto) {
-    var tasa = f.tasa === null ? '<span class="tasa tasa--na">Consultar con la entidad</span>' : '<span class="tasa">' + pct(f.tasa) + '</span><span class="tasa__tipo">' + esc(f.tipoTasa || '') + '</span>';
-    return (
-      '<div class="fila">' +
-      '<div class="fila__cab"><span class="fila__nombre">' + esc(f.entidad) + '</span><span class="fila__valor">' + tasa + '</span></div>' +
-      '<p class="fila__detalle">' + esc(f.producto) + (f[colMonto] && f[colMonto] !== '—' ? ' · ' + esc(f[colMonto]) : '') + '</p>' +
-      '<div class="sello-linea">' + selloTasa(f) + enlaceAfiliado(f.afiliado) + '</div>' +
-      '</div>'
-    );
-  }
-
-  function pintarTasas(d) {
-    document.getElementById('tasas-nota').textContent = d.tasasPlazoFijo.nota;
-    var filas = d.tasasPlazoFijo.filas.slice().sort(function (a, b) { return (b.tasa || -1) - (a.tasa || -1); });
-    document.getElementById('tabla-plazo-fijo').innerHTML = '<div class="filas">' + filas.map(function (f) { return filaTasa(f, 'monto'); }).join('') + '</div>';
-    document.getElementById('ahorro-nota').textContent = d.tasasAhorro.nota;
-    var ah = d.tasasAhorro.filas.slice().sort(function (a, b) { return b.tasa - a.tasa; });
-    document.getElementById('tabla-ahorro').innerHTML = '<div class="filas mt-md">' + ah.map(function (f) { return filaTasa(f, 'saldo'); }).join('') + '</div>';
-    var ref = d.referencia.tasaPromedioPlazo;
-    document.getElementById('isr-nota').innerHTML = esc(d.avisoIsr) + ' Como referencia, el promedio de todos los depósitos a plazo del sistema fue ' + pct(ref.valor) + ' en ' + esc(ref.periodo.toLowerCase()) + '. ' + esc(ref.nota) +
-      '<span class="sello-linea">' + sello(ref.fuente, fechaCorta(ref.fecha), ref.url) + '</span>';
-  }
-
-  function pintarBonos(b) {
-    var plazos = b.plazos.map(function (p) { return '<div class="bono"><span class="bono__plazo">' + p.anios + (p.anios === 1 ? ' año' : ' años') + '</span><span class="bono__tasa">' + pct(p.tasa) + '</span><span class="bono__vence">vence ' + fechaCorta(p.vence) + '</span></div>'; }).join('');
-    document.getElementById('card-bonos').innerHTML =
-      '<div class="tarjeta">' +
-      '<div class="bonos">' + plazos + '</div>' +
-      '<dl class="datos">' +
-      '<dt>Mínimo</dt><dd>' + q(b.minimo) + ', luego múltiplos de ' + q(b.multiplo) + '; máximo ' + q(b.maximoAnual) + ' al año</dd>' +
-      '<dt>Intereses</dt><dd>' + esc(b.pagoIntereses) + ', ' + esc(b.impuestos) + '</dd>' +
-      '<dt>Cómo se compran</dt><dd>' + esc(b.comoComprar) + '</dd>' +
-      '</dl>' +
-      '<div class="sello-linea">' + sello(b.fuente, fechaCorta(b.fecha), b.url) + '<span class="meta">Tasas de la emisión de abril de 2026; cada emisión puede cambiar. Información oficial en <a href="' + esc(b.urlOficial) + '" target="_blank" rel="noopener">minfin.gob.gt</a></span></div>' +
-      '</div>';
-  }
-
-  function pintarEstafas(n) {
-    document.getElementById('lista-estafas').innerHTML = '<div class="filas">' + n.senales.map(function (s) {
-      return '<div class="fila alerta">' + ico('alerta') + '<div><div class="alerta__titulo">' + esc(s.titulo) + '</div><p>' + esc(s.texto) + '</p></div></div>';
-    }).join('') + '</div>';
-    document.getElementById('lista-verificar').innerHTML = '<div class="tarjeta"><ol class="verificar">' + n.verificar.map(function (v) {
-      return '<li>' + esc(v.texto) + ' <a href="' + esc(v.enlace) + '" target="_blank" rel="noopener">' + esc(v.etiqueta) + '</a></li>';
-    }).join('') + '</ol></div>';
+  if (!yaVino('lista-opciones')) {
+    json('/api/inversiones').then(function (d) {
+      var t = tasasHtml(d);
+      $('lista-opciones').innerHTML = opcionesHtml(d.tipos);
+      $('tasas-nota').innerHTML = t.notaPlazo;
+      $('tabla-plazo-fijo').innerHTML = t.plazo;
+      $('ahorro-nota').innerHTML = t.notaAhorro;
+      $('tabla-ahorro').innerHTML = t.ahorro;
+      $('isr-nota').innerHTML = t.isr;
+      $('card-bonos').innerHTML = bonosHtml(d.bonos);
+      $('lista-estafas').innerHTML = estafasHtml(d.noEsInversion);
+      $('lista-verificar').innerHTML = verificarHtml(d.noEsInversion);
+    }).catch(function () { $('lista-opciones').innerHTML = '<p class="texto-2">No pudimos cargar la información.</p>'; });
   }
 
   // Calculadoras (misma lógica que src/calculadoras.js)
@@ -541,15 +231,6 @@
     })(calcs[ci][0], calcs[ci][1]);
   }
 
-  fetch('/api/inversiones').then(function (r) { return r.json(); }).then(function (d) {
-    pintarOpciones(d.tipos);
-    pintarTasas(d);
-    pintarBonos(d.bonos);
-    pintarEstafas(d.noEsInversion);
-  }).catch(function () {
-    document.getElementById('lista-opciones').innerHTML = '<p class="texto-2">No pudimos cargar la información.</p>';
-  });
-
 
   // ─── Aprende: cursos con progreso en el celular ───
   var CLAVE_PROGRESO = 'quetzal-hoy:progreso';
@@ -598,7 +279,7 @@
 
   function barra(a) { return '<div class="progreso" role="progressbar" aria-label="Avance" aria-valuenow="' + a.pct + '" aria-valuemin="0" aria-valuemax="100"><div class="progreso__relleno" style="width:' + a.pct + '%"></div></div>'; }
 
-  var PORTADA = { presupuesto: ['billetera', 'jade'], deudas: ['tijeras', 'rojo'], invertir: ['brote', 'oro'] };
+  var ICONO_CURSO = { presupuesto: 'billetera', deudas: 'tijeras', invertir: 'brote' };
   function vistaCursos() {
     var p = leerProgreso(), html = '<h1 class="titulo-pagina">Aprende</h1><p class="texto-2 mb-md">Cursos cortos y gratuitos. Tu avance se guarda en este celular.</p>';
     var cont = null;
@@ -612,9 +293,7 @@
     }
     for (var j = 0; j < cursosCache.length; j++) {
       var cu = cursosCache[j], av = avance(cu, p);
-      var pc = PORTADA[cu.id] || ['billetera', 'jade'];
-      html += '<button class="tarjeta curso" data-curso="' + cu.id + '">' +
-        '<span class="portada portada--' + pc[1] + '" aria-hidden="true">' + ico(pc[0]) + '<span class="portada__num">' + (j + 1) + '</span></span><span class="curso__cuerpo">' +
+      html += '<button class="tarjeta curso con-icono" data-curso="' + cu.id + '">' + ico(ICONO_CURSO[cu.id] || 'billetera') + '<span class="curso__cuerpo">' +
         '<span class="curso__titulo">' + esc(cu.titulo) + '</span>' +
         '<span class="curso__meta">' + cu.lecciones.length + ' lecciones · ' + esc(cu.nivel.toLowerCase()) + (cu.premium ? ' · premium' : '') + '</span>' +
         '<span class="curso__desc">' + esc(cu.descripcion) + '</span>' + etiquetaPatrocinio(cu.patrocinio) +
@@ -632,7 +311,6 @@
   function vistaCurso(cid) {
     var c = cursoPorId(cid), p = leerProgreso(), a = avance(c, p);
     var html = '<button class="volver" id="volver-cursos">' + ico('atras') + 'Todos los cursos</button>' +
-      '<div class="portada portada--' + (PORTADA[c.id] || ['', 'jade'])[1] + ' curso-cabecera" aria-hidden="true">' + ico((PORTADA[c.id] || ['billetera'])[0]) + '</div>' +
       '<h1 class="titulo-pagina">' + esc(c.titulo) + '</h1><p class="texto-2">' + esc(c.descripcion) + '</p>' + etiquetaPatrocinio(c.patrocinio) +
       '<div class="mt-md">' + barra(a) + '<div class="curso__avance">' + a.hechas + ' de ' + a.total + ' lecciones terminadas</div></div>' +
       '<div class="filas lecciones mt-md">';
@@ -715,66 +393,56 @@
   var autorCursos = 'Leo Marín';
   function pintarAprende(html) { document.getElementById('aprende-vista').innerHTML = html; }
   fetch('/api/cursos').then(function (r) { return r.json(); }).then(function (d) { cursosCache = d.cursos; premiumCfg = d.premium || premiumCfg; autorCursos = d.autor || autorCursos; vistaCursos(); })
-    .catch(function () { pintarAprende('<h1 class="titulo-pagina">Aprende</h1><p class="texto-2">No pudimos cargar los cursos. Inténtalo de nuevo con conexión.</p>'); });
+    .catch(function (err) { console.error('Aprende:', err); pintarAprende('<h1 class="titulo-pagina">Aprende</h1><p class="texto-2">No pudimos cargar los cursos. Inténtalo de nuevo con conexión.</p>'); });
 
-  fetch('/api/tipo-cambio')
-    .then(function (r) { return r.json(); })
-    .then(pintarTipoCambio)
-    .catch(function () { pintarTipoCambio(null); });
-
-  // ─── Instalación: botón automático si el navegador lo ofrece; si no, pasos según el teléfono ───
-  var instalar = document.getElementById('instalar');
-  var btnInstalar = document.getElementById('btn-instalar');
-  var pasosInstalar = document.getElementById('instalar-pasos');
+  // ─── Instalar: barra pequeña sobre las pestañas, desde la segunda visita ───
+  // Nunca tapa el contenido: mientras se ve, la página suma su alto abajo para poder ver todo.
+  var CLAVE_VISITAS = 'quetzal-hoy:visitas', CLAVE_CERRADA = 'quetzal-hoy:instalar';
+  var barraInstalar = $('instalar'), textoBarra = $('instalar-texto'), btnInstalar = $('btn-instalar');
   var installEvent = null;
+  function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function contarVisita() {
+    var n = parseInt(leer(CLAVE_VISITAS) || '0', 10) || 0;
+    try { if (!sessionStorage.getItem('quetzal-hoy:sesion')) { sessionStorage.setItem('quetzal-hoy:sesion', '1'); n++; guardar(CLAVE_VISITAS, String(n)); } } catch (e) {}
+    return n;
+  }
+  var visitas = contarVisita();
   function yaInstalada() {
     return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true || location.search.indexOf('source=pwa') >= 0 || location.search.indexOf('source=twa') >= 0;
   }
-  function instalacionOculta() { try { return localStorage.getItem('quetzal-hoy:instalar') === 'no'; } catch (e) { return false; } }
-  function pasosSegunTelefono() {
+  function sistema() {
     var ua = navigator.userAgent || '';
-    var iOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    if (iOS) {
-      var safari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
-      return (safari ? [] : ['Abre esta página en <strong>Safari</strong> (en otros navegadores de iPhone no se puede instalar).']).concat([
-        'Toca el botón <strong>Compartir</strong> ' + ico('compartirIos') + ' (el cuadrado con la flecha hacia arriba, abajo en el centro).',
-        'Baja en la lista y toca <strong>"Agregar a pantalla de inicio"</strong>.',
-        'Toca <strong>Agregar</strong>. El ícono verde queda en tu pantalla.'
-      ]);
-    }
-    if (/Android/i.test(ua)) {
-      var chrome = /Chrome/i.test(ua) && !/EdgA|OPR|SamsungBrowser/i.test(ua);
-      return [
-        'Toca el menú ' + ico('menu') + ' (los tres puntos, arriba a la derecha' + (chrome ? '' : ' de Chrome') + ').',
-        'Toca <strong>"Agregar a pantalla principal"</strong> o <strong>"Instalar app"</strong>.',
-        'Confirma con <strong>Instalar</strong>. El ícono verde queda en tu pantalla.'
-      ];
-    }
-    return ['En el celular, abre <strong>hoy.compoundclub.fyi</strong> y usa "Agregar a pantalla de inicio" del menú del navegador.'];
+    if (/Android/i.test(ua)) return 'android';
+    // iPad con iPadOS se presenta como Mac con pantalla táctil
+    if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) return /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua) ? 'ios' : 'ios-otro';
+    return 'otro';
   }
-  function mostrarInstalar() {
-    if (yaInstalada() || instalacionOculta()) return;
-    if (installEvent) { btnInstalar.hidden = false; pasosInstalar.hidden = true; }
-    else { pasosInstalar.innerHTML = pasosSegunTelefono().map(function (p) { return '<li>' + p + '</li>'; }).join(''); pasosInstalar.hidden = false; btnInstalar.hidden = true; }
-    instalar.hidden = false;
+  function mostrarBarra() {
+    if (yaInstalada() || leer(CLAVE_CERRADA) === 'no' || visitas < 2) return;
+    var so = sistema();
+    if (installEvent) { textoBarra.textContent = 'Instala Al cambio en tu celular'; btnInstalar.hidden = false; }
+    else if (so === 'ios') { textoBarra.innerHTML = 'Para instalar: toca Compartir ' + ico('compartirIos') + ' y luego <strong>Agregar a inicio</strong>'; btnInstalar.hidden = true; }
+    else if (so === 'ios-otro') { textoBarra.innerHTML = 'Para instalar, abre esta página en <strong>Safari</strong>'; btnInstalar.hidden = true; }
+    else if (so === 'android') { textoBarra.innerHTML = 'Para instalar: menú ' + ico('menu') + ' y luego <strong>Instalar app</strong>'; btnInstalar.hidden = true; }
+    else return; // en computadora solo se ofrece si el navegador trae el botón de instalar
+    barraInstalar.hidden = false;
+    document.body.classList.add('con-barra-instalar');
   }
+  function ocultarBarra() { barraInstalar.hidden = true; document.body.classList.remove('con-barra-instalar'); }
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     installEvent = e;
-    mostrarInstalar();
+    mostrarBarra();
   });
   btnInstalar.addEventListener('click', function () {
     if (!installEvent) return;
     installEvent.prompt();
-    installEvent.userChoice.then(function (r) { if (r && r.outcome === 'accepted') instalar.hidden = true; });
+    installEvent.userChoice.then(function (r) { if (r && r.outcome === 'accepted') ocultarBarra(); });
   });
-  document.getElementById('btn-instalar-cerrar').addEventListener('click', function () {
-    instalar.hidden = true;
-    try { localStorage.setItem('quetzal-hoy:instalar', 'no'); } catch (e) {}
-  });
-  window.addEventListener('appinstalled', function () { instalar.hidden = true; });
-  // Si en 2 s el navegador no ofreció instalar, mostramos los pasos manuales
-  setTimeout(mostrarInstalar, 2000);
+  $('btn-instalar-cerrar').addEventListener('click', function () { ocultarBarra(); guardar(CLAVE_CERRADA, 'no'); });
+  window.addEventListener('appinstalled', ocultarBarra);
+  if (document.readyState === 'complete') mostrarBarra(); else window.addEventListener('load', mostrarBarra);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function () {});

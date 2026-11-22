@@ -79,8 +79,8 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
   <meta property="og:image" content="https://${esc(config.dominio)}/og-image.png">
   <meta property="og:url" content="${esc(url)}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#06422f" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d3a2a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1411" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">

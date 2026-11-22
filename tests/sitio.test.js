@@ -49,7 +49,7 @@ test('index tiene las 4 pestañas, el service worker y Open Graph', () => {
   for (const t of ['Hoy', 'Noticias', 'Invertir', 'Aprende']) {
     assert.match(html, new RegExp(`id="tab-${t.toLowerCase()}"`), `falta pestaña ${t}`);
   }
-  assert.match(html, /<script src="\/app\.js">/);
+  assert.match(html, /<script type="module" src="\/app\.js">/);
   const app = readFileSync(join(publico, 'app.js'), 'utf8');
   assert.match(app, /serviceWorker\.register\('\/sw\.js'\)/);
   assert.match(html, /property="og:image" content="\/og-image\.png"/);
@@ -57,7 +57,7 @@ test('index tiene las 4 pestañas, el service worker y Open Graph', () => {
 });
 
 test('la página principal pesa menos de 150 KB sin imágenes', () => {
-  const peso = ['index.html', 'styles.css', 'sw.js', 'manifest.webmanifest']
+  const peso = ['index.html', 'styles.css', 'sw.js', 'manifest.webmanifest', 'app.js', 'render.js']
     .reduce((s, f) => s + readFileSync(join(publico, f)).length, 0);
   assert.ok(peso < 150 * 1024, `pesa ${peso} bytes`);
 });
@@ -66,4 +66,13 @@ test('robots apunta al sitemap del dominio configurado', () => {
   const robots = readFileSync(join(publico, 'robots.txt'), 'utf8');
   assert.match(robots, new RegExp(`https://${config.dominio}/sitemap.xml`));
   assert.ok(!existsSync(join(publico, 'sitemap.xml')), 'el sitemap es dinámico (Worker), no estático');
+});
+
+test('app.js no repite nombres de funciones o variables (una tapaba a otra y rompía Aprende)', () => {
+  const app = readFileSync(join(publico, 'app.js'), 'utf8');
+  const nombres = [...app.matchAll(/^ {2}(?:function ([A-Za-z_$][\w$]*)\s*\(|var ([A-Za-z_$][\w$]*)\s*=)/gm)].map((m) => m[1] || m[2]);
+  const multiples = [...app.matchAll(/^ {2}var ([^;]+);/gm)].flatMap((m) => m[1].split(/,\s*(?=[A-Za-z_$][\w$]*\s*=)/).slice(1).map((p) => p.split('=')[0].trim()));
+  const todos = [...nombres, ...multiples];
+  const repetidos = todos.filter((n, i) => todos.indexOf(n) !== i);
+  assert.deepEqual(repetidos, [], `nombres repetidos: ${repetidos.join(', ')}`);
 });
