@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-11-03",
+  "actualizado": "2026-11-22",
   "avisoIsr": "En Guatemala, los intereses que pagan bancos y cooperativas tienen una retención del 10% de ISR. Las tasas se muestran antes de esa retención, tal como las publica cada entidad.",
   "tipos": [
     {
@@ -84,37 +84,47 @@
   "tasasPlazoFijo": {
     "nota": "Tasa anual publicada para un depósito de Q5,000 a Q50,000 a 1 año (365 días), antes del ISR. Las tasas cambian seguido: verifica las condiciones con la entidad antes de invertir.",
     "filas": [
-      { "entidad": "Banco Azteca", "tipo": "banco", "producto": "Inversión Azteca a Plazo", "tasa": 6.25, "tipoTasa": "efectiva", "monto": "Q5,000 a Q299,999", "plazo": "364 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Banco de Antigua", "tipo": "banco", "producto": "Certificado de Depósito a Plazo", "tasa": 6.25, "tipoTasa": "nominal", "monto": "Q3,000 a Q99,999", "plazo": "365 a 729 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Cooperativa UPA", "tipo": "cooperativa", "producto": "Plazo fijo", "tasa": 6.5, "tipoTasa": "nominal", "monto": "Cualquier monto", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Cooperativa ACREDICOM", "tipo": "cooperativa", "producto": "Ahorro a plazo fijo", "tasa": 6.0, "tipoTasa": "nominal", "monto": "Cualquier monto", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Cooperativa COPAR", "tipo": "cooperativa", "producto": "Cuenta a plazo fijo", "tasa": 5.75, "tipoTasa": "nominal", "monto": "Q5,000 a Q25,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Banco Internacional", "tipo": "banco", "producto": "e-Plazo (digital)", "tasa": 5.5, "tipoTasa": "efectiva", "monto": "Q5,000 a Q10 millones", "plazo": "360 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Bantrab", "tipo": "banco", "producto": "CDP Bienestar +", "tasa": 5.05, "tipoTasa": "nominal", "monto": "Q5,000 a Q49,999", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "BAC Credomatic", "tipo": "banco", "producto": "CDP (canal digital)", "tasa": 4.9, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Azteca", "tipo": "banco", "producto": "Inversión Azteca Creciente", "tasa": 6.5, "tipoTasa": "efectiva", "monto": "Desde Q1,000", "plazo": "360 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco de Antigua", "tipo": "banco", "producto": "Certificado de Depósito a Plazo", "tasa": 6.25, "tipoTasa": "nominal", "monto": "Q3,000 a Q99,999", "plazo": "365 a 729 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa UPA", "tipo": "cooperativa", "producto": "Plazo fijo", "tasa": 6.5, "tipoTasa": "nominal", "monto": "Cualquier monto", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa ACREDICOM", "tipo": "cooperativa", "producto": "Ahorro a plazo fijo", "tasa": 6.0, "tipoTasa": "nominal", "monto": "Cualquier monto", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Cooperativa COPAR", "tipo": "cooperativa", "producto": "Cuenta a plazo fijo", "tasa": 6.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q25,000", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Internacional", "tipo": "banco", "producto": "e-Plazo (digital)", "tasa": 5.5, "tipoTasa": "efectiva", "monto": "Q5,000 a Q10 millones", "plazo": "360 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Bantrab", "tipo": "banco", "producto": "CDP Bienestar +", "tasa": 5.05, "tipoTasa": "nominal", "monto": "Q5,000 a Q49,999", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "BAC Credomatic", "tipo": "banco", "producto": "CDP (canal digital)", "tasa": 4.9, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
       { "entidad": "Cooperativa Guadalupana", "tipo": "cooperativa", "producto": "Mi Plazo Fijo", "tasa": 4.05, "tipoTasa": "nominal", "monto": "Q1,000 a Q50,000", "plazo": "365 días", "fecha": "2026-11-03", "fuente": "Sitio de la cooperativa", "url": "https://www.cooperativaguadalupana.com.gt/ahorro/mi-plazo-fijo/" },
-      { "entidad": "Banco Ficohsa", "tipo": "banco", "producto": "Inversión a Plazo Fijo", "tasa": 3.75, "tipoTasa": "nominal", "monto": "Q1,000 a Q49,999", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Banco Promerica", "tipo": "banco", "producto": "Depósito a Plazo Fijo", "tasa": 3.55, "tipoTasa": "efectiva", "monto": "Q2,000 a Q24,999", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Banco G&T Continental", "tipo": "banco", "producto": "Certificado de Depósito a Plazo", "tasa": 2.75, "tipoTasa": "nominal", "monto": "Q5,000 a Q49,999", "plazo": "365 días", "fecha": "2026-08-31", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo/gtc-plazo-fijo-gtq" },
-      { "entidad": "Banco Agromercantil (BAM)", "tipo": "banco", "producto": "CDP", "tasa": 2.0, "tipoTasa": "efectiva", "monto": "Q5,000 a Q49,999", "plazo": "360 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "Banco Industrial", "tipo": "banco", "producto": "Plazo Fijo", "tasa": 1.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
-      { "entidad": "CHN", "tipo": "banco", "producto": "Ahorro Plazo Fijo", "tasa": 1.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-09-08", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Ficohsa", "tipo": "banco", "producto": "Inversión a Plazo Fijo", "tasa": 3.75, "tipoTasa": "nominal", "monto": "Q1,000 a Q49,999", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Promerica", "tipo": "banco", "producto": "Depósito a Plazo Fijo", "tasa": 3.55, "tipoTasa": "efectiva", "monto": "Q2,000 a Q24,999", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco G&T Continental", "tipo": "banco", "producto": "Certificado de Depósito a Plazo", "tasa": 2.75, "tipoTasa": "nominal", "monto": "Q5,000 a Q49,999", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Agromercantil (BAM)", "tipo": "banco", "producto": "CDP", "tasa": 2.0, "tipoTasa": "efectiva", "monto": "Q5,000 a Q49,999", "plazo": "360 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Industrial", "tipo": "banco", "producto": "Plazo Fijo", "tasa": 1.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "CHN", "tipo": "banco", "producto": "Ahorro Plazo Fijo", "tasa": 1.5, "tipoTasa": "nominal", "monto": "Q5,000 a Q100,000", "plazo": "365 días", "fecha": "2026-11-20", "fuente": "tasas.gt (lee el tarifario del banco)", "url": "https://www.tasas.gt/plazo-fijo" },
       { "entidad": "Banrural", "tipo": "banco", "producto": "Depósito a plazo", "tasa": null, "tipoTasa": null, "monto": "—", "plazo": "—", "fecha": "2026-11-03", "fuente": "No encontramos la tasa publicada en línea", "url": "https://www.banrural.com.gt/" },
-      { "entidad": "Cooperativa El Bienestar", "tipo": "cooperativa", "producto": "Ahorro a plazo fijo", "tasa": null, "tipoTasa": null, "monto": "Desde Q1,000", "plazo": "90 a 730 días", "fecha": "2026-11-03", "fuente": "Publica solo un máximo (\"hasta 7.75%\"), sin tabla", "url": "https://cooperativaelbienestar.com.gt/index.php/ahorros/ahorro-a-plazo-fijo" }
+      { "entidad": "Cooperativa El Bienestar", "tipo": "cooperativa", "producto": "Ahorro a plazo fijo", "tasa": null, "tipoTasa": null, "monto": "Desde Q1,000", "plazo": "90 a 730 días", "fecha": "2026-11-03", "fuente": "Publica solo un máximo (\"hasta 7.75%\"), sin tabla", "url": "https://cooperativaelbienestar.com.gt/index.php/ahorros/ahorro-a-plazo-fijo" },
+      { "entidad": "Cooperativa ENGADI", "tipo": "cooperativa", "producto": "Depósitos a plazo fijo", "tasa": 4.75, "tipoTasa": "nominal", "monto": "Q10,000 a Q24,999", "plazo": "365 días", "fuente": "tasas.gt (lee el tarifario de la cooperativa)", "fecha": "2026-11-20", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Cuscatlán", "tipo": "banco", "producto": "Depósito a Plazo", "tasa": 3.5, "tipoTasa": "efectiva", "monto": "Q1,000 a Q25,000", "plazo": "365 días", "fuente": "tasas.gt (lee el tarifario del banco)", "fecha": "2026-11-20", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Banco Nexa", "tipo": "banco", "producto": "Depósito a Plazo Fijo", "tasa": 3.25, "tipoTasa": "nominal", "monto": "Q500 a Q24,999", "plazo": "365 días", "fuente": "tasas.gt (lee el tarifario del banco)", "fecha": "2026-11-20", "url": "https://www.tasas.gt/plazo-fijo" },
+      { "entidad": "Vivibanco", "tipo": "banco", "producto": "Certificado Plazo Fijo Plus", "tasa": 3.0, "tipoTasa": "nominal", "monto": "Q3,000 a Q20,000", "plazo": "365 días", "fuente": "tasas.gt (lee el tarifario del banco)", "fecha": "2026-11-20", "url": "https://www.tasas.gt/plazo-fijo" }
     ]
   },
   "tasasAhorro": {
-    "nota": "Cuentas de ahorro con el dinero siempre disponible, tasa anual publicada antes del ISR, verificado el 8 de septiembre de 2026 en tasas.gt (lee el tarifario de cada banco).",
+    "nota": "Cuentas de ahorro con el dinero siempre disponible, tasa anual publicada antes del ISR, verificado el 20 de noviembre de 2026 en tasas.gt (lee el tarifario de cada banco).",
     "filas": [
-      { "entidad": "Banco Multimoney", "producto": "Cuenta de Ahorro Digital", "tasa": 5.0, "saldo": "Desde Q0.01", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "Banco Industrial", "producto": "Planes de Inversión", "tasa": 4.5, "saldo": "Desde Q50", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "CHN", "producto": "Depósito de Ahorro Visionario", "tasa": 4.0, "saldo": "Cualquier monto", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "Cooperativa UPA", "producto": "Ahorro Disponible", "tasa": 4.0, "saldo": "Cualquier monto", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "Banco Internacional", "producto": "Ahorro e-Savings", "tasa": 3.0, "saldo": "Desde Q1,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "G&T Continental", "producto": "Ahorro Preferente", "tasa": 3.0, "saldo": "Desde Q5,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "Bantrab", "producto": "BT La Colmenita", "tasa": 2.5, "saldo": "Desde Q50", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "BAC Credomatic", "producto": "Ahorro Alcanza", "tasa": 2.0, "saldo": "Q5,000 a Q300,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
-      { "entidad": "Banrural", "producto": "Cuenta Amigo Crece", "tasa": 1.0, "saldo": "Hasta Q250,000", "fecha": "2026-09-08", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" }
+      { "entidad": "Banco Agromercantil (BAM)", "producto": "Cuenta Nequi", "tasa": 8.0, "saldo": "Hasta Q200,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Bantrab", "producto": "La Colmenita MLB", "tasa": 5.0, "saldo": "Desde Q50", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Multimoney", "producto": "Cuenta de Ahorro Digital", "tasa": 5.0, "saldo": "Desde Q0.01", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "CHN", "producto": "Depósito de Ahorro Visionario", "tasa": 4.0, "saldo": "Cualquier monto", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Cooperativa UPA", "producto": "Ahorro Disponible", "tasa": 4.0, "saldo": "Cualquier monto", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Ficohsa", "producto": "Cuenta Ahorro Siempre", "tasa": 3.75, "saldo": "Desde Q1,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco de Antigua", "producto": "Ahorro Corriente", "tasa": 3.0, "saldo": "Desde Q250", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "G&T Continental", "producto": "Ahorro Preferente", "tasa": 3.0, "saldo": "Desde Q5,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Internacional", "producto": "Ahorro e-Savings", "tasa": 3.0, "saldo": "Desde Q1,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Cooperativa Ecosaba", "producto": "Ahorro Disponible", "tasa": 3.0, "saldo": "Cualquier monto", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Vivibanco", "producto": "Cuenta ViviAhorro Preferida", "tasa": 2.5, "saldo": "Q2,500 a Q10,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Promerica", "producto": "Cuenta Ahorro Tasa Alta", "tasa": 2.0, "saldo": "Q1,000 a Q24,999", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "BAC Credomatic", "producto": "Ahorro Alcanza", "tasa": 2.0, "saldo": "Q5,000 a Q300,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banco Industrial", "producto": "Ahorro SOS", "tasa": 1.5, "saldo": "Desde Q500", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" },
+      { "entidad": "Banrural", "producto": "Cuenta Amigo Crece", "tasa": 1.0, "saldo": "Hasta Q250,000", "fecha": "2026-11-20", "fuente": "tasas.gt", "url": "https://www.tasas.gt/ahorro" }
     ]
   },
   "bonos": {
@@ -137,7 +147,14 @@
     "urlOficial": "https://www.minfin.gob.gt/"
   },
   "referencia": {
-    "tasaPromedioPlazo": { "valor": 6.84, "periodo": "Diciembre 2025", "fecha": "2026-02-15", "fuente": "Superintendencia de Bancos, informe a diciembre de 2025", "url": "https://www.sib.gob.gt/wp-content/uploads/04-Informe-a-diciembre-2025.pdf", "nota": "Promedio ponderado de todos los depósitos a plazo del sistema; los montos grandes suben el promedio." }
+    "tasaPromedioPlazo": {
+      "valor": 6.84,
+      "periodo": "Diciembre 2025",
+      "fecha": "2026-02-15",
+      "fuente": "Superintendencia de Bancos, informe a diciembre de 2025",
+      "url": "https://www.sib.gob.gt/wp-content/uploads/04-Informe-a-diciembre-2025.pdf",
+      "nota": "Promedio ponderado de todos los depósitos a plazo del sistema; los montos grandes suben el promedio."
+    }
   },
   "noEsInversion": {
     "senales": [

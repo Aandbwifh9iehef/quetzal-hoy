@@ -5,6 +5,7 @@ import { parsearRemesas, resumirRemesas, anotarAntiguedad, diasDesde } from '../
 
 const html = new TextDecoder('latin1').decode(readFileSync(new URL('./fixtures/banguat-remesas.htm', import.meta.url)));
 const indicadores = JSON.parse(readFileSync(new URL('../data/indicadores.json', import.meta.url), 'utf8'));
+const fijos = JSON.parse(readFileSync(new URL('./fixtures/indicadores-2026-11-03.json', import.meta.url), 'utf8'));
 
 test('parsea la tabla real de remesas del Banguat', () => {
   const t = parsearRemesas(html);
@@ -42,11 +43,11 @@ test('todos los indicadores tienen valor, fecha, fuente, url y significado', () 
 });
 
 test('anotarAntiguedad marca "dato de <mes>" pasados 45 días', () => {
-  const a = anotarAntiguedad(indicadores.indicadores, '2026-11-03');
+  const a = anotarAntiguedad(fijos.indicadores, '2026-11-03');
   assert.equal(a.combustibles.viejo, false);
   assert.equal(a.combustibles.etiqueta, null);
   assert.equal(a['tasa-lider'].viejo, false);
-  const b = anotarAntiguedad(indicadores.indicadores, '2026-12-20');
+  const b = anotarAntiguedad(fijos.indicadores, '2026-12-20');
   assert.equal(b.inflacion.viejo, true);
   assert.equal(b.inflacion.etiqueta, 'dato de septiembre');
   assert.equal(b['tasa-lider'].etiqueta, 'dato de septiembre');

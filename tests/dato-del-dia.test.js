@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { PLANTILLAS, construirContexto, todosLosDatos, datoDelDia, factorInflacion } from '../src/dato-del-dia.js';
 import { construirRespuesta } from '../src/tipo-cambio.js';
 
-const indicadores = JSON.parse(readFileSync(new URL('../data/indicadores.json', import.meta.url), 'utf8'));
+// Copia fija de los datos del 3 nov 2026: los cálculos esperados no cambian con la revisión mensual
+const indicadores = JSON.parse(readFileSync(new URL('./fixtures/indicadores-2026-11-03.json', import.meta.url), 'utf8'));
 const historial = JSON.parse(readFileSync(new URL('../data/tipo-cambio-historial.json', import.meta.url), 'utf8')).datos;
 const tipoCambio = construirRespuesta(historial);
 const ctx = construirContexto({ indicadores, tipoCambio, hoyIso: '2026-11-03' });

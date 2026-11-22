@@ -37,8 +37,9 @@ test('las páginas de indicadores se generan con datos reales, fuente y JSON-LD'
     revisar(h, INDICADORES_SEO[clave].ruta);
     assert.match(h, new RegExp(`href="${indicadores[clave].url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`), `${clave}: enlace a la fuente`);
   }
-  assert.match(paginaIndicador('inflacion', indicadores.inflacion, config), /4\.69%/);
-  const vieja = paginaIndicador('inflacion', anotarAntiguedad(leer('data/indicadores.json').indicadores, '2027-01-15').inflacion, config);
+  const fijos = leer('tests/fixtures/indicadores-2026-11-03.json').indicadores;
+  assert.match(paginaIndicador('inflacion', anotarAntiguedad(fijos, '2026-11-03').inflacion, config), /4\.69%/);
+  const vieja = paginaIndicador('inflacion', anotarAntiguedad(fijos, '2027-01-15').inflacion, config);
   assert.match(vieja, /Dato de septiembre/);
   revisar(paginaTipoCambio({ disponible: false }, config), INDICADORES_SEO['tipo-cambio'].ruta);
 });

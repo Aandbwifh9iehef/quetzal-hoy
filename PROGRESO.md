@@ -268,3 +268,23 @@
   gráfico destacado (`android/grafico-destacado.png`, ahora lo genera `scripts/iconos.mjs`; se borró el
   `.svg` viejo) y las capturas de `android/capturas/` (780×1560, tomadas del sitio publicado con
   `node scripts/capturas.mjs https://hoy.compoundclub.fyi android/capturas play`).
+- 22 nov 2026 (revisión mensual): indicadores. Inflación de octubre 4.38% (acumulada 3.99%, mensual
+  −0.18%) y canasta básica de octubre Q986.95 urbana / Q767.51 rural, del INE publicadas el 9 nov (el
+  PDF del INE no se puede abrir desde aquí; las cifras coinciden en Prensa Libre, Soy502 y Prensa Latina,
+  que citan el informe del INE). Combustibles: tabla oficial del MEM del 16 nov (superior Q31.47, regular
+  Q28.96, diésel Q40.06); algunos medios publicaron otras cifras, se usó la del MEM. Remesas de octubre
+  (US$2,469.2 millones) con `node scripts/indicadores.js`. Tasa líder sin cambios (3.50%); la próxima
+  sesión de la Junta Monetaria es el 25 nov 2026. El valor inicial de la calculadora de inflación pasó a
+  4.38%.
+- 22 nov 2026 (revisión mensual): tasas de Invertir verificadas en tasas.gt el 20 nov. Plazo fijo: COPAR
+  5.75% → 6.50%; Azteca pasa a su mejor producto a 1 año ("Inversión Azteca Creciente", 6.50% efectiva,
+  desde Q1,000); se agregan ENGADI, Cuscatlán, Nexa y Vivibanco; G&T pasa a la tabla general de
+  tasas.gt. Ahorro: se muestra el mejor producto sin plazo de cada entidad. BAM "Cuenta Nequi" (8.00%) y
+  Bantrab "La Colmenita MLB" (5.00%) suben al principio; se agregan Ficohsa, Antigua, Ecosaba, Vivibanco
+  y Promerica. Banco Industrial "Planes de Inversión" ahora solo anuncia un máximo ("hasta 4.50%"), así
+  que se cambió por "Ahorro SOS" (1.50%). Las cuentas con plazo (BAC Incrementa, ahorro programado) no
+  entran porque la lista es de dinero siempre disponible.
+- 22 nov 2026 (revisión mensual): las pruebas que esperan cifras exactas (dato del día, antigüedad,
+  página de inflación) usan ahora una copia fija, `tests/fixtures/indicadores-2026-11-03.json`, para que
+  actualizar los datos cada mes no las rompa. La prueba que valida campos sigue leyendo los datos reales.
+  Caché del service worker v18.
