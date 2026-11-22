@@ -49,6 +49,8 @@
   --ancho-max: 1120px;
   --ancho-lectura: 680px;
 
+  --sombra-flotante: 0 8px 24px rgba(23, 32, 27, 0.14);
+
   --curva: cubic-bezier(0.22, 1, 0.36, 1);
   --rapido: 150ms;
   --entrada: 360ms;
@@ -70,6 +72,7 @@
     --acento-suave: rgba(95, 191, 148, 0.12);
     --mal: #f08b81;
     --bien: #5fbf94;
+    --sombra-flotante: 0 8px 24px rgba(0, 0, 0, 0.5);
     color-scheme: dark;
   }
 }
@@ -139,6 +142,7 @@ em { font-style: normal; font-weight: 500; }
 .meta { font-size: var(--t-meta); color: var(--texto-3); }
 .lede { font-size: var(--t-tarjeta); color: var(--texto-2); }
 .cargando { color: var(--texto-3); font-size: var(--t-2); padding: var(--s4) 0; }
+.esqueleto { color: transparent !important; background: var(--superficie-2); border-color: transparent !important; border-radius: var(--r-sello); }
 .mt-sm { margin-top: var(--s2); } .mt-md { margin-top: var(--s4); } .mt-lg { margin-top: var(--s8); }
 .mb-md { margin-bottom: var(--s4); }
 .texto-centro { text-align: center; }
@@ -240,8 +244,14 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
 }
 .aviso-legal--arriba { margin: 0 0 var(--s5); padding: var(--s3) var(--s4); border: 0; border-radius: var(--r-control); background: var(--superficie-2); }
 
-/* ─── Instalar ─── */
-.instalar { margin-bottom: var(--s5); }
+/* ─── Instalar: tarjeta flotante sobre la barra, no empuja el contenido ─── */
+.instalar {
+  position: fixed; z-index: 30;
+  left: var(--s3); right: var(--s3);
+  bottom: calc(var(--barra) + env(safe-area-inset-bottom) + var(--s3));
+  border-color: var(--linea-fuerte); box-shadow: var(--sombra-flotante);
+  animation: entrar var(--entrada) var(--curva);
+}
 .instalar__cab { display: flex; align-items: center; gap: var(--s3); }
 .instalar__cab img { width: 44px; height: 44px; border-radius: var(--r-control); }
 .instalar__tit { font-weight: 500; }
@@ -499,6 +509,7 @@ details.desplegable > p, details.desplegable > div { margin-top: var(--s2); }
   .nav-btn { flex-direction: row; gap: var(--s2); padding: 0 var(--s3); border-radius: var(--r-control); font-size: var(--t-2); color: var(--texto-2); }
   .nav-btn.activo { background: var(--superficie); box-shadow: 0 0 0 1px var(--linea); }
   .columnas--parejas > * + *, .columnas > .col + .col { margin-top: 0; }
+  .instalar { left: auto; right: var(--s6); bottom: var(--s6); width: 400px; }
   .cabecera__fecha { display: none; }
   .main { padding: var(--s4) var(--s6) var(--s16); }
   .pie { padding: var(--s4) var(--s6) var(--s8); }

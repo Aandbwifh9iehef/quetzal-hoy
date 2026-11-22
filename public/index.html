@@ -60,9 +60,15 @@
       <h1 class="titulo-pagina">Hoy en Guatemala</h1>
       <div class="columnas">
         <div class="col">
-          <div class="tarjeta tarjeta--tc" id="card-tipo-cambio">
-            <h2 class="etiqueta">Precio del dólar</h2>
-            <div class="cargando">Cargando dato…</div>
+          <!-- Mientras llega el dato, la tarjeta ya ocupa su lugar para que nada salte -->
+          <div class="tarjeta tarjeta--tc" id="card-tipo-cambio" aria-busy="true">
+            <h2 class="etiqueta">Precio del dólar en quetzales</h2>
+            <div class="tc__valor"><span class="tc__moneda">Q</span><span class="esqueleto">7.0000</span></div>
+            <p class="tc__cambio"><span class="esqueleto">Cargando el dato de hoy</span></p>
+            <div class="tc__controles" aria-hidden="true"><div class="segmentos"><span class="rango activo">7 días</span><span class="rango">1 mes</span><span class="rango">1 año</span></div></div>
+            <div class="grafica" aria-hidden="true"><div class="grafica__area"></div><div class="grafica__x"><span>&nbsp;</span></div></div>
+            <div class="sello-linea" aria-hidden="true"><span class="sello esqueleto">Banguat · 22 nov 2026</span><span class="meta esqueleto">Referencia. El oficial está en banguat.gob.gt</span></div>
+            <div class="acciones" aria-hidden="true"><span class="btn-secundario esqueleto">Compartir</span></div>
           </div>
 
           <div class="tarjeta" id="card-convertidor">
@@ -80,7 +86,7 @@
                 <input type="number" inputmode="decimal" id="gtq" placeholder="0" min="0" step="any">
               </label>
             </div>
-            <p class="texto-2 mt-md" id="convertidor-nota">Se activa con el tipo de cambio del día</p>
+            <p class="texto-2 mt-md" id="convertidor-nota">Se activa con el tipo de cambio de referencia del día. Los bancos y las remesadoras usan su propia tasa.</p>
           </div>
         </div>
 

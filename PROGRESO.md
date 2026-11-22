@@ -263,7 +263,7 @@
 - 22 nov 2026 (fase U): no se hizo el video de historia del punto 10 porque esta Mac no tiene Playwright
   ni ffmpeg. En su lugar, `docs/unslop/antes-despues.png` con Hoy antes y después lado a lado. Las
   capturas se toman con `scripts/capturas.mjs` (Chrome sin ventana, sin dependencias).
-- 22 nov 2026 (fase U): caché del service worker v15 → v16.
+- 22 nov 2026 (fase U): caché del service worker v15 → v17 (v16 salió en la primera publicación del rediseño; v17 con el arreglo de saltos de diseño).
 - 22 nov 2026 (fase U): como la app aún no se sube a Google Play, se rehicieron con el diseño nuevo el
   gráfico destacado (`android/grafico-destacado.png`, ahora lo genera `scripts/iconos.mjs`; se borró el
   `.svg` viejo) y las capturas de `android/capturas/` (780×1560, tomadas del sitio publicado con

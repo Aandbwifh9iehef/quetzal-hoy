@@ -153,6 +153,7 @@
   function pintarTipoCambio(d) {
     var card = document.getElementById('card-tipo-cambio');
     if (!d || !d.disponible) {
+      card.removeAttribute('aria-busy');
       card.innerHTML =
         '<h2 class="etiqueta">Precio del dólar</h2>' +
         '<p class="texto-2 mt-sm">No pudimos cargar el dato. Consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>';
@@ -162,6 +163,7 @@
     var esHoy = d.fecha === new Date().toISOString().slice(0, 10);
     var avisoFecha = esHoy ? '' : '<p class="tc__aviso">Último dato disponible: ' + fechaCorta(d.fecha) + '. Aún no hay dato de hoy.</p>';
 
+    card.removeAttribute('aria-busy');
     card.innerHTML =
       '<h2 class="etiqueta">Precio del dólar en quetzales</h2>' +
       '<div class="tc__valor"><span class="tc__moneda">Q</span>' + d.valor.toFixed(4) + '</div>' +
