@@ -259,6 +259,40 @@
 
 </div>
 
+<script>
+// Pestañas: van aquí, dentro de la página, para que funcionen aunque el service worker
+// tenga guardada una versión vieja de app.js (pasó el 22 nov 2026).
+(function () {
+  var TABS = ['hoy', 'noticias', 'invertir', 'aprende'];
+  function cambiarTab(tab) {
+    var btn = document.getElementById('nav-' + tab), sec = document.getElementById('tab-' + tab);
+    if (!btn || !sec) return;
+    for (var i = 0; i < TABS.length; i++) {
+      var b = document.getElementById('nav-' + TABS[i]), s = document.getElementById('tab-' + TABS[i]);
+      if (s) s.classList.remove('activa');
+      if (b) { b.classList.remove('activo'); b.setAttribute('aria-selected', 'false'); }
+    }
+    sec.classList.add('activa');
+    btn.classList.add('activo');
+    btn.setAttribute('aria-selected', 'true');
+    if (history.replaceState) history.replaceState(null, '', tab === 'hoy' ? location.pathname + location.search : '#' + tab);
+    window.scrollTo(0, 0);
+  }
+  window.cambiarTab = function (tab) { cambiarTab(typeof tab === 'string' ? tab : 'hoy'); };
+  for (var i = 0; i < TABS.length; i++) {
+    (function (t) {
+      var b = document.getElementById('nav-' + t);
+      if (b) b.addEventListener('click', function () { cambiarTab(t); });
+    })(TABS[i]);
+  }
+  function desdeHash() {
+    var h = (location.hash || '').replace('#', '');
+    if (TABS.indexOf(h) >= 0) cambiarTab(h);
+  }
+  desdeHash();
+  window.addEventListener('hashchange', desdeHash);
+})();
+</script>
 <script type="module" src="/app.js"></script>
 </body>
 </html>

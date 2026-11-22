@@ -143,7 +143,8 @@ async function portada(request, env, ctx) {
     });
   }
   const headers = new Headers(base.headers);
-  headers.set('Cache-Control', 'public, max-age=300');
+  // Sin guardar en el navegador: una portada vieja con código nuevo (o al revés) rompe las pestañas
+  headers.set('Cache-Control', 'no-cache');
   headers.delete('ETag');
   headers.delete('Content-Length');
   return new Response(rw.transform(base).body, { status: 200, headers });

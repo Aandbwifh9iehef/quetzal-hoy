@@ -44,27 +44,26 @@ import { esc, q, pct, fechaCorta, ico, graficaSvg, tarjetaTipoCambio, notaConver
     if (a) evento('clic_afiliado');
   });
 
-  // ─── Pestañas ───
-  var TABS = ['hoy', 'noticias', 'invertir', 'aprende'];
-  function cambiarTab(tab, btn) {
-    var secs = document.querySelectorAll('.seccion');
-    for (var i = 0; i < secs.length; i++) secs[i].classList.remove('activa');
-    var btns = document.querySelectorAll('.nav-btn');
-    for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('activo'); btns[j].setAttribute('aria-selected', 'false'); }
-    $('tab-' + tab).classList.add('activa');
-    btn.classList.add('activo');
-    btn.setAttribute('aria-selected', 'true');
-    if (history.replaceState) history.replaceState(null, '', tab === 'hoy' ? location.pathname : '#' + tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Las pestañas viven en un script dentro de index.html: así funcionan aunque el celular
+  // tenga guardada una versión vieja de este archivo. Si la página es vieja y no lo trae,
+  // este respaldo las conecta igual.
+  if (typeof window.cambiarTab !== 'function') {
+    var PESTANAS = ['hoy', 'noticias', 'invertir', 'aprende'];
+    var irA = function (tab) {
+      PESTANAS.forEach(function (t) {
+        var s = $('tab-' + t), b = $('nav-' + t);
+        if (s) s.classList.toggle('activa', t === tab);
+        if (b) { b.classList.toggle('activo', t === tab); b.setAttribute('aria-selected', String(t === tab)); }
+      });
+      if (history.replaceState) history.replaceState(null, '', tab === 'hoy' ? location.pathname : '#' + tab);
+      window.scrollTo(0, 0);
+    };
+    window.cambiarTab = function (tab) { irA(typeof tab === 'string' ? tab : 'hoy'); };
+    PESTANAS.forEach(function (t) { var b = $('nav-' + t); if (b) b.addEventListener('click', function () { irA(t); }); });
+    var hashInicial = (location.hash || '').replace('#', '');
+    if (PESTANAS.indexOf(hashInicial) > 0) irA(hashInicial);
+    window.addEventListener('hashchange', function () { var h = (location.hash || '').replace('#', ''); if (PESTANAS.indexOf(h) >= 0) irA(h); });
   }
-  window.cambiarTab = cambiarTab;
-  TABS.forEach(function (t) { var b = $('nav-' + t); if (b) b.addEventListener('click', function () { cambiarTab(t, b); }); });
-  function abrirDesdeHash() {
-    var h = (location.hash || '').replace('#', '');
-    if (TABS.indexOf(h) > 0) cambiarTab(h, $('nav-' + h));
-  }
-  abrirDesdeHash();
-  window.addEventListener('hashchange', abrirDesdeHash);
 
   // ─── Tipo de cambio y convertidor ───
   var tc = null;

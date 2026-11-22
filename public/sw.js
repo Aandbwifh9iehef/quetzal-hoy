@@ -1,4 +1,4 @@
-const CACHE = 'quetzal-hoy-v23';
+const CACHE = 'quetzal-hoy-v25';
 const PRECACHE = [
   '/',
   '/styles.css',
@@ -42,10 +42,11 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Páginas: red primero, caché de respaldo, página sin conexión al final
+  // Páginas: red primero (sin usar copias guardadas por el navegador), caché de respaldo,
+  // página sin conexión al final
   if (req.mode === 'navigate') {
     e.respondWith(
-      fetch(req)
+      fetch(req.url, { cache: 'no-cache', credentials: 'same-origin', redirect: 'manual' })
         .then(res => {
           if (res.ok) caches.open(CACHE).then(c => c.put(req, res.clone()));
           return res;
@@ -55,7 +56,21 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Recursos estáticos: caché primero
+  // Código y estilos: red primero y caché de respaldo. Si se sirvieran de la caché, una página nueva
+  // podría correr con código viejo (pasó el 22 nov 2026: las pestañas dejaron de cambiar).
+  if (/\.(js|css)$/.test(url.pathname)) {
+    e.respondWith(
+      fetch(req, { cache: 'no-cache' })
+        .then(res => {
+          if (res.ok) caches.open(CACHE).then(c => c.put(req, res.clone()));
+          return res;
+        })
+        .catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // Fuente, íconos e imágenes: caché primero
   e.respondWith(
     caches.match(req).then(hit => hit || fetch(req).then(res => {
       if (res.ok) caches.open(CACHE).then(c => c.put(req, res.clone()));

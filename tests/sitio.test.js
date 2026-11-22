@@ -76,3 +76,13 @@ test('app.js no repite nombres de funciones o variables (una tapaba a otra y rom
   const repetidos = todos.filter((n, i) => todos.indexOf(n) !== i);
   assert.deepEqual(repetidos, [], `nombres repetidos: ${repetidos.join(', ')}`);
 });
+
+test('las pestañas no dependen de app.js y el código no se sirve viejo desde la caché', () => {
+  const html = readFileSync(join(publico, 'index.html'), 'utf8');
+  const inline = /<script>\s*\/\/ Pestañas[\s\S]*?<\/script>/.exec(html);
+  assert.ok(inline, 'las pestañas van en un script dentro de index.html');
+  for (const t of ['hoy', 'noticias', 'invertir', 'aprende']) assert.match(html, new RegExp(`id="nav-${t}"`));
+  assert.ok(html.indexOf(inline[0]) < html.indexOf('src="/app.js"'), 'el script de pestañas va antes de app.js');
+  const sw = readFileSync(join(publico, 'sw.js'), 'utf8');
+  assert.match(sw, /\\\.\(js\|css\)\$/, 'js y css: red primero');
+});

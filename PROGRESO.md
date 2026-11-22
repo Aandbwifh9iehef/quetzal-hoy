@@ -349,3 +349,13 @@
   detecta nombres repetidos en `app.js` y se subió el service worker para que nadie se quede con la copia
   rota. Caché del service worker v23. Capturas en `docs/fase-11/correcciones/`. Lighthouse móvil en vivo:
   100 en todo, CLS 0, 102 KB transferidos.
+- 22 nov 2026 (pestañas que no cambiaban): Raúl vio que al tocar Noticias, Invertir o Aprende se quedaba en
+  Hoy. Causa: la página nueva ya no traía el `onclick` de las pestañas (lo hacía app.js), y un celular que
+  todavía tenía guardado el app.js anterior (el service worker servía el código desde su caché) o la
+  portada anterior (el Worker la mandaba con `max-age=300`) mezclaba una versión vieja con una nueva y las
+  pestañas quedaban sin conectar. Se reprodujo en el navegador antes de corregir. Arreglos: (1) las pestañas
+  van en un script pequeño dentro de index.html, que no depende de app.js; app.js trae un respaldo por si la
+  página es vieja; (2) el service worker pide la página, el código y los estilos a la red primero, sin usar
+  copias del navegador (`cache: 'no-cache'`), y usa su caché solo sin conexión; (3) la portada del Worker va
+  con `Cache-Control: no-cache`. Se probó con página nueva + app.js viejo, con página vieja + app.js nuevo y
+  normal: las cuatro pestañas cambian. Caché del service worker v25. Prueba nueva en `tests/sitio.test.js`.
