@@ -270,9 +270,9 @@ Tareas:
   degradados de moda, sin emojis, sin brillos).
 
 Criterios de terminado:
-- [ ] `npm test` pasa.
-- [ ] El nombre "Al cambio" aparece en toda la app y en lo que se comparte; ninguna pantalla dice "Quetzal Hoy".
-- [ ] Contraste AA en claro y oscuro, rendimiento móvil ≥ 90 en vivo, sin errores en consola.
-- [ ] Capturas antes y después en `docs/fase-11/`.
-- [ ] Publicado y comprobado en la URL en vivo.
+- [x] `npm test` pasa.
+- [x] El nombre "Al cambio" aparece en toda la app y en lo que se comparte; ninguna pantalla dice "Quetzal Hoy".
+- [x] Contraste AA en claro y oscuro, rendimiento móvil ≥ 90 en vivo, sin errores en consola.
+- [x] Capturas antes y después en `docs/fase-11/`.
+- [x] Publicado y comprobado en la URL en vivo.
 

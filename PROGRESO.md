@@ -1,6 +1,6 @@
 # Progreso — Quetzal Hoy
 
-## Siguiente fase: 11 — Nombre nuevo y colores del quetzal (en curso). Después: mantenimiento (ver "Rutina mensual").
+## Siguiente fase: ninguna pendiente. Lo que sigue es mantenimiento (ver "Rutina mensual").
 
 | Fase | Nombre | Estado | Fecha |
 |---|---|---|---|
@@ -15,7 +15,7 @@
 | 9 | Listo para ganar dinero | Hecha | 3 nov 2026 |
 | 10 | App en Google Play | Hecha (lista para que Raúl la suba) | 3 nov 2026 |
 | U | Rediseño con Unslop | Hecha | 22 nov 2026 |
-| 11 | Nombre nuevo y colores del quetzal | En curso | 22 nov 2026 |
+| 11 | Nombre nuevo y colores del quetzal | Hecha | 22 nov 2026 |
 
 ## Publicación
 - **La app está publicada:** https://hoy.compoundclub.fyi (también https://quetzal-hoy.academi-q1.workers.dev).
@@ -289,3 +289,23 @@
   página de inflación) usan ahora una copia fija, `tests/fixtures/indicadores-2026-11-03.json`, para que
   actualizar los datos cada mes no las rompa. La prueba que valida campos sigue leyendo los datos reales.
   Caché del service worker v18.
+- 22 nov 2026 (fase 11): Raúl eligió el nombre **Al cambio** (lo escribió así, con "cambio" en minúscula;
+  se respeta tal cual) y la paleta **Quetzal vivo**. El nombre sale de `site.config.json` y se cambió en
+  todas las páginas, manifest, imagen del día, texto de WhatsApp, media kit, ficha y manifest de Google
+  Play. No se cambiaron los nombres internos (Worker `quetzal-hoy`, KV, `package.json`, alias de la
+  llave de Android, paquete `fyi.compoundclub.hoy`) ni las claves guardadas en el celular
+  (`quetzal-hoy:progreso`, `:premium`, `:instalar`), para que nadie pierda su avance de cursos.
+- 22 nov 2026 (fase 11): logo nuevo: una C de "cambio" con un punto rojo (el pecho del quetzal) y la
+  punta dorada de la pluma. Se probaron otras ideas (flechas de cambio, moneda con plumas); la C fue la
+  más clara en tamaño chico. Ícono de la app sobre verde hondo.
+- 22 nov 2026 (fase 11): la Fase U pedía "un acento usado poco" y Raúl sintió la app plana. Se mantiene
+  lo que la hacía confiable (sello de fuente y fecha, Figtree, sin emojis, sin degradados, el dólar sin
+  rojo ni verde) y se agregan bloques de color con sentido: cabecera verde hondo, tarjeta del dólar en
+  jade con la cifra crema y el punto de hoy dorado, dato del día en dorado, mosaicos de color con íconos
+  de línea en indicadores y noticias (el tema sale de palabras del titular), portadas de color en los
+  cursos, punto de color para el riesgo y pastilla detrás de la pestaña activa. DISENO.md actualizado.
+- 22 nov 2026 (fase 11): contraste AA comprobado para cada combinación nueva en claro y oscuro. Para que
+  el texto secundario crema pase AA, la tarjeta del dólar usa `#0a6b4b` (un poco más oscuro que el jade
+  de los botones). Lighthouse móvil en vivo: rendimiento, accesibilidad, buenas prácticas y SEO en 100.
+- 22 nov 2026 (fase 11): capturas antes y después en `docs/fase-11/`; capturas de Google Play y gráfico
+  destacado rehechos con el nombre y los colores nuevos. Caché del service worker v19.
