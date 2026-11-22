@@ -30,7 +30,10 @@ test('el proyecto TWA y la ficha de Play Store están completos', () => {
   const larga = /## Descripción completa[^\n]*\n\n([\s\S]*?)\n## /.exec(ficha)[1];
   assert.ok(larga.length > 500 && larga.length <= 4000, `descripción completa ${larga.length}`);
   assert.match(ficha, /privacidad/);
-  for (const f of ['README.md', 'declaraciones.md', 'ficha-play-store.md', 'twa-manifest.json', 'grafico-destacado.svg']) {
+  for (const f of ['README.md', 'declaraciones.md', 'ficha-play-store.md', 'twa-manifest.json', 'grafico-destacado.png']) {
     assert.ok(existsSync(new URL(`../android/${f}`, import.meta.url)), `falta android/${f}`);
   }
+  // El gráfico destacado lo genera scripts/iconos.mjs y Play lo pide de 1024×500
+  const png = readFileSync(new URL('../android/grafico-destacado.png', import.meta.url));
+  assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1024, 500]);
 });
