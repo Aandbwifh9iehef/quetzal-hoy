@@ -5,25 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sin conexión — Quetzal Hoy</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#1B4332">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <div id="app">
-  <header class="header">
-    <a class="header__logo" href="/">
-      <img src="/icon.svg" alt="" width="32" height="32">
-      <span class="marca">Quetzal <em>Hoy</em></span>
+  <header class="cabecera">
+    <a class="marca" href="/" aria-label="Quetzal Hoy, inicio">
+      <svg class="marca__signo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="13" cy="13" r="9" stroke-width="3"/><path d="M17 21.2c2.6 4 6.5 7 12 8" stroke-width="3"/><path d="M20.3 18.6c2.4 3 5.4 5 9.7 5.6" stroke-width="2"/></svg>
+      <span class="marca__nombre">Quetzal Hoy</span>
     </a>
   </header>
-  <div class="tejido" aria-hidden="true"></div>
-  <main class="pagina-estatica">
-    <div class="pronto">
-      <div class="pronto__icono" aria-hidden="true">📵</div>
-      <div class="pronto__titulo">Estás sin conexión</div>
-      <p class="pronto__desc">Esta página no se había guardado en tu celular. Cuando vuelvas a tener internet, inténtalo de nuevo.</p>
-      <button class="negrita" style="color: var(--c-secundario); font-size: 1rem;" onclick="location.reload()">Reintentar</button>
+  <main class="pagina">
+    <div class="vacio">
+      <h1 class="vacio__titulo">Estás sin conexión</h1>
+      <p class="vacio__texto">Esta página no se había guardado en tu celular. Cuando vuelvas a tener internet, inténtalo de nuevo.</p>
+      <div class="acciones"><button class="btn-secundario" onclick="location.reload()">Reintentar</button></div>
     </div>
   </main>
 </div>

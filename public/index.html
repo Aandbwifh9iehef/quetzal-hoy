@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quetzal Hoy — Tu dinero, explicado</title>
   <meta name="description" content="Tipo de cambio del día, noticias económicas de Guatemala explicadas en sencillo, comparador de inversiones y cursos de finanzas personales.">
-  <meta name="theme-color" content="#1B4332" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0F1923" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Quetzal Hoy">
 
   <!-- Open Graph -->
@@ -25,110 +25,102 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="preload" href="/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <a class="saltar" href="#contenido-principal">Ir al contenido</a>
 <div id="app">
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header__logo">
-      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Quetzal estilizado: plumas de la cola -->
-        <circle cx="16" cy="14" r="7" fill="#52B788"/>
-        <ellipse cx="16" cy="14" rx="4.5" ry="5" fill="#1B4332"/>
-        <circle cx="16" cy="12" r="2" fill="#52B788"/>
-        <!-- Plumas largas -->
-        <path d="M12 20 Q10 26 9 30" stroke="#52B788" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M14 21 Q13 27 12 31" stroke="#74C69D" stroke-width="2" stroke-linecap="round"/>
-        <path d="M16 21 Q16 27 16 32" stroke="#52B788" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M18 21 Q19 27 20 31" stroke="#74C69D" stroke-width="2" stroke-linecap="round"/>
-        <path d="M20 20 Q22 26 23 30" stroke="#52B788" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Pico -->
-        <path d="M14 11 Q16 9 18 11" stroke="#F4A261" stroke-width="1.5" stroke-linecap="round"/>
-        <!-- Ojo -->
-        <circle cx="16" cy="12.5" r="1" fill="#F4A261"/>
-      </svg>
-      <span class="marca">Quetzal <em>Hoy</em></span>
-    </div>
-    <span class="header__fecha" id="fecha-hoy"></span>
+  <header class="cabecera">
+    <a class="marca" href="/" aria-label="Quetzal Hoy, inicio">
+      <svg class="marca__signo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="13" cy="13" r="9" stroke-width="3"/><path d="M17 21.2c2.6 4 6.5 7 12 8" stroke-width="3"/><path d="M20.3 18.6c2.4 3 5.4 5 9.7 5.6" stroke-width="2"/></svg>
+      <span class="marca__nombre">Quetzal Hoy</span>
+    </a>
+    <span class="cabecera__fecha" id="fecha-hoy"></span>
   </header>
-  <div class="tejido" aria-hidden="true"></div>
 
-  <!-- Contenido principal -->
   <main class="main" id="contenido-principal">
 
-    <!-- Instalación: tarjeta visible hasta que la app esté instalada -->
-    <div class="instalar" id="instalar" hidden>
+    <!-- Instalación: visible hasta que la app esté instalada -->
+    <div class="tarjeta instalar" id="instalar" hidden>
       <div class="instalar__cab">
         <img src="/icon.svg" alt="" width="44" height="44">
-        <div><div class="instalar__tit">Lleva Quetzal Hoy en tu celular</div><div class="instalar__sub">Gratis, pesa muy poco y funciona sin internet.</div></div>
+        <div><div class="instalar__tit">Lleva Quetzal Hoy en tu celular</div><div class="texto-2">Gratis, pesa poco y funciona sin internet</div></div>
       </div>
-      <button id="btn-instalar" class="btn-principal mt-sm" hidden>Instalar app</button>
       <ol class="instalar__pasos" id="instalar-pasos" hidden></ol>
-      <button class="instalar__cerrar" id="btn-instalar-cerrar">Ahora no</button>
+      <div class="acciones">
+        <button id="btn-instalar" class="btn-principal" hidden>Instalar app</button>
+        <button class="btn-secundario" id="btn-instalar-cerrar">Ahora no</button>
+      </div>
     </div>
 
     <!-- Pestaña: Hoy -->
-    <section id="tab-hoy" class="seccion activa" role="tabpanel" aria-label="Hoy">
-      <h1 class="seccion-titulo">Hoy en <span class="resaltado">Guatemala</span></h1>
+    <section id="tab-hoy" class="seccion activa" role="tabpanel" aria-labelledby="nav-hoy">
+      <h1 class="titulo-pagina">Hoy en Guatemala</h1>
+      <div class="columnas">
+        <div class="col">
+          <div class="tarjeta tarjeta--tc" id="card-tipo-cambio">
+            <h2 class="etiqueta">Precio del dólar</h2>
+            <div class="cargando">Cargando dato…</div>
+          </div>
 
-      <div class="tarjeta tarjeta--tc" id="card-tipo-cambio">
-        <div class="tarjeta__titulo">Tipo de cambio del dólar</div>
-        <div class="cargando">Cargando dato…</div>
-      </div>
-
-      <div class="tarjeta mt-md" id="card-convertidor">
-        <div class="tarjeta__titulo">Convertidor rápido</div>
-        <div class="convertidor">
-          <label class="campo">
-            <span>Dólares (USD)</span>
-            <input type="number" inputmode="decimal" id="usd" placeholder="100" min="0" step="any">
-          </label>
-          <button class="convertidor__swap" id="btn-swap" aria-label="Invertir conversión">⇅</button>
-          <label class="campo">
-            <span>Quetzales (GTQ)</span>
-            <input type="number" inputmode="decimal" id="gtq" placeholder="0" min="0" step="any">
-          </label>
+          <div class="tarjeta" id="card-convertidor">
+            <h2 class="titulo-tarjeta">Convertidor</h2>
+            <div class="convertidor">
+              <label class="campo">
+                <span>Dólares</span>
+                <input type="number" inputmode="decimal" id="usd" placeholder="100" min="0" step="any">
+              </label>
+              <button class="convertidor__swap" id="btn-swap" aria-label="Cambiar dirección de la conversión">
+                <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+              </button>
+              <label class="campo">
+                <span>Quetzales</span>
+                <input type="number" inputmode="decimal" id="gtq" placeholder="0" min="0" step="any">
+              </label>
+            </div>
+            <p class="texto-2 mt-md" id="convertidor-nota">Se activa con el tipo de cambio del día</p>
+          </div>
         </div>
-        <p class="texto-suave mt-sm" id="convertidor-nota">Se activa con el tipo de cambio del día.</p>
+
+        <div class="col">
+          <div class="tarjeta" id="card-dato-del-dia">
+            <h2 class="etiqueta">Dato del día</h2>
+            <div class="cargando">Cargando…</div>
+          </div>
+
+          <h2 class="titulo-seccion">Indicadores de Guatemala</h2>
+          <div id="lista-indicadores">
+            <div class="cargando">Cargando indicadores…</div>
+          </div>
+        </div>
       </div>
 
-      <div class="tarjeta mt-md tarjeta--dato" id="card-dato-del-dia">
-        <div class="tarjeta__titulo">Dato del día</div>
-        <div class="cargando">Cargando…</div>
-      </div>
-
-      <h2 class="subtitulo mt-lg">Indicadores de Guatemala</h2>
-      <div id="lista-indicadores">
-        <div class="cargando">Cargando indicadores…</div>
-      </div>
-
-      <div class="aviso-legal mt-md">
+      <div class="aviso-legal">
         Dato de referencia del Banco de Guatemala. Consulta el oficial en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.
         Información educativa. <a href="/aviso-legal">Aviso legal</a>.
       </div>
     </section>
 
     <!-- Pestaña: Noticias -->
-    <section id="tab-noticias" class="seccion" role="tabpanel" aria-label="Noticias">
-      <h1 class="seccion-titulo">Noticias <span class="resaltado">explicadas</span></h1>
-      <p class="texto-suave noticias__intro">Cada mañana elegimos lo económico que importa, lo resumimos en dos frases y te decimos cómo te afecta. Siempre con enlace a la nota original.</p>
-      <div id="noticias-fecha" class="noticias__fecha"></div>
+    <section id="tab-noticias" class="seccion" role="tabpanel" aria-labelledby="nav-noticias">
+      <h1 class="titulo-pagina">Noticias explicadas</h1>
+      <p class="noticias__intro">Cada mañana elegimos lo económico que importa, lo resumimos en dos frases y te decimos cómo te afecta. Siempre con enlace a la nota original.</p>
+      <p class="meta" id="noticias-fecha"></p>
       <div id="noticias-contenido"><div class="cargando">Cargando noticias…</div></div>
-      <details class="archivo" id="archivo-noticias" hidden>
-        <summary>Días anteriores</summary>
+      <details class="desplegable archivo" id="archivo-noticias" hidden>
+        <summary>Días anteriores <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
         <div class="archivo__lista" id="archivo-lista"></div>
       </details>
-      <div class="aviso-legal mt-md">
+      <div class="aviso-legal">
         Los resúmenes se generan automáticamente a partir del titular y la descripción de cada medio. El contenido completo pertenece a cada medio. <a href="/aviso-legal">Aviso legal</a>.
       </div>
     </section>
 
     <!-- Pestaña: Invertir -->
-    <section id="tab-invertir" class="seccion" role="tabpanel" aria-label="Invertir">
-      <h1 class="seccion-titulo">Invertir en <span class="resaltado">Guatemala</span></h1>
+    <section id="tab-invertir" class="seccion" role="tabpanel" aria-labelledby="nav-invertir">
+      <h1 class="titulo-pagina">Invertir en Guatemala</h1>
       <div class="aviso-legal aviso-legal--arriba">
         Esto es información para comparar, no asesoría financiera. Verifica las condiciones con la entidad antes de invertir. <a href="/aviso-legal">Aviso legal</a>.
       </div>
@@ -141,87 +133,96 @@
         <a href="#estafas">Estafas</a>
       </nav>
 
-      <h2 class="subtitulo mt-lg" id="opciones">Tus opciones reales</h2>
-      <p class="texto-suave mb-md">Toca cada una para ver qué es, desde cuánto, el riesgo y quién la supervisa.</p>
-      <div id="lista-opciones"><div class="cargando">Cargando…</div></div>
+      <div class="columnas">
+        <div class="col">
+          <h2 class="titulo-seccion" id="opciones">Tus opciones en Guatemala</h2>
+          <p class="texto-2 mb-md">Toca cada una para ver qué es, desde cuánto, el riesgo y quién la supervisa.</p>
+          <div id="lista-opciones"><div class="cargando">Cargando…</div></div>
 
-      <h2 class="subtitulo mt-lg" id="tasas">Tasas de plazo fijo a 1 año</h2>
-      <p class="texto-suave mb-md" id="tasas-nota"></p>
-      <div id="tabla-plazo-fijo"></div>
-      <details class="significa mt-sm" id="det-ahorro">
-        <summary>Ver tasas de cuentas de ahorro</summary>
-        <p class="texto-suave" id="ahorro-nota"></p>
-        <div id="tabla-ahorro"></div>
-      </details>
-      <p class="texto-suave mt-md" id="isr-nota"></p>
+          <h2 class="titulo-seccion" id="tasas">Tasas de plazo fijo a 1 año</h2>
+          <p class="texto-2 mb-md" id="tasas-nota"></p>
+          <div id="tabla-plazo-fijo"></div>
+          <details class="desplegable" id="det-ahorro">
+            <summary>Ver tasas de cuentas de ahorro <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <p class="texto-2" id="ahorro-nota"></p>
+            <div id="tabla-ahorro"></div>
+          </details>
+          <p class="texto-2 mt-md" id="isr-nota"></p>
 
-      <h2 class="subtitulo mt-lg" id="bonos">Bonos del Tesoro para personas</h2>
-      <div id="card-bonos"></div>
-
-      <h2 class="subtitulo mt-lg" id="calculadoras">Calculadoras</h2>
-
-      <div class="tarjeta calc">
-        <div class="tarjeta__titulo">Ahorro mensual con interés</div>
-        <div class="calc__campos">
-          <label class="campo"><span>Ahorras al mes (Q)</span><input type="number" inputmode="decimal" id="c1-aporte" value="500" min="0" step="any"></label>
-          <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c1-tasa" value="5" min="0" step="any"></label>
-          <label class="campo"><span>Meses</span><input type="number" inputmode="numeric" id="c1-meses" value="24" min="1" step="1"></label>
-          <label class="campo"><span>Ya tienes (Q)</span><input type="number" inputmode="decimal" id="c1-inicial" value="0" min="0" step="any"></label>
+          <h2 class="titulo-seccion" id="bonos">Bonos del Tesoro para personas</h2>
+          <div id="card-bonos"></div>
         </div>
-        <div class="calc__resultado" id="c1-resultado"></div>
+
+        <div class="col">
+          <h2 class="titulo-seccion" id="calculadoras">Calculadoras</h2>
+
+          <div class="tarjeta calc">
+            <h3 class="titulo-tarjeta">Ahorro mensual con interés</h3>
+            <div class="calc__campos">
+              <label class="campo"><span>Ahorras al mes (Q)</span><input type="number" inputmode="decimal" id="c1-aporte" value="500" min="0" step="any"></label>
+              <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c1-tasa" value="5" min="0" step="any"></label>
+              <label class="campo"><span>Meses</span><input type="number" inputmode="numeric" id="c1-meses" value="24" min="1" step="1"></label>
+              <label class="campo"><span>Ya tienes (Q)</span><input type="number" inputmode="decimal" id="c1-inicial" value="0" min="0" step="any"></label>
+            </div>
+            <div class="calc__resultado" id="c1-resultado"></div>
+          </div>
+
+          <div class="tarjeta calc">
+            <h3 class="titulo-tarjeta">Plazo fijo</h3>
+            <div class="calc__campos">
+              <label class="campo"><span>Monto (Q)</span><input type="number" inputmode="decimal" id="c2-monto" value="10000" min="0" step="any"></label>
+              <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c2-tasa" value="5" min="0" step="any"></label>
+              <label class="campo"><span>Días</span><select id="c2-dias"><option value="90">90</option><option value="180">180</option><option value="365" selected>365</option><option value="730">730</option></select></label>
+            </div>
+            <div class="calc__resultado" id="c2-resultado"></div>
+          </div>
+
+          <div class="tarjeta calc">
+            <h3 class="titulo-tarjeta">Si lo guardas en casa</h3>
+            <div class="calc__campos">
+              <label class="campo"><span>Monto guardado (Q)</span><input type="number" inputmode="decimal" id="c3-monto" value="5000" min="0" step="any"></label>
+              <label class="campo"><span>Años</span><input type="number" inputmode="numeric" id="c3-anios" value="3" min="1" step="1"></label>
+              <label class="campo"><span>Inflación anual (%)</span><input type="number" inputmode="decimal" id="c3-inflacion" value="4.69" min="0" step="any"></label>
+            </div>
+            <div class="calc__resultado" id="c3-resultado"></div>
+          </div>
+
+          <div class="tarjeta calc">
+            <h3 class="titulo-tarjeta">Meta de ahorro</h3>
+            <div class="calc__campos">
+              <label class="campo"><span>Quiero juntar (Q)</span><input type="number" inputmode="decimal" id="c4-meta" value="20000" min="0" step="any"></label>
+              <label class="campo"><span>En cuántos meses</span><input type="number" inputmode="numeric" id="c4-meses" value="18" min="1" step="1"></label>
+              <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c4-tasa" value="4" min="0" step="any"></label>
+              <label class="campo"><span>Ya tienes (Q)</span><input type="number" inputmode="decimal" id="c4-inicial" value="0" min="0" step="any"></label>
+            </div>
+            <div class="calc__resultado" id="c4-resultado"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="tarjeta calc mt-md">
-        <div class="tarjeta__titulo">Plazo fijo</div>
-        <div class="calc__campos">
-          <label class="campo"><span>Monto (Q)</span><input type="number" inputmode="decimal" id="c2-monto" value="10000" min="0" step="any"></label>
-          <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c2-tasa" value="5" min="0" step="any"></label>
-          <label class="campo"><span>Días</span><select id="c2-dias"><option value="90">90</option><option value="180">180</option><option value="365" selected>365</option><option value="730">730</option></select></label>
+      <h2 class="titulo-seccion" id="estafas">Esto no es inversión</h2>
+      <p class="texto-2 mb-md">Muchas estafas se presentan como negocios que prometen mucho. Estas son las señales de alerta.</p>
+      <div class="columnas columnas--parejas">
+        <div id="lista-estafas"></div>
+        <div>
+          <h3 class="titulo-tarjeta mb-md">Cómo verificar si una entidad está autorizada</h3>
+          <div id="lista-verificar"></div>
         </div>
-        <div class="calc__resultado" id="c2-resultado"></div>
       </div>
 
-      <div class="tarjeta calc mt-md">
-        <div class="tarjeta__titulo">Si lo guardas en casa</div>
-        <div class="calc__campos">
-          <label class="campo"><span>Monto guardado (Q)</span><input type="number" inputmode="decimal" id="c3-monto" value="5000" min="0" step="any"></label>
-          <label class="campo"><span>Años</span><input type="number" inputmode="numeric" id="c3-anios" value="3" min="1" step="1"></label>
-          <label class="campo"><span>Inflación anual (%)</span><input type="number" inputmode="decimal" id="c3-inflacion" value="4.69" min="0" step="any"></label>
-        </div>
-        <div class="calc__resultado" id="c3-resultado"></div>
-      </div>
-
-      <div class="tarjeta calc mt-md">
-        <div class="tarjeta__titulo">Meta de ahorro</div>
-        <div class="calc__campos">
-          <label class="campo"><span>Quiero juntar (Q)</span><input type="number" inputmode="decimal" id="c4-meta" value="20000" min="0" step="any"></label>
-          <label class="campo"><span>En cuántos meses</span><input type="number" inputmode="numeric" id="c4-meses" value="18" min="1" step="1"></label>
-          <label class="campo"><span>Tasa anual (%)</span><input type="number" inputmode="decimal" id="c4-tasa" value="4" min="0" step="any"></label>
-          <label class="campo"><span>Ya tienes (Q)</span><input type="number" inputmode="decimal" id="c4-inicial" value="0" min="0" step="any"></label>
-        </div>
-        <div class="calc__resultado" id="c4-resultado"></div>
-      </div>
-
-      <h2 class="subtitulo mt-lg" id="estafas">Esto NO es inversión</h2>
-      <p class="texto-suave mb-md">Cada año miles de guatemaltecos pierden sus ahorros en "negocios" que prometen mucho. Estas son las señales de alerta.</p>
-      <div id="lista-estafas"></div>
-      <h3 class="subtitulo mt-lg">Cómo verificar si una entidad está autorizada</h3>
-      <div id="lista-verificar"></div>
-
-      <div class="aviso-legal mt-lg">
+      <div class="aviso-legal">
         Información educativa, no asesoría financiera personalizada. Las tasas cambian: verifica las condiciones con la entidad antes de invertir. Nunca prometemos rendimientos. <a href="/aviso-legal">Aviso legal</a>.
       </div>
     </section>
 
     <!-- Pestaña: Aprende -->
-    <section id="tab-aprende" class="seccion" role="tabpanel" aria-label="Aprende">
+    <section id="tab-aprende" class="seccion" role="tabpanel" aria-labelledby="nav-aprende">
       <div id="aprende-vista"><div class="cargando">Cargando cursos…</div></div>
     </section>
 
   </main>
 
-  <!-- Links del footer -->
-  <nav class="footer-links" aria-label="Páginas de la app">
+  <nav class="pie" aria-label="Páginas de la app">
     <a href="/acerca">Acerca de</a>
     <a href="/novedades">Novedades</a>
     <a href="/privacidad">Privacidad</a>
@@ -230,32 +231,22 @@
     <a href="/anunciate">Anúnciate</a>
   </nav>
 
-  <!-- Navegación inferior -->
+  <!-- Navegación principal: barra inferior en el celular, arriba en pantallas anchas -->
   <nav class="nav-inferior" aria-label="Navegación principal" role="tablist">
     <button class="nav-btn activo" id="nav-hoy" onclick="cambiarTab('hoy', this)" role="tab" aria-selected="true" aria-controls="tab-hoy">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
       Hoy
     </button>
     <button class="nav-btn" id="nav-noticias" onclick="cambiarTab('noticias', this)" role="tab" aria-selected="false" aria-controls="tab-noticias">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
-        <path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
       Noticias
     </button>
     <button class="nav-btn" id="nav-invertir" onclick="cambiarTab('invertir', this)" role="tab" aria-selected="false" aria-controls="tab-invertir">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg>
       Invertir
     </button>
     <button class="nav-btn" id="nav-aprende" onclick="cambiarTab('aprende', this)" role="tab" aria-selected="false" aria-controls="tab-aprende">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
       Aprende
     </button>
   </nav>

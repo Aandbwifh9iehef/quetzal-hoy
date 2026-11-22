@@ -5,48 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Compartir el resumen de hoy — Quetzal Hoy</title>
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#1B4332">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <div id="app">
-  <header class="header">
-    <a class="header__logo" href="/">
-      <img src="/icon.svg" alt="" width="32" height="32">
-      <span>Quetzal Hoy</span>
+  <header class="cabecera">
+    <a class="marca" href="/" aria-label="Quetzal Hoy, inicio">
+      <svg class="marca__signo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="13" cy="13" r="9" stroke-width="3"/><path d="M17 21.2c2.6 4 6.5 7 12 8" stroke-width="3"/><path d="M20.3 18.6c2.4 3 5.4 5 9.7 5.6" stroke-width="2"/></svg>
+      <span class="marca__nombre">Quetzal Hoy</span>
     </a>
-    <span class="header__fecha" id="fecha-hoy"></span>
+    <span class="cabecera__fecha" id="fecha-hoy"></span>
   </header>
-  <main class="pagina-estatica">
+  <main class="pagina">
     <h1>Resumen de hoy para compartir</h1>
     <p>Copia el texto y pégalo en WhatsApp, o descarga la imagen para tu estado o historia. Todo se arma solo con los datos de hoy.</p>
 
-    <h2>1. Texto para WhatsApp</h2>
+    <h2>Texto para WhatsApp</h2>
     <div class="tarjeta">
       <pre class="resumen-texto" id="resumen-texto">Cargando…</pre>
       <button class="btn-principal mt-md" id="btn-copiar">Copiar texto</button>
-      <div class="texto-suave texto-centro mt-sm" id="copiar-estado"></div>
+      <div class="texto-2 mt-sm" id="copiar-estado" role="status"></div>
     </div>
 
-    <h2>2. Imagen del día</h2>
+    <h2>Imagen del día</h2>
     <div class="tarjeta">
-      <div class="formatos">
+      <div class="segmentos formatos" role="group" aria-label="Tamaño de la imagen">
         <button class="rango activo" data-f="1080x1350">Post (1080×1350)</button>
         <button class="rango" data-f="1080x1920">Estado / historia (1080×1920)</button>
       </div>
       <div class="vista-imagen mt-md"><img id="vista-imagen" alt="Imagen del día" src="/api/imagen-dia.svg?formato=1080x1350"></div>
       <button class="btn-principal mt-md" id="btn-descargar">Descargar PNG</button>
-      <div class="texto-suave texto-centro mt-sm" id="descargar-estado"></div>
+      <div class="texto-2 mt-sm" id="descargar-estado" role="status"></div>
     </div>
 
-    <p class="texto-suave mt-lg">Esta página no aparece en el menú. Guárdala en favoritos: <strong>hoy.compoundclub.fyi/compartir</strong></p>
-    <p class="mt-md"><a href="/">← Volver al inicio</a></p>
+    <p class="texto-2 mt-lg">Esta página no aparece en el menú. Guárdala en favoritos: <strong>hoy.compoundclub.fyi/compartir</strong></p>
+    <p class="mt-md"><a class="btn-enlace" href="/">Volver al inicio</a></p>
   </main>
 </div>
 <script>
 (function () {
-  document.getElementById('fecha-hoy').textContent = new Date().toLocaleDateString('es-GT', { weekday: 'short', day: 'numeric', month: 'short' });
+  document.getElementById('fecha-hoy').textContent = new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long' }).replace(/^./, function (c) { return c.toUpperCase(); });
   var pre = document.getElementById('resumen-texto');
   var formato = '1080x1350';
 

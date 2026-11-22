@@ -224,3 +224,27 @@ Tareas:
 
 Lo que tendrá que hacer Raúl: crear la cuenta de desarrollador de Google Play (pago único) y subir
 el archivo que genere Claude Code, siguiendo los pasos exactos.
+
+---
+
+## Fase U — Rediseño con Unslop
+**Objetivo:** quitarle a la app la cara de "hecha por IA" con la skill **unslop** de Damir Sokolovsky
+(@heydamir, CC BY 4.0, https://github.com/heydamir/unslop). Se hace una sola vez y no cambia la
+numeración de las demás fases. Instrucciones completas en [docs/unslop/UNSLOP.md](docs/unslop/UNSLOP.md).
+
+Resumen:
+- Instalar la skill en `.claude/skills/unslop/` y seguir sus 9 pasadas (espaciado, color, íconos, textos,
+  tipografía, layout, detalles, visuales, movimiento) en todas las pantallas existentes.
+- Dirección aprobada: exacto, sereno, cercano; mundo del billete de quetzal y la libreta de ahorro.
+  Momentos: la tarjeta del tipo de cambio y la gráfica de las calculadoras. Firma: el sello de fuente
+  y fecha ("Banguat · 22 nov 2026"), mismo componente en toda la app.
+- Superficies grafito, acento verde tinta (#1d6b4f / #5fbf94), subidas y bajadas del dólar sin rojo ni
+  verde, Figtree autoalojada, íconos lucide, sin emojis ni signos de exclamación.
+- Capturas antes y después en `docs/unslop/`, auditoría, `DISENO.md` como sistema fijo.
+
+Criterios de terminado:
+- [ ] `npm test` pasa.
+- [ ] Capturas después sin ninguna señal de la auditoría; checklist de la skill completa.
+- [ ] Contraste AA claro y oscuro, sin errores en consola, rendimiento móvil ≥ 90.
+- [ ] Cada dato con fuente y fecha (sello); avisos legales intactos.
+- [ ] Publicado y comprobado en la URL en vivo.

@@ -14,6 +14,7 @@
 | 8 | SEO, analítica y pulido | Hecha | 3 nov 2026 |
 | 9 | Listo para ganar dinero | Hecha | 3 nov 2026 |
 | 10 | App en Google Play | Hecha (lista para que Raúl la suba) | 3 nov 2026 |
+| U | Rediseño con Unslop | Hecha | 22 nov 2026 |
 
 ## Publicación
 - **La app está publicada:** https://hoy.compoundclub.fyi (también https://quetzal-hoy.academi-q1.workers.dev).
@@ -217,3 +218,53 @@
   precios, empleo, impuestos, comercio, empresas, mercados, tecnología, vivienda, salud, mundo/Guatemala)
   con un ícono grande y la franja de tejido. Los cursos tienen cabecera ilustrada y el hero del dólar el
   quetzal como marca de agua. Titulares sin subrayado (solo los enlaces dentro de párrafos lo llevan).
+- 22 nov 2026 (fase U): rediseño completo con la skill unslop de heydamir (CC BY 4.0, en
+  `.claude/skills/unslop/`, crédito en README). Auditoría en `docs/unslop/auditoria.md` (nivel Fuerte),
+  capturas antes y después en `docs/unslop/`. Reglas de diseño en `DISENO.md`.
+- 22 nov 2026 (fase U): **Figtree reemplaza la tipografía del sistema.** Variable 400–600, solo
+  caracteres latinos, 20 KB en woff2, autoalojada en `public/fonts/` (licencia OFL al lado), con
+  `font-display: swap`, precargada en la portada y guardada por el service worker. Ningún pedido a Google.
+  Se eligió Figtree sobre Instrument Sans porque sus números tabulares son más anchos y claros en
+  pantallas chicas.
+- 22 nov 2026 (fase U): paleta de grafito con un toque cálido de papel (`#f4f4f0` / `#111412`) y un solo
+  acento verde de tinta (`#1d6b4f` claro, `#5fbf94` oscuro). Contraste AA verificado para todos los
+  textos, el acento y el rojo sobre las tres superficies en los dos temas.
+- 22 nov 2026 (fase U): el cambio del dólar ya no va en verde o naranja: flecha y texto gris
+  ("Q 0.0116 más que ayer"). Si el dato anterior no es de ayer, dice la fecha ("más que el 3 nov"),
+  para no llamar "ayer" a un dato de hace días. La misma frase se usa en la app, la página
+  /tipo-cambio-hoy, el texto de WhatsApp y la imagen del día.
+- 22 nov 2026 (fase U): el sello (`Banguat · 22 nov 2026`) es el único componente para fuente y fecha.
+  Las fuentes largas se acortan (Banco de Guatemala → Banguat, Superintendencia de Bancos → SIB, etc.) y
+  la fuente completa queda en el `title`. Cuando el campo "fuente" de una tasa es una nota ("Sitio de la
+  cooperativa", "No encontramos la tasa publicada en línea"), el sello muestra el sitio web y la nota va
+  al lado. No se cambió ningún dato.
+- 22 nov 2026 (fase U): guilloché (roseta de billete) al 7% de opacidad, solo en la tarjeta del dólar. Se
+  revisó en claro y oscuro: se lee como papel de billete y no compite con la cifra, así que se quedó.
+- 22 nov 2026 (fase U): calculadoras con gráfica: columnas mes a mes (lo que pones en gris, intereses en
+  verde) en ahorro y meta; barra partida en plazo fijo (tu dinero / interés neto) e inflación (lo que
+  podrás comprar / lo que pierdes, en rojo porque es una pérdida real). Mismas fórmulas que antes.
+- 22 nov 2026 (fase U): se quitaron emojis de toda la interfaz y del texto de WhatsApp (💵 📰 💡). Los
+  `icono` de `data/cursos.json` siguen en el archivo (no se tocan datos) pero ya no se muestran.
+- 22 nov 2026 (fase U): frases que no se podían comprobar, quitadas o cambiadas: "Cada año miles de
+  guatemaltecos pierden sus ahorros…" (Invertir) → "Muchas estafas se presentan como negocios que
+  prometen mucho"; "Audiencia en Guatemala, mayoritariamente desde celular" (Anúnciate) → "La app está
+  hecha para usarse desde el celular, con pocos datos"; "Uso mayoritario desde celular con datos móviles;
+  la app pesa menos de 100 KB" (media kit) → "la página principal pesa menos de 150 KB sin contar
+  imágenes" (lo comprueba `npm test`).
+- 22 nov 2026 (fase U): "Esto NO es inversión" pasó a "Esto no es inversión" (sin mayúsculas de grito);
+  "Tus opciones reales" → "Tus opciones en Guatemala"; "Resumen automático" quedó como texto pequeño
+  gris, sin pastilla.
+- 22 nov 2026 (fase U): logo nuevo: el nombre en Figtree 600 y una Q con la cola larga del quetzal, en un
+  solo color. Ícono de la app, ícono enmascarable, favicon y og-image se generan con
+  `node scripts/iconos.mjs`; se borró `public/og-image.svg` (no se usaba). Imagen del día: papel claro,
+  tinta verde, sello con fuente y fecha, sin mayúsculas.
+- 22 nov 2026 (fase U): en pantallas de 900 px o más, Hoy e Invertir van a dos columnas (máximo 1120 px)
+  y las cuatro pestañas suben a la cabecera; la barra inferior se oculta.
+- 22 nov 2026 (fase U): no se hizo el video de historia del punto 10 porque esta Mac no tiene Playwright
+  ni ffmpeg. En su lugar, `docs/unslop/antes-despues.png` con Hoy antes y después lado a lado. Las
+  capturas se toman con `scripts/capturas.mjs` (Chrome sin ventana, sin dependencias).
+- 22 nov 2026 (fase U): caché del service worker v15 → v16.
+- 22 nov 2026 (fase U): como la app aún no se sube a Google Play, se rehicieron con el diseño nuevo el
+  gráfico destacado (`android/grafico-destacado.png`, ahora lo genera `scripts/iconos.mjs`; se borró el
+  `.svg` viejo) y las capturas de `android/capturas/` (780×1560, tomadas del sitio publicado con
+  `node scripts/capturas.mjs https://hoy.compoundclub.fyi android/capturas play`).

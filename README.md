@@ -26,3 +26,7 @@ npm run deploy    # publicar a mano (normalmente no hace falta: cada push a main
 - `data/` — datos editoriales en JSON (cursos, inversiones, indicadores).
 - `tests/` — pruebas con `node:test`.
 - `PLAN.md` — las fases del proyecto. `PROGRESO.md` — en qué fase vamos.
+
+## Créditos
+
+Rediseño guiado por unslop de Damir Sokolovsky (@heydamir), CC BY 4.0 — https://github.com/heydamir/unslop

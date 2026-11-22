@@ -1,3 +1,5 @@
+import { textoCambio } from './compartir.js';
+
 // Páginas HTML servidas por el Worker (indexables): indicadores, cursos, comparador, novedades
 const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
@@ -31,10 +33,22 @@ export function renderTexto(t) {
 
 export const ETIQUETA_PATROCINIO = 'Enlace patrocinado';
 
+export const SIGNO = '<svg class="marca__signo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="13" cy="13" r="9" stroke-width="3"/><path d="M17 21.2c2.6 4 6.5 7 12 8" stroke-width="3"/><path d="M20.3 18.6c2.4 3 5.4 5 9.7 5.6" stroke-width="2"/></svg>';
+
+const CORTOS = { 'Banco de Guatemala': 'Banguat', 'Superintendencia de Bancos': 'SIB', 'Ministerio de Energía y Minas': 'MEM', 'Ministerio de Finanzas': 'Minfin', 'Instituto Nacional de Estadística': 'INE' };
+// Sello: fuente · fecha, el mismo componente que usa la app
+export function sello(fuente, fecha, url) {
+  const corta = String(fuente).split(/ \(|, /)[0].trim();
+  const texto = `${esc(CORTOS[corta] || corta)}${fecha ? ` · ${esc(fecha)}` : ''}`;
+  const titulo = `Fuente: ${esc(fuente)}${fecha ? `, ${esc(fecha)}` : ''}`;
+  return url ? `<a class="sello" href="${esc(url)}" target="_blank" rel="noopener" title="${titulo}">${texto}</a>` : `<span class="sello" title="${titulo}">${texto}</span>`;
+}
+
+
 // Todo enlace patrocinado lleva rel="sponsored" y la etiqueta visible, sin excepción
 export function enlaceAfiliado(afiliado) {
   if (!afiliado?.url) return '';
-  return `<a class="btn-afiliado" href="${esc(afiliado.url)}" target="_blank" rel="sponsored noopener">${esc(afiliado.texto || 'Abrir cuenta')} ↗ <span class="eti-patro">${ETIQUETA_PATROCINIO}</span></a>`;
+  return `<a class="btn-afiliado" href="${esc(afiliado.url)}" target="_blank" rel="sponsored noopener">${esc(afiliado.texto || 'Abrir cuenta')} <span class="eti-patro">${ETIQUETA_PATROCINIO}</span></a>`;
 }
 
 export function etiquetaPatrocinioCurso(patrocinio) {
@@ -65,8 +79,8 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
   <meta property="og:image" content="https://${esc(config.dominio)}/og-image.png">
   <meta property="og:url" content="${esc(url)}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#1B4332" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0F1923" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -76,20 +90,19 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
 <body>
 <a class="saltar" href="#contenido">Ir al contenido</a>
 <div id="app">
-  <header class="header">
-    <a class="header__logo" href="/">
-      <img src="/icon.svg" alt="" width="32" height="32">
-      <span class="marca">${esc(config.nombre).replace(/ (\S+)$/, ' <em>$1</em>')}</span>
+  <header class="cabecera">
+    <a class="marca" href="/" aria-label="${esc(config.nombre)}, inicio">
+      ${SIGNO}
+      <span class="marca__nombre">${esc(config.nombre)}</span>
     </a>
   </header>
-  <div class="tejido" aria-hidden="true"></div>
-  <main class="pagina-estatica" id="contenido">
-    ${migas.length ? `<nav class="migas" aria-label="Ruta"><a href="/">Inicio</a>${migas.map((m) => ` › <a href="${esc(m.ruta)}">${esc(m.nombre)}</a>`).join('')}</nav>` : ''}
+  <main class="pagina" id="contenido">
+    ${migas.length ? `<nav class="migas" aria-label="Ruta"><a href="/">Inicio</a>${migas.map((m) => `<span aria-hidden="true">/</span><a href="${esc(m.ruta)}">${esc(m.nombre)}</a>`).join('')}</nav>` : ''}
     ${cuerpo}
-    <div class="aviso-legal mt-lg">Información educativa, no asesoría financiera. Cada dato muestra su fuente y fecha. <a href="/aviso-legal">Aviso legal</a>.</div>
-    <p class="mt-md"><a href="/">← Abrir la app</a></p>
+    <div class="aviso-legal">Información educativa, no asesoría financiera. Cada dato muestra su fuente y fecha. <a href="/aviso-legal">Aviso legal</a>.</div>
+    <p class="mt-md"><a class="btn-enlace" href="/">Abrir la app</a></p>
   </main>
-  <nav class="footer-links" aria-label="Páginas de la app">
+  <nav class="pie" aria-label="Páginas de la app">
     <a href="/acerca">Acerca de</a>
     <a href="/novedades">Novedades</a>
     <a href="/privacidad">Privacidad</a>
@@ -98,10 +111,10 @@ export function plantilla({ titulo, descripcion, ruta, cuerpo, jsonLd = [], noin
     <a href="/anunciate">Anúnciate</a>
   </nav>
   <nav class="nav-inferior" aria-label="Navegación principal">
-    <a class="nav-btn" href="/#hoy">Hoy</a>
-    <a class="nav-btn" href="/#noticias">Noticias</a>
-    <a class="nav-btn" href="/#invertir">Invertir</a>
-    <a class="nav-btn" href="/#aprende">Aprende</a>
+    <a class="nav-btn" href="/#hoy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Hoy</a>
+    <a class="nav-btn" href="/#noticias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>Noticias</a>
+    <a class="nav-btn" href="/#invertir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg>Invertir</a>
+    <a class="nav-btn" href="/#aprende"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>Aprende</a>
   </nav>
 </div>
 ${config.analytics ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${esc(config.analytics)}"}'></script>` : ''}
@@ -119,7 +132,7 @@ export const INDICADORES_SEO = {
 };
 
 function fuenteHtml(ind) {
-  return `<p class="fuente-dato">Fuente: <a href="${esc(ind.url)}" target="_blank" rel="noopener">${esc(ind.fuente)}</a>, ${fechaCorta(ind.fecha)}.${ind.viejo ? ` <strong>Dato de ${esc(ind.etiqueta.replace('dato de ', ''))}</strong>; aún no hay uno más reciente.` : ''}</p>`;
+  return `<p class="sello-linea">${sello(ind.fuente, fechaCorta(ind.fecha), ind.url)}${ind.viejo ? `<span class="meta">Dato de ${esc(ind.etiqueta.replace('dato de ', ''))}; aún no hay uno más reciente</span>` : ''}</p>`;
 }
 
 export function paginaTipoCambio(tc, config) {
@@ -127,14 +140,14 @@ export function paginaTipoCambio(tc, config) {
   const hoy = tc?.disponible;
   const cuerpo = hoy
     ? `<h1>${esc(seo.titulo)}</h1>
-<p class="lede">Hoy, ${fechaCorta(tc.fecha)}, el tipo de cambio de referencia del Banco de Guatemala es <strong>${q(tc.valor, 4)} por dólar</strong>${tc.ayer ? ` (${tc.tendencia === 'sube' ? 'sube' : tc.tendencia === 'baja' ? 'baja' : 'igual'} ${Math.abs(tc.cambio).toFixed(4)} frente a ayer, ${q(tc.ayer.valor, 4)})` : ''}.</p>
-<div class="tarjeta"><div class="tarjeta__titulo">Dólar hoy</div><div class="tarjeta__valor">${q(tc.valor, 4)}</div><div class="tarjeta__sub">por 1 dólar · ${fechaCorta(tc.fecha)}</div></div>
+<p class="lede">Hoy, ${fechaCorta(tc.fecha)}, el tipo de cambio de referencia del Banco de Guatemala es <strong>${q(tc.valor, 4)} por dólar</strong>${tc.ayer ? ` (${esc(textoCambio(tc))}, cuando estaba en ${q(tc.ayer.valor, 4)})` : ''}.</p>
+<div class="tarjeta tarjeta--tc mt-md"><p class="etiqueta">Precio del dólar en quetzales</p><div class="tc__valor"><span class="tc__moneda">Q</span>${tc.valor.toFixed(4)}</div><div class="sello-linea">${sello('Banco de Guatemala', fechaCorta(tc.fecha), 'https://www.banguat.gob.gt')}</div></div>
 <h2>¿Qué significa?</h2>
 <p>Es el precio de referencia al que se cambia un dólar por quetzales. Lo publica cada día el Banco de Guatemala. Los bancos y las remesadoras usan su propia tasa de compra y venta, que suele ser un poco distinta. $100 de remesa equivalen hoy a unos ${q(100 * tc.valor)}.</p>
 <h2>Últimos 7 días</h2>
 <table class="tabla"><thead><tr><th>Fecha</th><th>Q por dólar</th></tr></thead><tbody>${(tc.series?.['7d'] ?? []).slice().reverse().map((d) => `<tr><td>${fechaCorta(d.fecha)}</td><td>${d.valor.toFixed(4)}</td></tr>`).join('')}</tbody></table>
-<p class="fuente-dato">Fuente: Banco de Guatemala, ${fechaCorta(tc.fecha)}. Dato de referencia; el oficial se consulta en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>
-<p class="mt-md"><a href="/#hoy" class="btn-enlace">Ver la gráfica de 1 año y el convertidor en la app →</a></p>`
+<p class="sello-linea">${sello('Banco de Guatemala', fechaCorta(tc.fecha), 'https://www.banguat.gob.gt')}<span class="meta">Dato de referencia; el oficial se consulta en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a></span></p>
+<p class="mt-md"><a href="/#hoy" class="btn-enlace">Ver la gráfica de 1 año y el convertidor en la app</a></p>`
     : `<h1>${esc(seo.titulo)}</h1><p>El dato de hoy no está disponible en este momento. Consúltalo en <a href="https://www.banguat.gob.gt" target="_blank" rel="noopener">banguat.gob.gt</a>.</p>`;
   const jsonLd = hoy ? [{
     '@context': 'https://schema.org', '@type': 'ExchangeRateSpecification', currency: 'USD',
@@ -168,15 +181,15 @@ ${DETALLE_IND[clave](ind)}
 <h2>¿Qué significa esto?</h2>
 <p>${esc(ind.significado)}</p>
 ${fuenteHtml(ind)}
-<p class="mt-md"><a href="/#hoy" class="btn-enlace">Ver todos los indicadores de hoy en la app →</a></p>`;
+<p class="mt-md"><a href="/#hoy" class="btn-enlace">Ver todos los indicadores de hoy en la app</a></p>`;
   return plantilla({ titulo: seo.titulo, descripcion: `${ind.nombre} en Guatemala: ${VALOR_IND[clave](ind)} (${ind.periodo}). Qué significa para tu bolsillo, con fuente y fecha.`, ruta: seo.ruta, cuerpo, config, migas: [{ nombre: ind.nombre, ruta: seo.ruta }] });
 }
 
 export function paginaCursos(cursos, config) {
   const cuerpo = `<h1>Cursos gratis de finanzas personales en Guatemala</h1>
 <p class="lede">Tres cursos cortos, de cinco lecciones cada uno, para ordenar tu dinero sin palabras complicadas. Escritos por ${esc(config.autor)}.</p>
-${cursos.map((c) => `<div class="tarjeta mt-md"><h2 class="sin-margen"><a href="/cursos/${esc(c.id)}">${c.icono} ${esc(c.titulo)}</a></h2><p>${esc(c.descripcion)}</p><ol class="lista-compacta">${c.lecciones.map((l) => `<li><a href="/cursos/${esc(c.id)}/${esc(l.id)}">${esc(l.titulo)}</a> <span class="texto-suave">· ${l.duracion} min</span></li>`).join('')}</ol></div>`).join('')}
-<p class="mt-md"><a href="/#aprende" class="btn-enlace">Hacer los cursos en la app (guarda tu avance) →</a></p>`;
+${cursos.map((c) => `<div class="tarjeta mt-md"><h2><a href="/cursos/${esc(c.id)}">${esc(c.titulo)}</a></h2><p>${esc(c.descripcion)}</p><ol class="lista-compacta">${c.lecciones.map((l) => `<li><a href="/cursos/${esc(c.id)}/${esc(l.id)}">${esc(l.titulo)}</a> <span class="meta">· ${l.duracion} min</span></li>`).join('')}</ol></div>`).join('')}
+<p class="mt-md"><a href="/#aprende" class="btn-enlace">Hacer los cursos en la app (guarda tu avance)</a></p>`;
   const jsonLd = [{ '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: cursos.map((c, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://${config.dominio}/cursos/${c.id}`, name: c.titulo })) }];
   return plantilla({ titulo: 'Cursos gratis de finanzas personales', descripcion: 'Tu primer presupuesto, Sal de deudas y Empieza a invertir con poco: tres cursos gratuitos y cortos para guatemaltecos.', ruta: '/cursos', cuerpo, jsonLd, config, migas: [{ nombre: 'Cursos', ruta: '/cursos' }] });
 }
@@ -186,24 +199,24 @@ function cursoLd(c, config) {
 }
 
 export function paginaCurso(c, config) {
-  const cuerpo = `<h1>${c.icono} ${esc(c.titulo)}</h1>
+  const cuerpo = `<h1>${esc(c.titulo)}</h1>
 <p class="lede">${esc(c.descripcion)}</p>
-<p class="texto-suave">${c.lecciones.length} lecciones · ${c.lecciones.reduce((s, l) => s + l.duracion, 0)} minutos en total · Gratis · Por ${esc(config.autor)}</p>
-<ol class="lecciones-lista">${c.lecciones.map((l) => `<li><a href="/cursos/${esc(c.id)}/${esc(l.id)}"><strong>${esc(l.titulo)}</strong></a><br><span class="texto-suave">${l.duracion} min · ${esc(l.texto.split('\n')[0].slice(0, 140))}…</span></li>`).join('')}</ol>
-<p class="mt-md"><a href="/#aprende" class="btn-enlace">Empezar en la app (guarda tu avance y tiene repaso) →</a></p>`;
+<p class="texto-2">${c.lecciones.length} lecciones · ${c.lecciones.reduce((s, l) => s + l.duracion, 0)} minutos en total · Gratis · Por ${esc(config.autor)}</p>
+<ol class="lecciones-lista">${c.lecciones.map((l) => `<li><a href="/cursos/${esc(c.id)}/${esc(l.id)}"><strong>${esc(l.titulo)}</strong></a><br><span class="texto-2">${l.duracion} min · ${esc(l.texto.split('\n')[0].slice(0, 140))}…</span></li>`).join('')}</ol>
+<p class="mt-md"><a href="/#aprende" class="btn-enlace">Empezar en la app (guarda tu avance y tiene repaso)</a></p>`;
   return plantilla({ titulo: `${c.titulo} — curso gratis`, descripcion: c.descripcion, ruta: `/cursos/${c.id}`, cuerpo, jsonLd: [cursoLd(c, config)], config, migas: [{ nombre: 'Cursos', ruta: '/cursos' }, { nombre: c.titulo, ruta: `/cursos/${c.id}` }] });
 }
 
 export function paginaLeccion(c, l, config) {
   const idx = c.lecciones.indexOf(l);
   const ant = c.lecciones[idx - 1], sig = c.lecciones[idx + 1];
-  const cuerpo = `<p class="texto-suave">${esc(c.titulo)} · Lección ${esc(l.id)} de ${c.lecciones.length} · ${l.duracion} min</p>
+  const cuerpo = `<p class="meta">${esc(c.titulo)} · Lección ${esc(l.id)} de ${c.lecciones.length} · ${l.duracion} min</p>
 <h1>${esc(l.titulo)}</h1>
 <article class="leccion">${renderTexto(l.texto)}</article>
 <h2>Repaso</h2>
 <p>Esta lección termina con ${l.preguntas.length} preguntas de repaso. Respóndelas en la app para guardar tu avance.</p>
-<p><a href="/#aprende" class="btn-enlace">Hacer el repaso en la app →</a></p>
-<nav class="leccion-nav mt-lg" aria-label="Lecciones">${ant ? `<a href="/cursos/${esc(c.id)}/${esc(ant.id)}">← ${esc(ant.titulo)}</a>` : '<span></span>'}${sig ? `<a href="/cursos/${esc(c.id)}/${esc(sig.id)}">${esc(sig.titulo)} →</a>` : `<a href="/cursos/${esc(c.id)}">Volver al curso</a>`}</nav>`;
+<p><a href="/#aprende" class="btn-enlace">Hacer el repaso en la app</a></p>
+<nav class="leccion-nav mt-lg" aria-label="Lecciones">${ant ? `<a href="/cursos/${esc(c.id)}/${esc(ant.id)}">Anterior: ${esc(ant.titulo)}</a>` : '<span></span>'}${sig ? `<a href="/cursos/${esc(c.id)}/${esc(sig.id)}">Siguiente: ${esc(sig.titulo)}</a>` : `<a href="/cursos/${esc(c.id)}">Volver al curso</a>`}</nav>`;
   const jsonLd = [{ '@context': 'https://schema.org', '@type': 'Article', headline: l.titulo, isPartOf: { '@type': 'Course', name: c.titulo }, author: { '@type': 'Person', name: config.autor }, publisher: { '@type': 'Organization', name: config.nombre }, inLanguage: 'es', isAccessibleForFree: true, url: `https://${config.dominio}/cursos/${c.id}/${l.id}` }];
   return plantilla({ titulo: `${l.titulo} — ${c.titulo}`, descripcion: l.texto.split('\n')[0].slice(0, 155), ruta: `/cursos/${c.id}/${l.id}`, cuerpo, jsonLd, config, migas: [{ nombre: 'Cursos', ruta: '/cursos' }, { nombre: c.titulo, ruta: `/cursos/${c.id}` }, { nombre: `Lección ${l.id}`, ruta: `/cursos/${c.id}/${l.id}` }] });
 }
@@ -212,20 +225,20 @@ export function paginaInvertir(inv, config) {
   const filas = inv.tasasPlazoFijo.filas.slice().sort((a, b) => (b.tasa ?? -1) - (a.tasa ?? -1));
   const cuerpo = `<h1>Tasas de plazo fijo en Guatemala: bancos y cooperativas</h1>
 <p class="lede">${esc(inv.tasasPlazoFijo.nota)}</p>
-<table class="tabla"><thead><tr><th>Entidad</th><th>Producto</th><th>Tasa anual</th><th>Fecha y fuente</th></tr></thead><tbody>${filas.map((f) => `<tr><td><strong>${esc(f.entidad)}</strong></td><td>${esc(f.producto)}${f.monto && f.monto !== '—' ? `<br><span class="texto-suave">${esc(f.monto)}</span>` : ''}</td><td>${f.tasa === null ? '<span class="texto-suave">Consultar con la entidad</span>' : `<strong>${f.tasa.toFixed(2)}%</strong> <span class="texto-suave">${esc(f.tipoTasa)}</span>`}</td><td class="texto-suave">${fechaCorta(f.fecha)}<br><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.fuente)}</a>${f.afiliado ? '<br>' + enlaceAfiliado(f.afiliado) : ''}</td></tr>`).join('')}</tbody></table>
-<p class="texto-suave">${esc(inv.avisoIsr)}</p>
+<table class="tabla"><thead><tr><th>Entidad</th><th>Producto</th><th>Tasa anual</th><th>Fecha y fuente</th></tr></thead><tbody>${filas.map((f) => `<tr><td><strong>${esc(f.entidad)}</strong></td><td>${esc(f.producto)}${f.monto && f.monto !== '—' ? `<br><span class="texto-2">${esc(f.monto)}</span>` : ''}</td><td>${f.tasa === null ? '<span class="texto-2">Consultar con la entidad</span>' : `<strong>${f.tasa.toFixed(2)}%</strong> <span class="meta">${esc(f.tipoTasa)}</span>`}</td><td>${sello(String(f.fuente).includes('.') ? f.fuente : String(f.url).replace(/^https?:\/\/(www\.)?/, '').split('/')[0], fechaCorta(f.fecha), f.url)}${f.afiliado ? '<br>' + enlaceAfiliado(f.afiliado) : ''}</td></tr>`).join('')}</tbody></table>
+<p class="texto-2 mt-md">${esc(inv.avisoIsr)}</p>
 <h2>Bonos del Tesoro para personas</h2>
-<p>Desde ${q(inv.bonos.minimo, 0)} y hasta ${q(inv.bonos.maximoAnual, 0)} al año: ${inv.bonos.plazos.map((p) => `${p.anios} ${p.anios === 1 ? 'año' : 'años'} al ${p.tasa}%`).join(', ')}; intereses ${esc(inv.bonos.pagoIntereses)}, ${esc(inv.bonos.impuestos)}. <span class="texto-suave">Fuente: <a href="${esc(inv.bonos.url)}" target="_blank" rel="noopener">${esc(inv.bonos.fuente)}</a>, ${fechaCorta(inv.bonos.fecha)}.</span></p>
+<p>Desde ${q(inv.bonos.minimo, 0)} y hasta ${q(inv.bonos.maximoAnual, 0)} al año: ${inv.bonos.plazos.map((p) => `${p.anios} ${p.anios === 1 ? 'año' : 'años'} al ${p.tasa}%`).join(', ')}; intereses ${esc(inv.bonos.pagoIntereses)}, ${esc(inv.bonos.impuestos)}.</p><p class="sello-linea">${sello(inv.bonos.fuente, fechaCorta(inv.bonos.fecha), inv.bonos.url)}</p>
 <h2>Las opciones, explicadas</h2>
-${inv.tipos.map((t) => `<h3>${esc(t.nombre)}</h3><p>${esc(t.queEs)} <span class="texto-suave">Riesgo ${esc(t.riesgo)} · ${esc(t.liquidez.toLowerCase())} · supervisa: ${esc(t.supervisa)}.</span></p>`).join('')}
-<p class="mt-md"><a href="/#invertir" class="btn-enlace">Comparar, usar las calculadoras y ver cómo evitar estafas en la app →</a></p>`;
+${inv.tipos.map((t) => `<h3>${esc(t.nombre)}</h3><p>${esc(t.queEs)} <span class="texto-2">Riesgo ${esc(t.riesgo)} · ${esc(t.liquidez.toLowerCase())} · supervisa: ${esc(t.supervisa)}.</span></p>`).join('')}
+<p class="mt-md"><a href="/#invertir" class="btn-enlace">Comparar, usar las calculadoras y ver cómo evitar estafas en la app</a></p>`;
   return plantilla({ titulo: 'Tasas de plazo fijo y opciones para invertir en Guatemala', descripcion: 'Comparación de tasas de depósito a plazo de bancos y cooperativas de Guatemala con fecha y fuente, Bonos del Tesoro para personas y las opciones explicadas sin jerga.', ruta: '/invertir-en-guatemala', cuerpo, config, migas: [{ nombre: 'Invertir', ruta: '/invertir-en-guatemala' }] });
 }
 
 export function paginaNovedades(novedades, config) {
   const cuerpo = `<h1>Novedades</h1>
 <p class="lede">Lo que hemos agregado a ${esc(config.nombre)}, de lo más reciente a lo más antiguo.</p>
-${novedades.slice().reverse().map((n) => `<div class="tarjeta mt-md"><div class="tarjeta__titulo">${fechaCorta(n.fecha)}</div><h2 class="sin-margen">${esc(n.titulo)}</h2><ul class="lista-compacta">${n.cambios.map((c) => `<li>${esc(c)}</li>`).join('')}</ul></div>`).join('')}`;
+${novedades.slice().reverse().map((n) => `<div class="tarjeta mt-md"><p class="meta">${fechaCorta(n.fecha)}</p><h2>${esc(n.titulo)}</h2><ul class="lista-compacta">${n.cambios.map((c) => `<li>${esc(c)}</li>`).join('')}</ul></div>`).join('')}`;
   return plantilla({ titulo: 'Novedades', descripcion: `Historial de lo que se ha agregado a ${config.nombre}.`, ruta: '/novedades', cuerpo, config, migas: [{ nombre: 'Novedades', ruta: '/novedades' }] });
 }
 
@@ -267,7 +280,7 @@ function bloqueMetricas(m) {
 <div class="metrica"><span class="metrica__n">${num(e.curso_terminado)}</span><span>cursos terminados</span></div>
 <div class="metrica"><span class="metrica__n">${num((e.compartir ?? 0) + (e.copiar_resumen ?? 0))}</span><span>veces compartido</span></div>
 </div>
-<p class="texto-suave">Cifras reales medidas por la app desde el ${fechaCorta(m.desde)} (últimos 30 días para instalaciones, cursos y compartidos). Las visitas se miden con Cloudflare Web Analytics, sin cookies.</p>`;
+<p class="texto-2 mt-sm">Cifras reales medidas por la app desde el ${fechaCorta(m.desde)} (últimos 30 días para instalaciones, cursos y compartidos). Las visitas se miden con Cloudflare Web Analytics, sin cookies.</p>`;
 }
 
 export function paginaAnunciate(config, metricas) {
@@ -275,14 +288,14 @@ export function paginaAnunciate(config, metricas) {
   const cuerpo = `<h1>Anúnciate en ${esc(config.nombre)}</h1>
 <p class="lede">${esc(config.nombre)} es la app gratuita de información financiera para guatemaltecos comunes: el dólar de hoy, los indicadores que mueven la economía, noticias explicadas en sencillo, comparación de opciones para invertir y cursos de finanzas personales. Todo desde el celular, en español de Guatemala.</p>
 <h2>A quién llegas</h2>
-<p>Personas que quieren entender su dinero: quien recibe remesas, quien está pagando una tarjeta, quien busca dónde poner sus primeros Q5,000, quien quiere aprender a hacer un presupuesto. Audiencia en Guatemala, mayoritariamente desde celular.</p>
+<p>Personas que quieren entender su dinero: quien recibe remesas, quien está pagando una tarjeta, quien busca dónde poner sus primeros Q5,000, quien quiere aprender a hacer un presupuesto. La app está hecha para usarse desde el celular, con pocos datos.</p>
 <h2>Lo que mide la app</h2>
 ${bloqueMetricas(metricas)}
 <h2>Formas de participar</h2>
-<div class="tarjeta mt-md"><h3 class="sin-margen">1. Patrocinio del resumen diario</h3><p>Cada mañana se comparte en WhatsApp y redes un resumen con el dólar, 3 noticias y un dato del día. Tu marca aparece al final como <strong>"Te lo trae: [tu marca]"</strong>, en el texto y en la imagen del día.</p></div>
-<div class="tarjeta mt-md"><h3 class="sin-margen">2. Patrocinio de un curso</h3><p>Tres cursos de cinco lecciones: <em>Tu primer presupuesto</em>, <em>Sal de deudas</em> y <em>Empieza a invertir con poco</em>. Tu marca aparece como <strong>"Patrocinado por [tu marca]"</strong> en la portada del curso y en cada lección.</p></div>
-<div class="tarjeta mt-md"><h3 class="sin-margen">3. Enlace de afiliado en el comparador</h3><p>En la tabla de tasas de plazo fijo y ahorro, junto a tu entidad, un botón <strong>"Abrir cuenta"</strong> hacia tu página. Tu tasa sigue mostrándose con su fecha y fuente, igual que las demás.</p></div>
-<div class="tarjeta mt-md"><h3 class="sin-margen">4. Bienestar financiero para empleados</h3><p>Los tres cursos, adaptados para tu empresa o cooperativa: sesión de arranque, acceso para tu equipo, seguimiento de avance y un cierre con preguntas. Ideal para bancos, remesadoras, aseguradoras, call centers y maquilas que quieren reducir el estrés financiero de su gente.</p></div>
+<div class="tarjeta mt-md"><h3>1. Patrocinio del resumen diario</h3><p>Cada mañana se comparte en WhatsApp y redes un resumen con el dólar, 3 noticias y un dato del día. Tu marca aparece al final como <strong>"Te lo trae: [tu marca]"</strong>, en el texto y en la imagen del día.</p></div>
+<div class="tarjeta mt-md"><h3>2. Patrocinio de un curso</h3><p>Tres cursos de cinco lecciones: «Tu primer presupuesto», «Sal de deudas» y «Empieza a invertir con poco». Tu marca aparece como <strong>"Patrocinado por [tu marca]"</strong> en la portada del curso y en cada lección.</p></div>
+<div class="tarjeta mt-md"><h3>3. Enlace de afiliado en el comparador</h3><p>En la tabla de tasas de plazo fijo y ahorro, junto a tu entidad, un botón <strong>"Abrir cuenta"</strong> hacia tu página. Tu tasa sigue mostrándose con su fecha y fuente, igual que las demás.</p></div>
+<div class="tarjeta mt-md"><h3>4. Bienestar financiero para empleados</h3><p>Los tres cursos, adaptados para tu empresa o cooperativa: sesión de arranque, acceso para tu equipo, seguimiento de avance y un cierre con preguntas. Ideal para bancos, remesadoras, aseguradoras, call centers y maquilas que quieren reducir el estrés financiero de su gente.</p></div>
 <h2>Nuestras reglas (no son negociables)</h2>
 <ul>
 <li>Todo patrocinio y todo enlace de afiliado lleva una etiqueta visible: <strong>"Patrocinado"</strong> o <strong>"Enlace patrocinado"</strong>.</li>
@@ -310,26 +323,24 @@ export function paginaMediaKit(config, metricas) {
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="stylesheet" href="/styles.css">
   <style>
-    .mk { max-width: 720px; margin: 0 auto; padding: 24px 16px 80px; color: #1A1A2E; background: #fff; }
-    .mk h1 { font-size: 1.8rem; margin: 0 0 4px; color: #1B4332; }
-    .mk h2 { font-size: 1.1rem; margin: 20px 0 6px; color: #1B4332; border-bottom: 2px solid #52B788; padding-bottom: 4px; }
-    .mk p, .mk li { font-size: 0.92rem; color: #1A1A2E; }
-    .mk__cab { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
-    .mk__cab img { width: 56px; height: 56px; border-radius: 12px; }
-    .mk .metricas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
-    .mk .metrica { border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px; text-align: center; font-size: 0.72rem; display: flex; flex-direction: column; gap: 2px; }
-    .mk .metrica__n { font-size: 1.3rem; font-weight: 800; color: #1B4332; }
-    .mk table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    .mk th, .mk td { text-align: left; padding: 6px; border-bottom: 1px solid #E2E8F0; vertical-align: top; }
-    .mk__pie { margin-top: 24px; font-size: 0.8rem; color: #5A6480; }
-    .mk__btn { display: inline-block; margin: 12px 0; padding: 12px 18px; background: #1B4332; color: #fff; border-radius: 10px; font-weight: 700; border: 0; cursor: pointer; }
+    .mk { max-width: 720px; margin: 0 auto; padding: var(--s6) var(--s4) var(--s16); }
+    .mk h1 { font-size: var(--t-pagina); }
+    .mk h2 { font-size: var(--t-tarjeta); margin: var(--s6) 0 var(--s2); padding-bottom: var(--s1); border-bottom: 1px solid var(--linea-fuerte); }
+    .mk p, .mk li { font-size: var(--t-2); }
+    .mk__cab { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s2); }
+    .mk__cab svg { width: 48px; height: 48px; color: var(--acento); }
+    .mk .metricas { grid-template-columns: repeat(4, 1fr); }
+    .mk table { width: 100%; border-collapse: collapse; font-size: var(--t-2); }
+    .mk th, .mk td { text-align: left; padding: var(--s2); border-bottom: 1px solid var(--linea); vertical-align: top; }
+    .mk th { font-weight: 500; color: var(--texto-2); }
+    .mk__pie { margin-top: var(--s6); color: var(--texto-2); }
+    .mk .btn-principal { width: auto; margin: var(--s3) 0; }
     @media (max-width: 600px) { .mk .metricas { grid-template-columns: repeat(2, 1fr); } }
     @media print {
       @page { size: A4; margin: 14mm; }
-      html, body { background: #fff !important; color: #000; }
+      :root { --fondo: #fff; --superficie: #fff; --texto: #000; --texto-2: #333; }
       .mk { padding: 0; max-width: none; }
-      .mk__btn, .no-imprimir { display: none !important; }
-      .mk .metricas { grid-template-columns: repeat(4, 1fr); }
+      .mk .btn-principal, .no-imprimir { display: none !important; }
       .tarjeta, .mk .metrica, table, h2 { break-inside: avoid; page-break-inside: avoid; }
       a { color: #000; text-decoration: none; }
     }
@@ -337,14 +348,14 @@ export function paginaMediaKit(config, metricas) {
 </head>
 <body>
 <main class="mk">
-  <div class="mk__cab"><img src="/icons/icon-192.png" alt=""><div><h1>${esc(config.nombre)} · Media kit</h1><div>${esc(config.tagline)} · hoy.compoundclub.fyi</div></div></div>
-  <button class="mk__btn" onclick="window.print()">Imprimir o guardar como PDF</button>
+  <div class="mk__cab">${SIGNO.replace('class="marca__signo" ', '')}<div><h1>${esc(config.nombre)} · Media kit</h1><div class="texto-2">${esc(config.tagline)} · ${esc(config.dominio)}</div></div></div>
+  <button class="btn-principal" onclick="window.print()">Imprimir o guardar como PDF</button>
   <h2>Qué es</h2>
   <p>App web gratuita e instalable en el celular con información financiera para guatemaltecos comunes: tipo de cambio del día (Banguat), ${num(metricas.contenido.indicadores)} indicadores con fuente y fecha, ${num(metricas.contenido.noticiasPorDia)} noticias económicas explicadas cada mañana, comparador de opciones para invertir (${num(metricas.contenido.entidadesTasas)} bancos y cooperativas) con calculadoras, y ${num(metricas.contenido.cursos)} cursos de finanzas personales (${num(metricas.contenido.lecciones)} lecciones). Todo en español de Guatemala, sin jerga. Autor: ${esc(config.autor)}.</p>
   <h2>Audiencia</h2>
-  <p>Personas en Guatemala que quieren entender su dinero: receptores de remesas, quienes pagan tarjetas o préstamos, ahorradores que buscan dónde poner sus primeros quetzales, y gente que quiere aprender a presupuestar. Uso mayoritario desde celular con datos móviles; la app pesa menos de 100 KB.</p>
+  <p>Personas en Guatemala que quieren entender su dinero: receptores de remesas, quienes pagan tarjetas o préstamos, ahorradores que buscan dónde poner sus primeros quetzales, y gente que quiere aprender a presupuestar. Está hecha para celulares con datos móviles: la página principal pesa menos de 150 KB sin contar imágenes.</p>
   <h2>Cifras (medidas por la app, al ${fechaCorta(metricas.desde)})</h2>
-  ${bloqueMetricas(metricas).replace(/<p class="texto-suave">[\s\S]*<\/p>/, '')}
+  ${bloqueMetricas(metricas).replace(/<p class="texto-2 mt-sm">[\s\S]*<\/p>/, '')}
   <p>Instalaciones, cursos y compartidos son de los últimos 30 días. Visitas: Cloudflare Web Analytics (se adjunta captura a pedido).</p>
   <h2>Formatos</h2>
   <table><thead><tr><th>Formato</th><th>Dónde aparece</th><th>Etiqueta</th></tr></thead><tbody>
@@ -358,7 +369,7 @@ export function paginaMediaKit(config, metricas) {
   <h2>Precios y contacto</h2>
   <p>${esc(config.anunciate?.preciosNota || 'Precios a convenir según alcance y duración.')} Escribe a <strong>${esc(correo)}</strong>${config.anunciate?.whatsapp ? ` o por WhatsApp al ${esc(config.anunciate.whatsapp)}` : ''}.</p>
   <p class="mk__pie">${esc(config.nombre)} · hoy.compoundclub.fyi · Información educativa, no asesoría financiera. Media kit generado el ${fechaCorta(metricas.desde)}.</p>
-  <p class="no-imprimir"><a href="/anunciate">← Volver a Anúnciate</a></p>
+  <p class="no-imprimir"><a class="btn-enlace" href="/anunciate">Volver a Anúnciate</a></p>
 </main>
 </body>
 </html>`;

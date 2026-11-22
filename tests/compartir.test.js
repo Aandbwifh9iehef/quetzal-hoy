@@ -35,7 +35,8 @@ test('el texto para WhatsApp tiene el formato esperado (fixture)', () => {
 test('el texto usa negritas de WhatsApp, enlaces en línea propia y nada roto', () => {
   const texto = textoResumen(datos);
   assert.match(texto, /^\*Quetzal Hoy — martes 3 de noviembre\*\n/);
-  assert.match(texto, /💵 \*Dólar:\* Q7\.6362 \(▼ 0\.0057 vs\. ayer\)/);
+  assert.match(texto, /\*Dólar:\* Q 7\.6362, Q 0\.0057 menos que ayer/);
+  assert.doesNotMatch(texto, /[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u, 'sin emojis');
   assert.match(texto, /\n  https:\/\/www\.prensalibre\.com\/a\n/);
   assert.match(texto, /Más en https:\/\/hoy\.compoundclub\.fyi\n$/);
   assert.doesNotMatch(texto, /undefined|null|NaN|\*\*/);
@@ -48,7 +49,7 @@ test('con patrocinador aparece "Te lo trae"; sin datos de hoy no revienta', () =
   assert.match(con, /Te lo trae: Banco Ejemplo · https:\/\/ejemplo\.gt/);
   const vacio = textoResumen({ fecha: '2026-11-03', tipoCambio: { disponible: false }, noticias: null, dato: null, config });
   assert.match(vacio, /^\*Quetzal Hoy — martes 3 de noviembre\*\n\nMás en/);
-  assert.doesNotMatch(vacio, /Dólar|📰|💡/);
+  assert.doesNotMatch(vacio, /Dólar|Lo que importa/);
 });
 
 test('envolver corta por palabras y limita líneas', () => {
@@ -63,10 +64,12 @@ test('la imagen SVG se genera en los dos tamaños y contiene los datos', () => {
   for (const f of Object.keys(FORMATOS)) {
     const svg = svgImagen({ ...datos, formato: f });
     assert.match(svg, new RegExp(`^<svg [^>]*width="${FORMATOS[f].ancho}" height="${FORMATOS[f].alto}"`));
-    assert.match(svg, /Q7\.6362/);
-    assert.match(svg, /DÓLAR HOY/);
-    assert.match(svg, /LO QUE IMPORTA HOY/);
-    assert.match(svg, /DATO DEL DÍA/);
+    assert.match(svg, />7\.6362</);
+    assert.match(svg, /Precio del dólar en quetzales/);
+    assert.match(svg, /Lo que importa hoy/);
+    assert.match(svg, /Dato del día/);
+    assert.match(svg, /Banguat · 3 nov 2026/, 'sello con fuente y fecha');
+    assert.doesNotMatch(svg, /letter-spacing="4"|DÓLAR|IMPORTA HOY/, 'sin etiquetas en mayúsculas');
     assert.match(svg, /hoy\.compoundclub\.fyi/);
     assert.doesNotMatch(svg, /undefined|NaN/);
     assert.doesNotMatch(svg, /<text[^>]*>[^<]*&(?!amp;|lt;|gt;|quot;)/, 'ampersands escapados');

@@ -5,11 +5,11 @@
   "contacto": "CompundClub@proton.me",
   "autor": "Leo Marín",
   "colores": {
-    "primario": "#1B4332",
-    "primarioClaro": "#2D6A4F",
-    "secundario": "#52B788",
-    "acento": "#F4A261",
-    "acentoOscuro": "#E76F51"
+    "nota": "Los colores reales viven en public/styles.css (:root) y DISENO.md. Estos son de referencia.",
+    "acento": "#1d6b4f",
+    "acentoOscuro": "#5fbf94",
+    "papel": "#f4f4f0",
+    "tinta": "#17201b"
   },
   "patrocinador": "",
   "patrocinadorUrl": "",

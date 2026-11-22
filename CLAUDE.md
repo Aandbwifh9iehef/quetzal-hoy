@@ -83,11 +83,12 @@ Lo que tienes que hacer tú: <pasos numerados, o "Nada. Cuando quieras, escribe:
   `src/guides-es.js`) se pueden reutilizar y adaptar como base de cursos.
 
 ## Diseño
-- Primero móvil (360–430 px de ancho). Botones grandes, texto mínimo 16 px, alto contraste.
-- Modo claro y oscuro (según el sistema).
-- Navegación inferior fija con 4 pestañas: **Hoy**, **Noticias**, **Invertir**, **Aprende**.
-- Paleta y logo propios definidos en la fase 1 en `src/styles.css` como variables CSS.
-  Nada de logos, fotos ni marcas de bancos o medios (solo sus nombres en texto).
+- Sigue `DISENO.md`. No inventes colores, tamaños ni componentes nuevos si ya existe uno.
+- Toda pantalla nueva o cambiada, en cualquier fase, pasa la checklist de
+  `.claude/skills/unslop/SKILL.md` antes del reporte. Si algo se ve hecho por IA, se corrige en la
+  misma fase. Inclúyelo en "Verifiqué".
+- Primero móvil (360–430 px), texto mínimo 16 px (13 en sellos y metadatos), todo lo tocable ≥ 44 px.
+- Nada de logos, fotos ni marcas de bancos o medios (solo sus nombres en texto).
 
 ## Cómo verificar (antes de cada reporte)
 1. Pruebas automáticas: `npm test` (node:test, sin dependencias extra) para toda la lógica de datos

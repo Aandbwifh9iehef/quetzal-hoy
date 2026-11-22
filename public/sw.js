@@ -1,8 +1,10 @@
-const CACHE = 'quetzal-hoy-v15';
+const CACHE = 'quetzal-hoy-v16';
 const PRECACHE = [
   '/',
   '/styles.css',
   '/icon.svg',
+  '/fonts/figtree-latin.woff2',
+  '/guilloche.svg',
   '/sin-conexion',
   '/app.js',
   '/manifest.webmanifest'
